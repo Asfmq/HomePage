@@ -186,6 +186,7 @@ body
     overflow-x: hidden;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    /* background-image: url('../assets/img/background.jpg'); */
 }
 
 a
@@ -712,3 +713,4 @@ li.selected{
     margin: 0;
     padding: 0;
 }
+

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title id="page-title"></title>
@@ -16,140 +16,158 @@
     <meta name="x5-fullscreen" content="true">
     <meta name="x5-page-mode" content="app">
     <meta name="lsvn" content="djEuNS4x">
-
-    <!-- 引入外部 CSS 和 JS -->
+    
+    <!-- 引入外部 CSS -->
     <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-2-M/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap/4.5.3/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="./assets/css/fontawesome-free5.13.0.css">
+    
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-2-M/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap/4.5.3/js/bootstrap.min.js"></script>
     <script src="config.js"></script>
 
-    <script src="./js/script.js"></script>
-    <script src="./assets/js/svg.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // 设置页面信息
+        document.getElementById('page-title').innerText = config.title;
+        document.getElementById('page-keywords').content = config.keywords;
+        document.getElementById('page-description').content = config.description;
+        document.getElementById('page-author').content = config.author;
+        document.getElementById('favicon').href = config.favicon;
 
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="position: absolute; z-index: 10000;">
-        <button class="navbar-toggler collapsed" style="border: none; outline: none;" type="button" data-toggle="collapse" data-target="#navbarsExample05">
-            <svg class="icon" width="200" height="200"><use xlink:href="#icon-menus"></use></svg>
-            <span><svg class="bi bi-x" fill="currentColor" id="x"><use xlink:href="#icon-closes"></use></svg></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarsExample05">
-            <ul class="navbar-nav mr-auto" id="nav-items"></ul>
-            <div id="he-plugin-simple"></div>
-        </div>
+        // 设置背景图
+        document.body.style.backgroundImage = `url(${config.backgroundImage})`; 
+
+        // 动态生成导航项
+        const navItemsContainer = document.getElementById('nav-items');
+        config.links.navItems.forEach(item => {
+          const li = document.createElement('li');
+          li.className = "nav-item";
+          li.innerHTML = `<a class="nav-link" href="${item.url}" id="${item.id}">${item.name}</a>`;
+          navItemsContainer.appendChild(li);
+        });
+
+        // 动态生成分类和链接
+        const categoriesContainer = document.getElementById('categories');
+        config.links.categories.forEach(category => {
+          const categoryDiv = document.createElement('ul');
+          categoryDiv.className = "mylist row";
+		  
+          categoryDiv.innerHTML = `<li class="title">
+			<svg class="icon" aria-hidden="true">
+				<use href="${category.icon}"></use>
+        	</svg>
+			<span>${category.title}</span></li>`;
+          category.links.forEach(link => {
+            const linkItem = document.createElement('li');
+            linkItem.className = "lylme-3";
+            linkItem.innerHTML = `<a rel="nofollow" href="${link.url}" target="_blank">
+                ${isImageFile(link.icon) ? 
+                    `<img src="${link.icon}" alt="${link.name}">` : 
+                    `<svg class="icon" aria-hidden="true">
+                        <use xlink:href="${link.icon}"></use>
+                    </svg>`
+                }
+                <span>${link.name}</span>
+            </a>`;
+            categoryDiv.appendChild(linkItem);
+          });
+          categoriesContainer.appendChild(categoryDiv);
+        });
+
+        // 设置版权和备案信息
+        document.getElementById('copyright').innerHTML = 
+		`Copyright ©${config.copyright.text} <a href='/' target='_blank'>${config.copyright.target}</a>. All Rights Reserved.<br>
+		<a href="${config.copyright.recordUrl}" target="_blank">${config.copyright.record}</a>`;
+      });
+
+      // 检查文件扩展名的函数
+      const isImageFile = (url) => /\.(png|jpg|ico|svg)$/.test(url);
+    </script>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarsExample05">
+        <svg class="icon" width="200" height="200"><use xlink:href="#icon-menus"></use></svg>
+        <span><svg class="bi bi-x" fill="currentColor" id="x"><use xlink:href="#icon-closes"></use></svg></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExample05">
+        <ul class="navbar-nav mr-auto" id="nav-items"></ul>
+        <div id="he-plugin-simple"></div>
+      </div>				
     </nav>
 
-    <!-- 主容器 -->
-    <div class="container" style="margin-top:10vh; position: relative; z-index: 100;">
-        <div id="main">
-            <div id="show_time"></div>  
-            <div id="show_date"></div>  
-        </div>
+    <main class="container" style="margin-top:10vh;">
+      <div id="main">
+        <div id="show_time"></div>  
+        <div id="show_date"></div>  
+      </div>
 
-        <!-- 搜索框 -->
-        <div id="search" class="s-search s-curren">
-            <div id="search-list" class="hide-type-list">
-                <div class="search-group group-a">
-                    <div class="search-box">
-                        <div id="search-lylme">
-                            <form action="https://cn.bing.com/search?q=" method="get" target="_blank" id="super-search-fm">
-                                <div id="checke-so" onclick="lylme()">
-                                    <svg class="lylme" aria-hidden="true"><use xlink:href="#icon-bing"></use></svg>
-                                    <svg class="sw" id="lylme-up" style="display:inline" aria-hidden="true"><use xlink:href="#icon-up"></use></svg>
-                                    <svg class="sw" id="lylme-down" style="display:none" aria-hidden="true"><use xlink:href="#icon-down"></use></svg>
-                                </div>
-                                <input type="text" id="search-text" placeholder="微软必应搜索" style="outline:0" autocomplete="off">
-                                <button class="submit" id="search-submit" type="submit">
-                                    <svg style="width: 22px; height: 22px; margin: 0 20px 0 20px; color: #fff;" class="icon" aria-hidden="true"><use xlink:href="#icon-sousuo"></use></svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+      <!-- 搜索框 -->
+      <div id="search" class="s-search s-curren">
+        <div id="search-list" class="hide-type-list">
+          <div class="search-group group-a">
+            <div class="search-box">
+              <div id="search-lylme">
+                <form action="https://cn.bing.com/search?q=" method="get" target="_blank" id="super-search-fm">
+                  <div id="checke-so" onclick="lylme()">
+                    <svg class="lylme" aria-hidden="true"><use xlink:href="#icon-bing"></use></svg>
+                    <svg class="sw" id="lylme-up" style="display:inline" aria-hidden="true"><use xlink:href="#icon-up"></use></svg>
+                    <svg class="sw" id="lylme-down" style="display:none" aria-hidden="true"><use xlink:href="#icon-down"></use></svg>
+                  </div>
+                  <input type="text" id="search-text" placeholder="微软必应搜索" style="outline:0" autocomplete="off">
+                  <button class="submit" id="search-submit" type="submit">
+                    <svg style="width: 22px; height: 22px; margin: 0 20px; color: #fff;" class="icon" aria-hidden="true"><use xlink:href="#icon-sousuo"></use></svg>
+                  </button>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
 
         <!-- 搜索类型选择 -->
-        <ul class="search-type" id="chso"></ul>
+		<ul class="search-type" id="chso"></ul>
+		<script>
+			const searchTypeContainer = document.getElementById('chso');
+			config.links.searchEngines.forEach(engine => {
+				const li = document.createElement('li');
+				li.innerHTML = 
+					`<input hidden="" checked="" type="radio" name="type" id="${engine.name}" value="${engine.url}" data-placeholder="${engine.placeholder}">
+					<label for="${engine.name}" style="font-weight:600">
+						<svg class="icon" aria-hidden="true"><use xlink:href="${engine.icon}"></use></svg>
+						<span style="color:#0c498c">${engine.name}</span>
+					</label>`
+				;
+				searchTypeContainer.appendChild(li);
+			});
+		</script>
 
-        <!-- 动态生成分类 -->
-        <ul class="mylist row" id="categories"></ul>
-    </div>
+    
+
+        <div class="set-check hidden-xs">
+          <input type="checkbox" id="set-search-blank" class="bubble-3" autocomplete="off">
+        </div>
+        
+        <ul id="word" style="display: none;"></ul>
+      </div>
+
+      <!-- 动态生成分类 -->
+      <ul class="mylist row" id="categories"></ul>
+    </main>
 
     <!-- 返回顶部 -->
     <div style="display:none;" class="back-to" id="toolBackTop">
-        <a title="返回顶部" onclick="window.scrollTo(0,0);return false;" href="#top" class="back-top"></a>
+      <a title="返回顶部" onclick="window.scrollTo(0,0);return false;" href="#top" class="back-top"></a>
     </div>
 
     <!-- 底部信息 -->
-    <div class="mt-5 mb-3 footer text-muted text-center">
-        <p id="copyright"></p>
-    </div>
+    <footer class="mt-5 mb-3 footer text-muted text-center">
+      <p id="copyright"></p>
+    </footer>
 
-    <script>
-        // 页面的动态内容生成
-        document.addEventListener("DOMContentLoaded", function() {
-            // 设置页面信息
-            const { title, keywords, description, author, favicon, backgroundImage, links, copyright } = config;
-
-            document.getElementById('page-title').innerText = title;
-            document.getElementById('page-keywords').content = keywords;
-            document.getElementById('page-description').content = description;
-            document.getElementById('page-author').content = author;
-            document.getElementById('favicon').href = favicon;
-
-            // 设置背景图
-            document.body.style.backgroundImage = `url(${backgroundImage})`; 
-
-            // 动态生成导航项
-            const navItemsContainer = document.getElementById('nav-items');
-            links.navItems.forEach(item => {
-                const li = document.createElement('li');
-                li.className = "nav-item";
-                li.innerHTML = `<a class="nav-link" href="${item.url}" id="${item.id}">${item.name}</a>`;
-                navItemsContainer.appendChild(li);
-            });
-
-            // 动态生成分类和链接
-            const categoriesContainer = document.getElementById('categories');
-            links.categories.forEach(category => {
-                const categoryDiv = document.createElement('ul');
-                categoryDiv.className = "mylist row";
-                categoryDiv.innerHTML = `<li class="title">
-                    <svg class="icon" aria-hidden="true">
-                        <use href="${category.icon}"></use>
-                    </svg>
-                    <span>${category.title}</span></li>`;
-
-                category.links.forEach(link => {
-                    const linkItem = document.createElement('li');
-                    linkItem.className = "lylme-3";
-                    linkItem.innerHTML = `
-                        <a rel="nofollow" href="${link.url}" target="_blank">
-                            ${isImageFile(link.icon) ? 
-                                `<img src="${link.icon}" alt="${link.name}">` : 
-                                `<svg class="icon" aria-hidden="true">
-                                    <use xlink:href="${link.icon}"></use>
-                                </svg>`
-                            }
-                            <span>${link.name}</span>
-                        </a>`;
-                    categoryDiv.appendChild(linkItem);
-                });
-
-                categoriesContainer.appendChild(categoryDiv);
-            });
-
-            // 设置版权和备案信息
-            document.getElementById('copyright').innerHTML = 
-            `Copyright ©${copyright.text} <a href='/' target='_blank'>${copyright.target}</a>. All Rights Reserved.<br>
-            <a href="${copyright.recordUrl}" target="_blank">${copyright.record}</a>`;
-        });
-
-        // 检查文件扩展名的函数
-        const isImageFile = (url) => /\.(png|jpg|ico|svg)$/.test(url);
-    </script>
-</body>
+    <script src="./js/script.js"></script>
+    <script src="./assets/js/svg.js"></script>
+  </body>
 </html>

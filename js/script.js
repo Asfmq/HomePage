@@ -99,7 +99,7 @@ function show() {
 	document.getElementById("show_time").innerHTML = format;
 	return show;
 }
-setInterval(show, 500);
+setInterval(show(), 500);
  
 
 !

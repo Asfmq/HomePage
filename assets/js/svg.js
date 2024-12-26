@@ -26,7 +26,6 @@ var icons = [
 // 在 function(c) 内部使用 icons 数组
 !function(c) {
     var l, h, a, t, i, p, z = '<svg>'+icons.join('')+'</svg>'; // 将 icons 数组合并成一个字符串
-    console.log(z);
     var d = document.getElementsByTagName("script");
     d = d[d.length - 1].getAttribute("data-injectcss");
     if (d && !c.__iconfont__svg__cssinject__) {
