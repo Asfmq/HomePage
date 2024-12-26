@@ -400,10 +400,11 @@ ul#chso
 .search-type li
 {
     margin-bottom: 10px;
+    margin-right: 5px;
     display: inline-block;
     background: #ffffffAD !important;
     background: rgba(255,255,255,70%);
-    border-radius: 10px
+    border-radius: 10px;
 }
 
 .search-type li label
