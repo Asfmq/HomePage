@@ -6,9 +6,6 @@ const config = {
     favicon: "./assets/img/fmq.ico",
     backgroundImage: "./assets/img/background.jpg",
     links: {
-        home: "https://www.lylme.com/",
-        blog: "https://blog.lylme.com/",
-        github: "https://github.com/lylme",
         navItems: [
             { name: "主页", url: "https://www.lylme.com/", id: "home-link" },
             { name: "博客", url: "https://blog.asfmq.com/", id: "blog-link" },
@@ -85,7 +82,9 @@ const config = {
                     { name: "calibre", url: "https://calibre.asfmq.cn", icon: "./assets/img/calibre.png" },
                     { name: "alist", url: "https://alist.asfmq.cn", icon: "./assets/img/alist.png" },
                     { name: "xiaoya", url: "https://xiaoya.asfmq.cn", icon: "./assets/img/xiaoya.jpg" },
-                    { name: "ollama", url: "https://llm.asfmq.cn", icon: "./assets/img/ollama.jpg" }
+                    { name: "ollama", url: "https://llm.asfmq.cn", icon: "./assets/img/ollama.jpg" },
+                    { name: "1panel", url: "https://1panel.asfmq.cn/", icon: "#icon-1panel" },
+                    { name: "frp", url: "https://frp.asfmq.cn", icon: "./assets/img/frps.svg" },
                 ]
             },
             {
@@ -146,7 +145,6 @@ const config = {
                 title: "world",
                 icon: "#icon-world",
                 links: [
-                    { name: "Cloudflare", url: "https://dash.cloudflare.com/", icon: "./assets/img/img_671e1295a09de.ico" },
                     { name: "Cloudflare", url: "https://dash.cloudflare.com/", icon: "./assets/img/img_671e1295a09de.ico" }
                 ]
             },
