@@ -77,8 +77,13 @@
 
         // 设置版权和备案信息
         document.getElementById('copyright').innerHTML = 
-		`Copyright ©${config.copyright.text} <a href='/' target='_blank'>${config.copyright.target}</a>. All Rights Reserved.<br>
-		<a href="${config.copyright.recordUrl}" target="_blank">${config.copyright.record}</a>`;
+            config.copyright.show ? 
+                `Copyright ©${config.copyright.text} <a href='/' target='_blank'>${config.copyright.target}</a>. All Rights Reserved.
+                ${config.copyright.showRecord ? 
+                    `<br><a href="${config.copyright.recordUrl}" target="_blank">${config.copyright.record}</a>` 
+                    : ''
+                }` 
+                : '';
       });
 
       // 检查文件扩展名的函数

@@ -12,25 +12,45 @@ function lylme(){
     var up = document.getElementById('lylme-up');
     var down = document.getElementById('lylme-down');
     var lylme = document.getElementById('chso');
-    var upsw = up.style.display;
-    var downsw = down.style.display;
-    if(upsw=='none'){
-        up.style.display='inline';
-         down.style.display='none';
-        lylme.style.display='none';
-        
-      
-    }
-    else{
-        up.style.display='none';
-        down.style.display='inline';  
-        lylme.style.display='contents';
-    }
     
+    if (!up || !down || !lylme) return; // 添加空值检查
+    
+    if (up.style.display == 'none') {
+        up.style.display = 'inline';
+        down.style.display = 'none';
+        lylme.style.display = 'none';
+    } else {
+        up.style.display = 'none';
+        down.style.display = 'inline';
+        lylme.style.display = 'contents';
+    }
 }
-$(document).on('click', '.search-type li', function(){
-    var icon=$(this).find('svg').html() //|| $(this).find('img')[0].outerHTML;
-    $(".lylme").html(icon);
+
+// 确保 DOM 加载完成后再添加事件监听
+document.addEventListener('DOMContentLoaded', function() {
+    // 搜索类型切换
+    $(document).on('click', '.search-type li', function() {
+        // 更新搜索图标
+        var icon = $(this).find('svg').html();
+        if (icon) {
+            $(".lylme").html(icon);
+        }
+
+        // 更新搜索框 placeholder
+        var input = $(this).find('input[type="radio"]');
+        if (input.length) {
+            var placeholder = input.data('placeholder');
+            $('#search-text').attr('placeholder', placeholder);
+            
+            // 更新表单提交地址
+            $('#super-search-fm').attr('action', input.val());
+        }
+
+        // 关闭搜索列表
+        $('#lylme-up').show();
+        $('#lylme-down').hide();
+        $('#chso').hide();
+    });
 });
 
 //关键词sug
