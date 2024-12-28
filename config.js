@@ -53,11 +53,10 @@ const config = {
                 "color": "#0084fe"
             },
             {
-                "name": "哔哩哔哩",
+                "name": "Blibili",
                 "url": "https://search.bilibili.com/all?keyword=",
-                "placeholder": "(゜-゜)つロ 干杯~",
                 "icon": "#icon-bili",
-                "color": "#00aeec"
+                "placeholder": "(゜-゜)つロ 干杯~"
             },
             {
                 "name": "微博",
@@ -67,11 +66,10 @@ const config = {
                 "color": "#ff5722"
             },
             {
-                "name": "谷��",
+                "name": "谷歌",
                 "url": "https://search.njau.cf/extdomains/www.google.com.hk/search?q=",
-                "placeholder": "值得信任的搜索引擎",
                 "icon": "#icon-google00",
-                "color": "#3B83FA"
+                "placeholder": "值得信任的搜索引擎"
             },
             {
                 "name": "翻译",
@@ -79,12 +77,6 @@ const config = {
                 "placeholder": "输入翻译内容（自动检测语言）",
                 "icon": "#icon-fanyi",
                 "color": "#0084fe"
-            },
-            {
-                "name": "1",
-                "url": "1",
-                "icon": "1",
-                "placeholder": "1"
             }
         ],
         "categories": [
@@ -169,7 +161,7 @@ const config = {
                         "icon": "./assets/img/deepl-logo-blue.svg"
                     },
                     {
-                        "name": "Overleaf",
+                        "name": "小绿鲸",
                         "url": "https://www.xljsci.com/editor/",
                         "icon": "./assets/img/img_66ff54da46c79.ico"
                     },
