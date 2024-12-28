@@ -46,7 +46,14 @@
         document.getElementById('favicon').href = config.favicon;
 
         // 设置背景图
-        document.body.style.backgroundImage = `url(${config.backgroundImage})`; 
+        document.body.style.cssText = `
+            background-image: url(${config.backgroundImage});
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+        `;
 
         // 动态生成导航项
         const navItemsContainer = document.getElementById('nav-items');
@@ -152,7 +159,7 @@
 
                 // 生成搜索引擎列表
                 const searchTypeContainer = document.getElementById('chso');
-                searchTypeContainer.innerHTML = ''; // 清空现有内容
+                searchTypeContainer.innerHTML = ''; // 清空��有内容
 
                 // 添加现有搜索引擎
                 config.links.searchEngines.forEach((engine, index) => {
@@ -211,6 +218,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarsExample05">
         <ul class="navbar-nav mr-auto" id="nav-items"></ul>
+        <button class="btn nav-link text-white" style="border: none; background: none;" onclick="showSiteInfo()">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-setting"></use>
+            </svg>
+            网站信息
+        </button>
         <div id="he-plugin-simple"></div>
       </div>				
     </nav>
@@ -233,7 +246,7 @@
                     <svg class="sw" id="lylme-up" style="display:inline" aria-hidden="true"><use xlink:href="#icon-up"></use></svg>
                     <svg class="sw" id="lylme-down" style="display:none" aria-hidden="true"><use xlink:href="#icon-down"></use></svg>
                   </div>
-                  <input type="text" id="search-text" placeholder="微软必应搜索" style="outline:0" autocomplete="off">
+                  <input type="text" id="search-text" placeholder="微软应搜索" style="outline:0" autocomplete="off">
                   <button class="submit" id="search-submit" type="submit">
                     <svg style="width: 22px; height: 22px; margin: 0 20px; color: #fff;" class="icon" aria-hidden="true"><use xlink:href="#icon-sousuo"></use></svg>
                   </button>
@@ -342,7 +355,7 @@
                         <input type="text" class="form-control" value="${link.name}" id="link-name-${categoryIndex}-${linkIndex}" placeholder="名称">
                     </div>
                     <div class="col-md-4">
-                        <input type="text" class="form-control" value="${link.url}" id="link-url-${categoryIndex}-${linkIndex}" placeholder="链��">
+                        <input type="text" class="form-control" value="${link.url}" id="link-url-${categoryIndex}-${linkIndex}" placeholder="链接">
                     </div>
                     <div class="col-md-4">
                         <input type="text" class="form-control" value="${link.icon}" id="link-icon-${categoryIndex}-${linkIndex}" placeholder="图标">
@@ -441,7 +454,7 @@
             }
         }
 
-        // 添加���索引擎
+        // 添加搜索引擎
         function addSearchEngine() {
             const name = document.getElementById("new-search-engine-name").value;
             const url = document.getElementById("new-search-engine-url").value;
@@ -604,7 +617,7 @@
                 // 从数组中删除链接
                 configData.links.categories[categoryIndex].links.splice(linkIndex, 1);
 
-                // 保��配置
+                // 保存配置
                 await saveConfig();
 
                 // 关闭模态框并重新加载
@@ -737,7 +750,7 @@
                     throw new Error('请填写所有必填项');
                 }
 
-                // 保持原有的链接变
+                // 保存原有的链接变
                 const links = configData.links.categories[index].links;
                 configData.links.categories[index] = { 
                     title, 
@@ -798,7 +811,7 @@
             document.getElementById('copyrightFields').style.display = showCopyright ? 'block' : 'none';
         }
 
-        // 切���备案字段显示状态
+        // 切换备案字段显示状态
         function toggleRecordFields() {
             const showRecord = document.getElementById('showRecord').checked;
             document.getElementById('recordFields').style.display = showRecord ? 'block' : 'none';
@@ -1034,7 +1047,7 @@
                 button.disabled = true;
                 button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
-                // 调用服务器接口获取网���信息
+                // 调用服务器接口获取网站信息
                 const response = await fetch(`/fetch-site-info?url=${encodeURIComponent(url)}`);
                 if (!response.ok) {
                     // 如果 https 失败，尝试 http
@@ -1077,6 +1090,44 @@
                 // 无论成功还是失败，都恢复按钮状态
                 button.disabled = false;
                 button.innerHTML = originalContent;
+            }
+        }
+
+        // 显示网站信息
+        function showSiteInfo() {
+            // 填充表单
+            document.getElementById('siteTitle').value = configData.title || '';
+            document.getElementById('siteKeywords').value = configData.keywords || '';
+            document.getElementById('siteDescription').value = configData.description || '';
+            document.getElementById('siteAuthor').value = configData.author || '';
+            document.getElementById('siteFavicon').value = configData.favicon || '';
+            document.getElementById('siteBackground').value = configData.backgroundImage || '';
+            
+            // 显示模态框
+            $('#siteInfoModal').modal('show');
+        }
+
+        // 保存网站信息
+        async function saveSiteInfo() {
+            try {
+                // 获取表单数据
+                configData.title = document.getElementById('siteTitle').value;
+                configData.keywords = document.getElementById('siteKeywords').value;
+                configData.description = document.getElementById('siteDescription').value;
+                configData.author = document.getElementById('siteAuthor').value;
+                configData.favicon = document.getElementById('siteFavicon').value;
+                configData.backgroundImage = document.getElementById('siteBackground').value;
+
+                // 保存配置
+                await saveConfig();
+                
+                // 关闭模态框并重新加载
+                $('#siteInfoModal').modal('hide');
+                await loadConfig();
+                
+            } catch (error) {
+                console.error('保存网站信息失败:', error);
+                alert('保存失败，请重试');
             }
         }
     </script>
@@ -1215,7 +1266,7 @@
     }
     </script>
 
-    <!-- 在 body 标签结束前添加导航项模态框 -->
+    <!-- 在 body 标签结束��添加导航项模态框 -->
     <div class="modal fade" id="addNavModal" tabindex="-1" aria-labelledby="addNavModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1575,6 +1626,52 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" onclick="saveCopyrightSettings()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加网站信息模态框 -->
+    <div class="modal fade" id="siteInfoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">��站信息设置</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="siteInfoForm">
+                        <div class="form-group">
+                            <label>网站标题</label>
+                            <input type="text" class="form-control" id="siteTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>关键词</label>
+                            <input type="text" class="form-control" id="siteKeywords">
+                        </div>
+                        <div class="form-group">
+                            <label>网站描述</label>
+                            <textarea class="form-control" id="siteDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>作者</label>
+                            <input type="text" class="form-control" id="siteAuthor">
+                        </div>
+                        <div class="form-group">
+                            <label>网站图标</label>
+                            <input type="text" class="form-control" id="siteFavicon">
+                        </div>
+                        <div class="form-group">
+                            <label>背景图片</label>
+                            <input type="text" class="form-control" id="siteBackground">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSiteInfo()">保存</button>
                 </div>
             </div>
         </div>

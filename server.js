@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 let fetch;
 let cheerio;
+const { URL } = require('url');
 
 // 动态导入依赖
 async function importDependencies() {
@@ -24,14 +25,15 @@ const port = 3000;
 
 // 添加获取网站信息的接口 - 需要放在静态文件中间件之前
 app.get('/fetch-site-info', async (req, res) => {
-    const url = req.query.url;
-    if (!url) {
+    const urlString = req.query.url;
+    if (!urlString) {
         return res.status(400).json({ error: '请提供URL' });
     }
 
     try {
-        // 获取网页内容
-        const response = await fetch(url);
+        // 使用 URL 类处理 URL
+        const url = new URL(urlString);
+        const response = await fetch(url.toString());
         const html = await response.text();
         const $ = cheerio.load(html);
 
@@ -58,16 +60,14 @@ app.get('/fetch-site-info', async (req, res) => {
 
         // 如果找到的是相对路径，转换为绝对路径
         if (favicon && !favicon.startsWith('http')) {
-            const siteUrl = new URL(url);
             favicon = favicon.startsWith('/') 
-                ? `${siteUrl.protocol}//${siteUrl.host}${favicon}`
-                : `${siteUrl.protocol}//${siteUrl.host}/${favicon}`;
+                ? new URL(favicon, url).toString()
+                : new URL(favicon, url).toString();
         }
 
         // 如果没有找到图标，使用默认的 favicon.ico
         if (!favicon) {
-            const siteUrl = new URL(url);
-            favicon = `${siteUrl.protocol}//${siteUrl.host}/favicon.ico`;
+            favicon = new URL('/favicon.ico', url).toString();
         }
 
         res.json({ title, favicon });
@@ -98,7 +98,7 @@ app.get('/config', (req, res) => {
             const config = eval(data);
             res.json(config);
         } catch (e) {
-            console.error('解析��置文件失败:', e);
+            console.error('解析配置文件失败:', e);
             res.status(500).send('解析配置文件失败');
         }
     });
@@ -149,6 +149,6 @@ app.use((err, req, res, next) => {
 
 // 启动服务器
 app.listen(port, () => {
-    console.log(`服务器运行在 http://localhost:${port}`);
+    console.log(`服务器运行在 http://localhost:${port}/admin.html`);
 });
 

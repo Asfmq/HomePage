@@ -4,12 +4,12 @@ const config = {
     "description": "",
     "author": "Asfmq",
     "favicon": "./assets/img/fmq.ico",
-    "backgroundImage": "./assets/img/background.jpg",
+    "backgroundImage": "https://ts1.cn.mm.bing.net/th/id/R-C.5245729f06d893bb71f1ef22d1701e99?rik=UUiU5%2f9nqV5QWA&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20181109%2fa6fcad52457646ef8b3d3c3b3b12e8ab.jpeg&ehk=UIlATT2VKn8IqNzCFFGKXvl11vSYf%2flqCueyxilmefg%3d&risl=&pid=ImgRaw&r=0",
     "links": {
         "navItems": [
             {
                 "name": "主页",
-                "url": "https://www.lylme.com/",
+                "url": "https://home.asfmq.com/",
                 "id": "home-link"
             },
             {
