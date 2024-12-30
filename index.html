@@ -54,19 +54,24 @@
           categoryDiv.className = "mylist row";
 		  
           categoryDiv.innerHTML = `<li class="title">
-			<svg class="icon" aria-hidden="true">
-				<use href="${category.icon}"></use>
-        	</svg>
+                ${category.icon.startsWith('<svg') ? 
+                    category.icon :
+                    `<svg class="icon" aria-hidden="true">
+                        <use href="${category.icon}"></use>
+                    </svg>`
+                }
 			<span>${category.title}</span></li>`;
           category.links.forEach(link => {
             const linkItem = document.createElement('li');
             linkItem.className = "lylme-3";
             linkItem.innerHTML = `<a rel="nofollow" href="${link.url}" target="_blank">
-                ${isImageFile(link.icon) ? 
-                    `<img src="${link.icon}" alt="${link.name}">` : 
-                    `<svg class="icon" aria-hidden="true">
-                        <use xlink:href="${link.icon}"></use>
-                    </svg>`
+                ${link.icon.startsWith('<svg') ? 
+                    `${link.icon}` :
+                    link.icon.startsWith('#') ?
+                        `<svg class="icon" aria-hidden="true">
+                            <use href="${link.icon}"></use>
+                        </svg>` :
+                        `<img src="${link.icon}" alt="${link.title}">`
                 }
                 <span>${link.name}</span>
             </a>`;
@@ -85,9 +90,6 @@
                 }` 
                 : '';
       });
-
-      // 检查文件扩展名的函数
-      const isImageFile = (url) => /\.(png|jpg|ico|svg)$/.test(url);
     </script>
 
   </head>
@@ -141,7 +143,14 @@
 				li.innerHTML = 
 					`<input hidden="" checked="" type="radio" name="type" id="${engine.name}" value="${engine.url}" data-placeholder="${engine.placeholder}">
 					<label for="${engine.name}" style="font-weight:600">
-						<svg class="icon" aria-hidden="true"><use xlink:href="${engine.icon}"></use></svg>
+						${engine.icon.startsWith('<svg') ? 
+                `${engine.icon}` :
+                engine.icon.startsWith('#') ?
+                    `<svg class="icon" aria-hidden="true">
+                        <use href="${engine.icon}"></use>
+                    </svg>` :
+                    `<img src="${engine.icon}" alt="${engine.title}">`
+            }
 						<span style="color:#0c498c">${engine.name}</span>
 					</label>`
 				;
