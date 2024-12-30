@@ -964,5 +964,72 @@ footer .text-muted:hover {
 }
 
 
+/* 管理员下拉菜单样式 */
+.navbar .nav-link {
+    position: relative;
+}
+
+#adminDropdown.dropdown-toggle {
+    font-weight: 500;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#adminDropdown.dropdown-toggle::after {
+    margin-left: 8px;
+    opacity: 0.8;
+}
+
+.navbar .dropdown-menu {
+    min-width: 120px;
+    padding: 8px 0;
+    margin-top: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    animation: dropdownFadeIn 0.2s ease-out;
+    transform-origin: top;
+    position: absolute;
+    right: 0;
+    left: auto;
+    transform-origin: top right;
+}
+
+.navbar .dropdown-menu .dropdown-item {
+    padding: 8px 20px;
+    color: #ffffff;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-weight: 500;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.navbar .dropdown-menu .dropdown-divider {
+    border-top: 0.1px solid rgba(255, 255, 255, 0.1);
+    margin: 4px 0;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
 
 

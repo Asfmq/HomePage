@@ -28,12 +28,92 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
     <script>
+        // 显示修改密码模态框
+        function showChangePasswordModal() {
+            $('#changePasswordModal').modal('show');
+        }
+
+        // 修改密码
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('请填写所有密码字段');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('新密码和确认密码不匹配');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+                    },
+                    body: JSON.stringify({
+                        currentPassword,
+                        newPassword
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    alert(data.message);
+                    $('#changePasswordModal').modal('hide');
+                    // 3秒后退出登录
+                    setTimeout(() => {
+                        logout();
+                    }, 3000);
+                } else {
+                    alert(data.message || '密码修改失败');
+                }
+            } catch (error) {
+                console.error('修改密码失败:', error);
+                alert('修改密码失败，请稍后重试');
+            }
+        }
+
+        // 登出函数
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/login.html';
+        }
+
         let configData = {};
 
         // 从服务器加载配置
         async function loadConfig() {
             try {
-                const response = await fetch('/config');
+                // 获取 token
+                const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const response = await fetch('/config', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        // 如果是认证问题，重定向到登录页面
+                        localStorage.removeItem('adminToken');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const config = await response.json();
                 configData = config;
 
@@ -206,13 +286,36 @@
 
             } catch (error) {
                 console.error('加载配置失败:', error);
+                alert('加载配置失败，请重试');
             }
         }
 
-        // 页面加载时初始化
-        loadConfig();
-        initSortable();
+        // 添加全局 fetch 拦截器，为所有请求添加 token
+        document.addEventListener('DOMContentLoaded', function() {
+            const originalFetch = window.fetch;
+            window.fetch = function() {
+                let [resource, config] = arguments;
+                
+                const token = localStorage.getItem('adminToken');
+                if (token) {
+                    if (!config) {
+                        config = {};
+                    }
+                    if (!config.headers) {
+                        config.headers = {};
+                    }
+                    config.headers['Authorization'] = `Bearer ${token}`;
+                }
+                
+                return originalFetch(resource, config);
+            };
+
+            // 初始化页面
+            loadConfig();
+            initSortable();
+        });
     </script>
+
 </head>
 
 <body>
@@ -229,8 +332,25 @@
                 </svg>
                 网站信息
             </button>
-            <div id="he-plugin-simple"></div>
-        </div>				
+            <div class="nav-item dropdown">
+                <button class="btn nav-link text-white" style="border: none; background: none;" type="button" id="adminDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-admin"></use>
+                    </svg>
+                    管理员
+                </button>
+                <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                    <a class="dropdown-item" href="#" onclick="showChangePasswordModal()">
+                        修改密码
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="logout()">
+                        退出登录
+                    </a>
+                </div>
+            </div>
+            <!-- <div id="he-plugin-simple"></div> -->
+        </div>		
     </nav>
 
     <main class="container" style="margin-top:10vh;">
@@ -679,6 +799,40 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" onclick="saveSiteInfo()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加修改密码的模态框 -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">修改密码</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label>当前密码</label>
+                            <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>确认新密码</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">保存</button>
                 </div>
             </div>
         </div>

@@ -133,11 +133,6 @@ const config = {
                         "name": "frp",
                         "url": "https://frp.asfmq.cn",
                         "icon": "./img/ico/frps.svg"
-                    },
-                    {
-                        "name": "百度",
-                        "url": "https://baidu.com",
-                        "icon": "https://www.baidu.com/favicon.ico"
                     }
                 ]
             },

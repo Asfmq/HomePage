@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>管理员登录</title>
+    <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 90%;
+        }
+        .login-form {
+            width: 100%;
+        }
+        .login-form .form-control {
+            height: auto;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .login-form .btn {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            background-color: #007bff;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .login-form .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .login-title {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            border-color: #80bdff;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" id="loginForm">
+            <h2 class="login-title">管理员登录</h2>
+            <input type="password" id="password" class="form-control" placeholder="请输入密码" required autofocus>
+            <button class="btn btn-primary btn-block" type="submit">登录</button>
+        </form>
+    </div>
+
+    <script>
+        // 从配置文件获取背景图
+        async function loadBackground() {
+            try {
+                const response = await fetch('/public-config');
+                const config = await response.json();
+                if (config.backgroundImage) {
+                    document.body.style.backgroundImage = `url(${config.backgroundImage})`;
+                }
+            } catch (error) {
+                console.error('加载背景图失败:', error);
+                // 设置默认背景色
+                document.body.style.backgroundColor = '#f5f5f5';
+            }
+        }
+
+        // 页面加载时获取背景图
+        loadBackground();
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            try {
+                // 禁用提交按钮，显示加载状态
+                submitButton.disabled = true;
+                submitButton.innerHTML = '登录中...';
+                
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    // 保存 token 到 localStorage
+                    localStorage.setItem('adminToken', data.token);
+                    // 使用带有 token 的 URL 跳转到管理页面
+                    window.location.href = `/admin.html?token=${data.token}`;
+                } else {
+                    alert('密码错误');
+                }
+            } catch (error) {
+                console.error('登录错误:', error);
+                alert('登录失败，请重试');
+            } finally {
+                // 恢复提交按钮状态
+                submitButton.disabled = false;
+                submitButton.innerHTML = '登录';
+            }
+        });
+    </script>
+</body>
+</html> 
