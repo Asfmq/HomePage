@@ -3,7 +3,7 @@ const config = {
     "keywords": "",
     "description": "",
     "author": "Asfmq",
-    "favicon": "./assets/img/fmq.ico",
+    "favicon": "./img/fmq.ico",
     "backgroundImage": "https://ts1.cn.mm.bing.net/th/id/R-C.5245729f06d893bb71f1ef22d1701e99?rik=UUiU5%2f9nqV5QWA&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20181109%2fa6fcad52457646ef8b3d3c3b3b12e8ab.jpeg&ehk=UIlATT2VKn8IqNzCFFGKXvl11vSYf%2flqCueyxilmefg%3d&risl=&pid=ImgRaw&r=0",
     "links": {
         "navItems": [
@@ -87,42 +87,42 @@ const config = {
                     {
                         "name": "本地服务",
                         "url": "/local",
-                        "icon": "./assets/img/fmq.ico"
+                        "icon": "./img/fmq.ico"
                     },
                     {
                         "name": "transmission",
                         "url": "https://transmission.asfmq.cn",
-                        "icon": "./assets/img/Transmission.png"
+                        "icon": "./img/Transmission.png"
                     },
                     {
                         "name": "immich",
                         "url": "https://immich.asfmq.cn",
-                        "icon": "./assets/img/immich.ico"
+                        "icon": "./img/immich.ico"
                     },
                     {
                         "name": "jellyfin",
                         "url": "https://jellyfin.asfmq.cn",
-                        "icon": "./assets/img/jellyfin.jpg"
+                        "icon": "./img/jellyfin.jpg"
                     },
                     {
                         "name": "calibre",
                         "url": "https://calibre.asfmq.cn",
-                        "icon": "./assets/img/calibre.png"
+                        "icon": "./img/calibre.png"
                     },
                     {
                         "name": "alist",
                         "url": "https://alist.asfmq.cn",
-                        "icon": "./assets/img/alist.png"
+                        "icon": "./img/alist.png"
                     },
                     {
                         "name": "xiaoya",
                         "url": "https://xiaoya.asfmq.cn",
-                        "icon": "./assets/img/xiaoya.jpg"
+                        "icon": "./img/xiaoya.jpg"
                     },
                     {
                         "name": "ollama",
                         "url": "https://llm.asfmq.cn",
-                        "icon": "./assets/img/ollama.jpg"
+                        "icon": "./img/ollama.jpg"
                     },
                     {
                         "name": "1panel",
@@ -132,7 +132,7 @@ const config = {
                     {
                         "name": "frp",
                         "url": "https://frp.asfmq.cn",
-                        "icon": "./assets/img/frps.svg"
+                        "icon": "./img/frps.svg"
                     }
                 ]
             },
@@ -143,32 +143,32 @@ const config = {
                     {
                         "name": "GitHub",
                         "url": "https://github.com/",
-                        "icon": "./assets/img/img_66ff58e4c794c.png"
+                        "icon": "./img/img_66ff58e4c794c.png"
                     },
                     {
                         "name": "Gitee",
                         "url": "https://gitee.com/",
-                        "icon": "./assets/img/img_66ff590389ea3.ico"
+                        "icon": "./img/img_66ff590389ea3.ico"
                     },
                     {
                         "name": "科研废物导航",
                         "url": "https://www.yanweb.top/",
-                        "icon": "./assets/img/img_66ff5fa92663b.png"
+                        "icon": "./img/img_66ff5fa92663b.png"
                     },
                     {
                         "name": "DeepL",
                         "url": "https://www.deepl.com/zh/translator",
-                        "icon": "./assets/img/deepl-logo-blue.svg"
+                        "icon": "./img/deepl-logo-blue.svg"
                     },
                     {
                         "name": "小绿鲸",
                         "url": "https://www.xljsci.com/editor/",
-                        "icon": "./assets/img/img_66ff54da46c79.ico"
+                        "icon": "./img/img_66ff54da46c79.ico"
                     },
                     {
                         "name": "overleaf",
                         "url": "https://www.overleaf.com/",
-                        "icon": "./assets/img/img_66ff551b97ece.ico"
+                        "icon": "./img/img_66ff551b97ece.ico"
                     }
                 ]
             },
@@ -179,27 +179,27 @@ const config = {
                     {
                         "name": "ArXiv",
                         "url": "https://arxiv.org/",
-                        "icon": "./assets/img/img_66ff54aa5775c.ico"
+                        "icon": "./img/img_66ff54aa5775c.ico"
                     },
                     {
                         "name": "ChatGPT",
                         "url": "https://chat.openai.com/",
-                        "icon": "./assets/img/chatgpt.jpg"
+                        "icon": "./img/chatgpt.jpg"
                     },
                     {
                         "name": "txyz",
                         "url": "https://app.txyz.ai/",
-                        "icon": "./assets/img/img_674c653aa6f60.png"
+                        "icon": "./img/img_674c653aa6f60.png"
                     },
                     {
                         "name": "storm",
                         "url": "https://storm.genie.stanford.edu/",
-                        "icon": "./assets/img/img_674c65a506906.ico"
+                        "icon": "./img/img_674c65a506906.ico"
                     },
                     {
                         "name": "huggingface",
                         "url": "https://huggingface.co/",
-                        "icon": "./assets/img/img_6755ab0e9a949.png"
+                        "icon": "./img/img_6755ab0e9a949.png"
                     }
                 ]
             },
@@ -210,27 +210,27 @@ const config = {
                     {
                         "name": "ADS/NASA",
                         "url": "https://ui.adsabs.harvard.edu/",
-                        "icon": "./assets/img/img_66ff59385530f.ico"
+                        "icon": "./img/img_66ff59385530f.ico"
                     },
                     {
                         "name": "CDS",
                         "url": "https://cds.u-strasbg.fr/",
-                        "icon": "./assets/img/img_66ff5a4793f4b.ico"
+                        "icon": "./img/img_66ff5a4793f4b.ico"
                     },
                     {
                         "name": "NADC",
                         "url": "https://nadc.china-vo.org/?&locale=zh_CN",
-                        "icon": "./assets/img/img_66ff5cdae29f2.ico"
+                        "icon": "./img/img_66ff5cdae29f2.ico"
                     },
                     {
                         "name": "svo",
                         "url": "http://svo2.cab.inta-csic.es/theory/main/",
-                        "icon": "./assets/img/svo.png"
+                        "icon": "./img/svo.png"
                     },
                     {
                         "name": "MESA",
                         "url": "https://docs.mesastar.org/",
-                        "icon": "./assets/img/MESA.png"
+                        "icon": "./img/MESA.png"
                     },
                     {
                         "name": "MIST",
@@ -246,22 +246,22 @@ const config = {
                     {
                         "name": "哔哩哔哩",
                         "url": "https://www.bilibili.com/",
-                        "icon": "./assets/img/img_66ff5f7e2c597.png"
+                        "icon": "./img/img_66ff5f7e2c597.png"
                     },
                     {
                         "name": "知乎",
                         "url": "https://www.zhihu.com/",
-                        "icon": "./assets/img/img_66ff5e925416b.ico"
+                        "icon": "./img/img_66ff5e925416b.ico"
                     },
                     {
                         "name": "抖音",
                         "url": "https://www.douyin.com/",
-                        "icon": "./assets/img/img_66ff651a39877.ico"
+                        "icon": "./img/img_66ff651a39877.ico"
                     },
                     {
                         "name": "youtube",
                         "url": "https://www.youtube.com/",
-                        "icon": "./assets/img/youtube.jpg"
+                        "icon": "./img/youtube.jpg"
                     }
                 ]
             },
@@ -272,12 +272,12 @@ const config = {
                     {
                         "name": "云·原神",
                         "url": "https://ys.mihoyo.com/cloud/?utm_source=default#/",
-                        "icon": "./assets/img/img_66ff6012160c3.ico"
+                        "icon": "./img/img_66ff6012160c3.ico"
                     },
                     {
                         "name": "云·星穹铁道",
                         "url": "https://sr.mihoyo.com/cloud/?from_channel=adbdpz#/",
-                        "icon": "./assets/img/img_66ff6024a45bd.ico"
+                        "icon": "./img/img_66ff6024a45bd.ico"
                     },
                     {
                         "name": "3DM",
@@ -293,7 +293,7 @@ const config = {
                     {
                         "name": "Cloudflare",
                         "url": "https://dash.cloudflare.com/",
-                        "icon": "./assets/img/img_671e1295a09de.ico"
+                        "icon": "./img/img_671e1295a09de.ico"
                     }
                 ]
             }
