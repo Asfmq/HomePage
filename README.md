@@ -1,7 +1,7 @@
 # HomePage
 
 ## 项目概述
-该项目基于[六零导航页](https://gitee.com/LyLme/lylme_spage){:target="_blank"}的lylme主题制作的纯静态个人导航页
+该项目基于[六零导航页](https://gitee.com/LyLme/lylme_spage)的lylme主题制作的纯静态个人导航页
 
 ### 优点
 1. 可以在在config.json中直接配置网站信息，静态部署
