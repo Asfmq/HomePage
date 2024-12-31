@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    image: my-nav
+    image: asfmqi/homepage:main
     container_name: nav-site
     ports:
       - "3000:3000"
