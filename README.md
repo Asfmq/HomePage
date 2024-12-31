@@ -24,7 +24,7 @@
 ## 静态使用
 ### 下载项目
 ```bash:copy
-git clone https://github.com/asfmqi/HomePage.git
+git clone https://github.com/Asfmq/HomePage.git
 ```
 下载完成后使用nginx等web服务器部署即可
 
@@ -43,7 +43,7 @@ node server.js
 ### 使用docker安装
 1. 下载docker-compose.yml文件
 ```bash:copy
-wget https://raw.githubusercontent.com/asfmqi/HomePage/main/docker-compose.yml
+wget https://raw.githubusercontent.com/Asfmq/HomePage/refs/heads/main/docker-compose.yml
 ```
 2. 创建html目录并启动docker
 ```bash:copy
