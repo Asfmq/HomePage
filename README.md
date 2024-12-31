@@ -21,10 +21,6 @@
 
 [前端演示](https://test.asfmq.cn)
 
-<a href="https://test.asfmq.cn/admin.html" target="_blank">后台演示</a>
-
-<a href="https://test.asfmq.cn" target="_blank">前端演示</a>
-
 ## 静态使用
 ### 下载项目
 ```bash:copy
