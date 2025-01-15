@@ -9,12 +9,12 @@ const config = {
         "navItems": [
             {
                 "name": "主页",
-                "url": "https://home.asfmq.com/",
+                "url": "https://home.asfmq.cn/",
                 "id": "home-link"
             },
             {
                 "name": "博客",
-                "url": "https://blog.asfmq.com/",
+                "url": "https://blog.asfmq.cn/",
                 "id": "blog-link"
             },
             {
@@ -133,6 +133,11 @@ const config = {
                         "name": "frp",
                         "url": "https://frp.asfmq.cn",
                         "icon": "./img/ico/frps.svg"
+                    },
+                    {
+                        "name": "思源笔记",
+                        "url": "https://note.asfmq.cn/",
+                        "icon": "https://note.asfmq.cn/favicon.ico"
                     }
                 ]
             },
@@ -187,6 +192,21 @@ const config = {
                         "icon": "./img/ico/chatgpt.jpg"
                     },
                     {
+                        "name": "DeepSeek",
+                        "url": "https://chat.deepseek.com/",
+                        "icon": "https://chat.deepseek.com/favicon.svg"
+                    },
+                    {
+                        "name": "智谱清言",
+                        "url": "https://chatglm.cn/",
+                        "icon": "https://chatglm.cn/img/icons/favicon.svg"
+                    },
+                    {
+                        "name": "文心一言",
+                        "url": "https://yiyan.baidu.com/",
+                        "icon": "https://nlp-eb.cdn.bcebos.com/logo/favicon.ico"
+                    },
+                    {
                         "name": "txyz",
                         "url": "https://app.txyz.ai/",
                         "icon": "./img/ico/img_674c653aa6f60.png"
@@ -234,7 +254,7 @@ const config = {
                     },
                     {
                         "name": "MIST",
-                        "url": "https://waps.cfa.harvard.edu/MIST/model_grids.html",
+                        "url": "https://waps.cfa.harvard.edu/MIST/",
                         "icon": "https://waps.cfa.harvard.edu/favicon.ico"
                     }
                 ]
