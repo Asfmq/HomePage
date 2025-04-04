@@ -13,13 +13,13 @@
 3. 支持拖拽排序，支跨分组拖拽
 4. 支持自动获取添加网站的标题和图标
 5. 支持编辑或隐藏网站版权和备案信息
-6. 各种图标直接支持[svg代码](https://www.iconfont.cn/){target="_blank"}
+6. 各种图标直接支持<a href="https://www.iconfont.cn/" target="_blank">svg代码</a>
 7. 支持管理员密码登陆
 
 ### 前端及后台演示
-[后台演示](https://test.asfmq.cn/admin.html){target="_blank"}
+<a href="https://test.asfmq.cn/admin.html" target="_blank">后台演示，管理员密码123</a>
+<a href="https://test.asfmq.cn" target="_blank">前端演示</a>
 
-[前端演示](https://test.asfmq.cn){target="_blank"}
 
 ## 静态使用
 ### 下载项目
