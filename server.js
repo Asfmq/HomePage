@@ -26,7 +26,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // 设置密码和 JWT 密钥
-const ADMIN_PASSWORD = '123'; // 修改为你的密码
+const ADMIN_PASSWORD = '1235'; // 修改为你的密码
 const JWT_SECRET = 'your-jwt-secret'; // 修改为你的 JWT 密钥
 
 // 允许前端发送 JSON 数据

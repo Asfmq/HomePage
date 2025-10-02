@@ -202,6 +202,11 @@ const config = {
                         "icon": "https://chatglm.cn/img/icons/favicon.svg"
                     },
                     {
+                        "name": "‎Google Gemini",
+                        "url": "https://gemini.google.com/",
+                        "icon": "https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
+                    },
+                    {
                         "name": "文心一言",
                         "url": "https://yiyan.baidu.com/",
                         "icon": "https://nlp-eb.cdn.bcebos.com/logo/favicon.ico"
