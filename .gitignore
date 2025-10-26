@@ -1,25 +1,26 @@
-# Dependencies
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
 
-# Environment
-.env
-.env.local
-.env.*.local
+# Node dependencies
+node_modules
 
-# IDE
-.idea/
-.vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Logs
+logs
+*.log
 
-# System Files
+# Misc
 .DS_Store
-Thumbs.db
+.fleet
+.idea
 
-html/
+# Local env files
+.env
+.env.*
+!.env.example
+
+HomePage/
