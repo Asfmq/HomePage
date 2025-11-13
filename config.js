@@ -177,7 +177,7 @@ const config = {
                     },
                     {
                         "name": "overleaf",
-                        "url": "https://www.overleaf.com/",
+                        "url": "https://cn.overleaf.com/",
                         "icon": "./img/ico/img_66ff551b97ece.ico"
                     }
                 ]
@@ -197,14 +197,19 @@ const config = {
                         "icon": "https://chat.deepseek.com/favicon.svg"
                     },
                     {
+                        "name": "Qwen Chat",
+                        "url": "https://chat.qwen.ai/",
+                        "icon": "https://assets.alicdn.com/g/qwenweb/qwen-webui-fe/0.0.69/favicon.png"
+                    },
+                    {
+                        "name": "通义",
+                        "url": "https://tongyi.aliyun.com/",
+                        "icon": "https://img.alicdn.com/imgextra/i4/O1CN01EfJVFQ1uZPd7W4W6i_!!6000000006051-2-tps-112-112.png"
+                    },
+                    {
                         "name": "智谱清言",
                         "url": "https://chatglm.cn/",
                         "icon": "https://chatglm.cn/img/icons/favicon.svg"
-                    },
-                    {
-                        "name": "‎Google Gemini",
-                        "url": "https://gemini.google.com/",
-                        "icon": "https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
                     },
                     {
                         "name": "文心一言",
@@ -261,6 +266,11 @@ const config = {
                         "name": "MIST",
                         "url": "https://waps.cfa.harvard.edu/MIST/",
                         "icon": "https://waps.cfa.harvard.edu/favicon.ico"
+                    },
+                    {
+                        "name": "Gaia Archive",
+                        "url": "https://gea.esac.esa.int/archive/",
+                        "icon": "https://gea.esac.esa.int/archive/images/favicon.ico"
                     }
                 ]
             },
