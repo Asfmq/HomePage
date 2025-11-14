@@ -1,0 +1,12 @@
+--2024-11-11 21:51:37--  https://ts4.cn.mm.bing.net/th?id=ODLS.bcead17a-c490-4681-b823-c51cee191866
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving ts4.cn.mm.bing.net (ts4.cn.mm.bing.net)... 116.163.40.131
+Connecting to ts4.cn.mm.bing.net (ts4.cn.mm.bing.net)|116.163.40.131|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 731 [image/png]
+Saving to: ‘th?id=ODLS.bcead17a-c490-4681-b823-c51cee191866’
+
+               th?id=ODLS.bce   0%[                                                  ]       0  --.-KB/s               th?id=ODLS.bcead17a-c490-4681 100%[=================================================>]     731  --.-KB/s    in 0s      
+
+2024-11-11 21:51:37 (22.7 MB/s) - ‘th?id=ODLS.bcead17a-c490-4681-b823-c51cee191866’ saved [731/731]
+

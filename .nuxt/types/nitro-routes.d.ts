@@ -3,8 +3,27 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/auth/change-password': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/change-password.post').default>>>>
+    }
+    '/api/auth/login': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/login.post').default>>>>
+    }
+    '/api/auth/verify': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/verify.get').default>>>>
+    }
+    '/api/config': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/config.get').default>>>>
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/config.post').default>>>>
+    }
+    '/api/fetch-site-info': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/fetch-site-info.get').default>>>>
+    }
+    '/api/health': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/health.get').default>>>>
+    }
     '/__nuxt_error': {
-      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/@nuxt/nitro-server/dist/runtime/handlers/renderer').default>>>>
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/handlers/renderer').default>>>>
     }
     '/__nuxt_island/**': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/#internal/nuxt/island-renderer').default>>>>

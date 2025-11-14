@@ -1,18 +1,30 @@
 
+# Use Node.js 18 as base image
 FROM node:18-alpine
+
+# Set working directory
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
-RUN npm install --production && npm cache clean --force
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
 COPY . .
 
-# 设置环境变量
-ENV NODE_ENV=production
-ENV PORT=3000
+# Build the application
+RUN npm run build
 
-# 暴露端口
+# Expose port
 EXPOSE 3000
 
-# 启动命令
-CMD ["node", "server.js"]
+# Set environment variables
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
+ENV ADMIN_PASSWORD=1235
+ENV JWT_SECRET=your-jwt-secret-change-in-production
+
+# Start the application
+CMD ["npm", "start"]

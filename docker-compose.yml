@@ -1,21 +1,20 @@
 services:
   web:
     build: .
-    image: asfmqi/homepage:main
-    container_name: nav-site
+    image: asfmqi/homepage:nuxt
+    container_name: homepage-nuxt
     ports:
       - "3000:3000"
     environment:
-      - ADMIN_PASSWORD=123
-      - JWT_SECRET=your_jwt_secret
-    volumes:
-      - html:/app
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - ADMIN_PASSWORD=1235
+      - JWT_SECRET=your-jwt-secret-change-in-production
+      - NODE_ENV=production
     restart: unless-stopped
-
-volumes:
-  html:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

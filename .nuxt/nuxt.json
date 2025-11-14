@@ -1,9 +1,9 @@
 {
-  "_hash": "tklCtwh6jn302PGqDe-Tpei_UGgYnhiWVilVis9QC3A",
+  "_hash": "6JAXDizVl3PBd-Ctw5oJxPGAybgYQ0OeXP7UVnFUOPc",
   "project": {
-    "rootDir": "E:/fmq/else-git/HomePage"
+    "rootDir": "/home/fmq/program/HomePage"
   },
   "versions": {
-    "nuxt": "4.2.0"
+    "nuxt": "3.17.5"
   }
 }

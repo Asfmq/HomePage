@@ -1,41 +1,43 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, getRequestURL, getResponseHeader, appendResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getHeader, getResponseStatusText } from 'file:///home/fmq/program/HomePage/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getResponseStatusText } from 'file://E:/fmq/else-git/HomePage/node_modules/h3/dist/index.mjs';
-import { escapeHtml } from 'file://E:/fmq/else-git/HomePage/node_modules/@vue/shared/dist/shared.cjs.js';
-import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://E:/fmq/else-git/HomePage/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://E:/fmq/else-git/HomePage/node_modules/ufo/dist/index.mjs';
-import destr, { destr as destr$1 } from 'file://E:/fmq/else-git/HomePage/node_modules/destr/dist/index.mjs';
-import { renderToString } from 'file://E:/fmq/else-git/HomePage/node_modules/vue/server-renderer/index.mjs';
-import { klona } from 'file://E:/fmq/else-git/HomePage/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file://E:/fmq/else-git/HomePage/node_modules/defu/dist/defu.mjs';
-import { snakeCase } from 'file://E:/fmq/else-git/HomePage/node_modules/scule/dist/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://E:/fmq/else-git/HomePage/node_modules/unhead/dist/server.mjs';
-import { stringify, uneval } from 'file://E:/fmq/else-git/HomePage/node_modules/devalue/index.js';
-import { isVNode, toValue, isRef } from 'file://E:/fmq/else-git/HomePage/node_modules/vue/index.mjs';
-import { createHooks } from 'file://E:/fmq/else-git/HomePage/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file://E:/fmq/else-git/HomePage/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://E:/fmq/else-git/HomePage/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file://E:/fmq/else-git/HomePage/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file://E:/fmq/else-git/HomePage/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file://E:/fmq/else-git/HomePage/node_modules/ohash/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file://E:/fmq/else-git/HomePage/node_modules/radix3/dist/index.mjs';
+import { escapeHtml } from 'file:///home/fmq/program/HomePage/node_modules/@vue/shared/dist/shared.cjs.js';
+import jwt from 'file:///home/fmq/program/HomePage/node_modules/jsonwebtoken/index.js';
+import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///home/fmq/program/HomePage/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file:///home/fmq/program/HomePage/node_modules/ufo/dist/index.mjs';
+import { renderToString } from 'file:///home/fmq/program/HomePage/node_modules/vue/server-renderer/index.mjs';
+import destr, { destr as destr$1 } from 'file:///home/fmq/program/HomePage/node_modules/destr/dist/index.mjs';
+import { createHooks } from 'file:///home/fmq/program/HomePage/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file:///home/fmq/program/HomePage/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///home/fmq/program/HomePage/node_modules/node-mock-http/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file:///home/fmq/program/HomePage/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file:///home/fmq/program/HomePage/node_modules/unstorage/drivers/fs.mjs';
+import { digest } from 'file:///home/fmq/program/HomePage/node_modules/ohash/dist/index.mjs';
+import { klona } from 'file:///home/fmq/program/HomePage/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file:///home/fmq/program/HomePage/node_modules/defu/dist/defu.mjs';
+import { snakeCase } from 'file:///home/fmq/program/HomePage/node_modules/scule/dist/index.mjs';
+import { getContext } from 'file:///home/fmq/program/HomePage/node_modules/unctx/dist/index.mjs';
+import { toRouteMatcher, createRouter } from 'file:///home/fmq/program/HomePage/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
-import consola, { consola as consola$1 } from 'file://E:/fmq/else-git/HomePage/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file://E:/fmq/else-git/HomePage/node_modules/youch-core/build/index.js';
-import { Youch } from 'file://E:/fmq/else-git/HomePage/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file://E:/fmq/else-git/HomePage/node_modules/source-map/source-map.js';
+import consola, { consola as consola$1 } from 'file:///home/fmq/program/HomePage/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file:///home/fmq/program/HomePage/node_modules/youch-core/build/index.js';
+import { Youch } from 'file:///home/fmq/program/HomePage/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file:///home/fmq/program/HomePage/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { getContext } from 'file://E:/fmq/else-git/HomePage/node_modules/unctx/dist/index.mjs';
-import { captureRawStackTrace, parseRawStackTrace } from 'file://E:/fmq/else-git/HomePage/node_modules/errx/dist/index.js';
+import { stringify, uneval } from 'file:///home/fmq/program/HomePage/node_modules/devalue/index.js';
+import { captureRawStackTrace, parseRawStackTrace } from 'file:///home/fmq/program/HomePage/node_modules/errx/dist/index.js';
+import { isVNode, toValue, isRef } from 'file:///home/fmq/program/HomePage/node_modules/vue/index.mjs';
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$1 } from 'file://E:/fmq/else-git/HomePage/node_modules/pathe/dist/index.mjs';
-import { walkResolver } from 'file://E:/fmq/else-git/HomePage/node_modules/unhead/dist/utils.mjs';
+import { dirname as dirname$1, resolve as resolve$1 } from 'file:///home/fmq/program/HomePage/node_modules/pathe/dist/index.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file:///home/fmq/program/HomePage/node_modules/unhead/dist/server.mjs';
+import { DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin } from 'file:///home/fmq/program/HomePage/node_modules/unhead/dist/plugins.mjs';
+import { walkResolver } from 'file:///home/fmq/program/HomePage/node_modules/unhead/dist/utils.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"E:/fmq/else-git/HomePage/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"/home/fmq/program/HomePage/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -47,11 +49,11 @@ const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"E:/fmq/else-git/HomePage","watchOptions":{"ignored":[null]}}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"E:/fmq/else-git/HomePage/server","watchOptions":{"ignored":[null]}}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"E:/fmq/else-git/HomePage/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"E:/fmq/else-git/HomePage/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"E:/fmq/else-git/HomePage/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/home/fmq/program/HomePage","watchOptions":{"ignored":[null]}}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/home/fmq/program/HomePage/server","watchOptions":{"ignored":[null]}}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/home/fmq/program/HomePage/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/home/fmq/program/HomePage/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"/home/fmq/program/HomePage/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -646,7 +648,11 @@ const _inlineRuntimeConfig = {
       }
     }
   },
-  "public": {}
+  "public": {
+    "apiBase": "/api"
+  },
+  "adminPassword": "1235",
+  "jwtSecret": "your-jwt-secret"
 };
 const envOptions = {
   prefix: "NITRO_",
@@ -690,6 +696,11 @@ new Proxy(/* @__PURE__ */ Object.create(null), {
     }
     return void 0;
   }
+});
+
+getContext("nitro-app", {
+  asyncContext: false,
+  AsyncLocalStorage: void 0
 });
 
 const config = useRuntimeConfig();
@@ -805,335 +816,6 @@ function hasReqHeader(event, name, includes) {
   return value && typeof value === "string" && value.toLowerCase().includes(includes);
 }
 
-const iframeStorageBridge = (nonce) => (
-  /* js */
-  `
-(function() {
-  const memoryStore = {};
-
-  const NONCE = ${JSON.stringify(nonce)}
-  
-  const mockStorage = {
-    getItem: function(key) {
-      return memoryStore[key] !== undefined ? memoryStore[key] : null;
-    },
-    setItem: function(key, value) {
-      memoryStore[key] = String(value);
-      window.parent.postMessage({
-        type: 'storage-set',
-        key: key,
-        value: String(value),
-        nonce: NONCE
-      }, '*');
-    },
-    removeItem: function(key) {
-      delete memoryStore[key];
-      window.parent.postMessage({
-        type: 'storage-remove',
-        key: key,
-        nonce: NONCE
-      }, '*');
-    },
-    clear: function() {
-      for (const key in memoryStore) {
-        delete memoryStore[key];
-      }
-      window.parent.postMessage({
-        type: 'storage-clear',
-        nonce: NONCE
-      }, '*');
-    },
-    key: function(index) {
-      const keys = Object.keys(memoryStore);
-      return keys[index] !== undefined ? keys[index] : null;
-    },
-    get length() {
-      return Object.keys(memoryStore).length;
-    }
-  };
-  
-  try {
-    Object.defineProperty(window, 'localStorage', {
-      value: mockStorage,
-      writable: false,
-      configurable: true
-    });
-  } catch (e) {
-    window.localStorage = mockStorage;
-  }
-  
-  window.addEventListener('message', function(event) {
-    if (event.data.type === 'storage-sync-data' && event.data.nonce === NONCE) {
-      const data = event.data.data;
-      for (const key in data) {
-        if (Object.prototype.hasOwnProperty.call(data, key)) {
-          memoryStore[key] = data[key];
-        }
-      }
-      if (typeof window.initTheme === 'function') {
-        window.initTheme();
-      }
-      window.dispatchEvent(new Event('storage-ready'));
-    }
-  });
-  
-  window.parent.postMessage({ 
-    type: 'storage-sync-request',
-    nonce: NONCE
-  }, '*');
-})();
-`
-);
-const parentStorageBridge = (nonce) => (
-  /* js */
-  `
-(function() {
-  const host = document.querySelector('nuxt-error-overlay');
-  if (!host) return;
-  
-  // Wait for shadow root to be attached
-  const checkShadow = setInterval(function() {
-    if (host.shadowRoot) {
-      clearInterval(checkShadow);
-      const iframe = host.shadowRoot.getElementById('frame');
-      if (!iframe) return;
-
-      const NONCE = ${JSON.stringify(nonce)}
-      
-      window.addEventListener('message', function(event) {
-        if (!event.data || event.data.nonce !== NONCE) return;
-        
-        const data = event.data;
-        
-        if (data.type === 'storage-set') {
-          localStorage.setItem(data.key, data.value);
-        } else if (data.type === 'storage-remove') {
-          localStorage.removeItem(data.key);
-        } else if (data.type === 'storage-clear') {
-          localStorage.clear();
-        } else if (data.type === 'storage-sync-request') {
-          const allData = {};
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            allData[key] = localStorage.getItem(key);
-          }
-          iframe.contentWindow.postMessage({
-            type: 'storage-sync-data',
-            data: allData,
-            nonce: NONCE
-          }, '*');
-        }
-      });
-    }
-  }, 10);
-})();
-`
-);
-const errorCSS = (
-  /* css */
-  `
-:host {
-  --preview-width: 240px;
-  --preview-height: 180px;
-  --base-width: 1200px;
-  --base-height: 900px;
-  --z-base: 999999998;
-  all: initial;
-  display: contents;
-}
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-#frame {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: var(--z-base);
-}
-#frame[inert] {
-  right: 5px;
-  bottom: 5px;
-  left: auto;
-  top: auto;
-  width: var(--base-width);
-  height: var(--base-height);
-  transform: scale(calc(240 / 1200));
-  transform-origin: bottom right;
-  overflow: hidden;
-  border-radius: calc(1200 * 8px / 240);
-}
-#preview {
-  position: fixed;
-  right: 5px;
-  bottom: 5px;
-  width: var(--preview-width);
-  height: var(--preview-height);
-  overflow: hidden;
-  border-radius: 8px;
-  pointer-events: none;
-  z-index: var(--z-base);
-  background: white;
-  display: none;
-}
-#frame:not([inert]) + #preview {
-  display: block;
-}
-#toggle {
-  position: fixed;
-  right: 5px;
-  bottom: 5px;
-  width: var(--preview-width);
-  height: var(--preview-height);
-  background: none;
-  border: 3px solid #00DC82;
-  border-radius: 8px;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: opacity 0.2s, box-shadow 0.2s;
-  z-index: calc(var(--z-base) + 1);
-}
-#toggle:hover,
-#toggle:focus {
-  opacity: 1;
-  box-shadow: 0 0 20px rgba(0, 220, 130, 0.6);
-}
-#toggle:focus-visible {
-  outline: 3px solid #00DC82;
-  outline-offset: 3px;
-  box-shadow: 0 0 24px rgba(0, 220, 130, 0.8);
-}
-@media (prefers-reduced-motion: reduce) {
-  #toggle {
-    transition: none;
-  }
-}
-`
-);
-function webComponentScript(base64HTML) {
-  return (
-    /* js */
-    `
-  (function() {
-    try {
-      const host = document.querySelector('nuxt-error-overlay');
-      if (!host) return;
-      
-      const shadow = host.attachShadow({ mode: 'open' });
-      
-      // Create elements
-      const style = document.createElement('style');
-      style.textContent = ${JSON.stringify(errorCSS)};
-      
-      const iframe = document.createElement('iframe');
-      iframe.id = 'frame';
-      iframe.src = 'data:text/html;base64,${base64HTML}';
-      iframe.title = 'Detailed error stack trace';
-      iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      
-      const preview = document.createElement('div');
-      preview.id = 'preview';
-      
-      const button = document.createElement('button');
-      button.id = 'toggle';
-      button.setAttribute('aria-expanded', 'true');
-      button.setAttribute('type', 'button');
-      button.innerHTML = '<span class="sr-only">Toggle detailed error view</span>';
-      
-      const liveRegion = document.createElement('div');
-      liveRegion.setAttribute('role', 'status');
-      liveRegion.setAttribute('aria-live', 'polite');
-      liveRegion.className = 'sr-only';
-      
-      // Update preview snapshot
-      function updatePreview() {
-        try {
-          let previewIframe = preview.querySelector('iframe');
-          if (!previewIframe) {
-            previewIframe = document.createElement('iframe');
-            previewIframe.style.cssText = 'width: 1200px; height: 900px; transform: scale(0.2); transform-origin: top left; border: none;';
-            previewIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-            preview.appendChild(previewIframe);
-          }
-          
-          const doctype = document.doctype ? '<!DOCTYPE ' + document.doctype.name + '>' : '';
-          const cleanedHTML = document.documentElement.outerHTML
-            .replace(/<nuxt-error-overlay[^>]*>.*?<\\/nuxt-error-overlay>/gs, '')
-            .replace(/<script[^>]*>.*?<\\/script>/gs, '');
-          
-          const iframeDoc = previewIframe.contentDocument || previewIframe.contentWindow.document;
-          iframeDoc.open();
-          iframeDoc.write(doctype + cleanedHTML);
-          iframeDoc.close();
-        } catch (error) {
-          console.error('Failed to update preview:', error);
-        }
-      }
-      
-      function toggleView() {
-        const isMinimized = iframe.hasAttribute('inert');
-        
-        if (isMinimized) {
-          updatePreview();
-          iframe.removeAttribute('inert');
-          button.setAttribute('aria-expanded', 'true');
-          liveRegion.textContent = 'Showing detailed error view';
-          setTimeout(function() {
-            try { iframe.contentWindow.focus(); } catch {}
-          }, 100);
-        } else {
-          iframe.setAttribute('inert', '');
-          button.setAttribute('aria-expanded', 'false');
-          liveRegion.textContent = 'Showing error page';
-          button.focus();
-        }
-      }
-      
-      button.onclick = toggleView;
-      
-      document.addEventListener('keydown', function(e) {
-        if ((e.key === 'Escape' || e.key === 'Esc') && !iframe.hasAttribute('inert')) {
-          toggleView();
-        }
-      });
-      
-      // Append to shadow DOM
-      shadow.appendChild(style);
-      shadow.appendChild(liveRegion);
-      shadow.appendChild(iframe);
-      shadow.appendChild(preview);
-      shadow.appendChild(button);
-      
-      // Initialize preview
-      setTimeout(updatePreview, 100);
-      
-    } catch (error) {
-      console.error('Failed to initialize Nuxt error overlay:', error);
-    }
-  })();
-  `
-  );
-}
-function generateErrorOverlayHTML(html) {
-  const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join("");
-  const errorPage = html.replace("<head>", `<head><script>${iframeStorageBridge(nonce)}<\/script>`);
-  const base64HTML = Buffer.from(errorPage, "utf8").toString("base64");
-  return `
-    <script>${parentStorageBridge(nonce)}<\/script>
-    <nuxt-error-overlay></nuxt-error-overlay>
-    <script>${webComponentScript(base64HTML)}<\/script>
-  `;
-}
-
 const errorHandler$0 = (async function errorhandler(error, event, { defaultHandler }) {
   if (event.handled || isJsonRequest(event)) {
     return;
@@ -1170,7 +852,7 @@ const errorHandler$0 = (async function errorhandler(error, event, { defaultHandl
     return;
   }
   if (!res) {
-    const { template } = await Promise.resolve().then(function () { return error500; });
+    const { template } = await Promise.resolve().then(function () { return errorDev; }) ;
     {
       errorObject.description = errorObject.message;
     }
@@ -1179,17 +861,10 @@ const errorHandler$0 = (async function errorhandler(error, event, { defaultHandl
   }
   const html = await res.text();
   for (const [header, value] of res.headers.entries()) {
-    if (header === "set-cookie") {
-      appendResponseHeader(event, header, value);
-      continue;
-    }
     setResponseHeader(event, header, value);
   }
   setResponseStatus(event, res.status && res.status !== 200 ? res.status : defaultRes.status, res.statusText || defaultRes.statusText);
-  {
-    const prettyResponse = await defaultHandler(error, event, { json: false });
-    return send(event, html.replace("</body>", `${generateErrorOverlayHTML(prettyResponse.body)}</body>`));
-  }
+  return send(event, html);
 });
 
 function defineNitroErrorHandler(handler) {
@@ -1343,15 +1018,15 @@ if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
 window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
 `;
 
-const _8Y9SafEXxS_lPpAKO9Lbo2la2QFy6VJoDSmxkLquw = (function(nitro) {
+const _ECYLlraUqjUXxSahy0kjibY14hIlLOIw9TNzT4Xs6ek = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
 });
 
-const rootDir = "E:/fmq/else-git/HomePage";
+const rootDir = "/home/fmq/program/HomePage";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"}],"link":[],"style":[],"script":[],"noscript":[]};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":""},{"name":"keywords","content":""}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"title":"fmq的主页"};
 
 const appRootTag = "div";
 
@@ -1361,10 +1036,6 @@ const appTeleportTag = "div";
 
 const appTeleportAttrs = {"id":"teleports"};
 
-const appSpaLoaderTag = "div";
-
-const appSpaLoaderAttrs = {"id":"__nuxt-loader"};
-
 const appId = "nuxt-app";
 
 const devReducers = {
@@ -1372,7 +1043,7 @@ const devReducers = {
   URL: (data) => data instanceof URL ? data.toString() : void 0
 };
 const asyncContext = getContext("nuxt-dev", { asyncContext: true, AsyncLocalStorage });
-const _Cw5rPMPyWT14NPCn0bcT956Zkk4XsrKWu4XkKWKzo = (nitroApp) => {
+const _iWmMsmHkE09VpkZjgWOt8sVgbmLGTAEGKKn7v1lHmLQ = (nitroApp) => {
   const handler = nitroApp.h3App.handler;
   nitroApp.h3App.handler = (event) => {
     return asyncContext.callAsync({ logs: [], event }, () => handler(event));
@@ -1427,7 +1098,7 @@ const _Cw5rPMPyWT14NPCn0bcT956Zkk4XsrKWu4XkKWKzo = (nitroApp) => {
       htmlContext.bodyAppend.unshift(`<script type="application/json" data-nuxt-logs="${appId}">${stringify(ctx.logs, reducers)}<\/script>`);
     } catch (e) {
       const shortError = e instanceof Error && "toString" in e ? ` Received \`${e.toString()}\`.` : "";
-      console.warn(`[nuxt] Failed to stringify dev server logs.${shortError} You can define your own reducer/reviver for rich types following the instructions in https://nuxt.com/docs/4.x/api/composables/use-nuxt-app#payload.`);
+      console.warn(`[nuxt] Failed to stringify dev server logs.${shortError} You can define your own reducer/reviver for rich types following the instructions in https://nuxt.com/docs/api/composables/use-nuxt-app#payload.`);
     }
   });
 };
@@ -1442,11 +1113,26 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _8Y9SafEXxS_lPpAKO9Lbo2la2QFy6VJoDSmxkLquw,
-_Cw5rPMPyWT14NPCn0bcT956Zkk4XsrKWu4XkKWKzo
+  _ECYLlraUqjUXxSahy0kjibY14hIlLOIw9TNzT4Xs6ek,
+_iWmMsmHkE09VpkZjgWOt8sVgbmLGTAEGKKn7v1lHmLQ
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"16239-Og2E9VpuRoSPkzTIa1OsrWKnSXw\"",
+    "mtime": "2025-11-14T03:18:30.362Z",
+    "size": 90681,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"542b6-UyHWFxjjZsBR4IDaW8UWWUcOj3A\"",
+    "mtime": "2025-11-14T03:18:30.363Z",
+    "size": 344758,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1471,7 +1157,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _d2hhxS = eventHandler((event) => {
+const _PF3bO6 = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -1569,6 +1255,8 @@ function createHead(options = {}) {
 
 const unheadOptions = {
   disableDefaults: true,
+  disableCapoSorting: false,
+  plugins: [DeprecationsPlugin, PromisesPlugin, TemplateParamsPlugin, AliasSortingPlugin],
 };
 
 function createSSRContext(event) {
@@ -1607,20 +1295,23 @@ function publicAssetsURL(...path) {
 
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
-const getServerEntry = () => import('file://E:/fmq/else-git/HomePage/.nuxt//dist/server/server.mjs').then((r) => r.default || r);
-const getClientManifest = () => import('file://E:/fmq/else-git/HomePage/.nuxt//dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getServerEntry = () => import('file:///home/fmq/program/HomePage/.nuxt/dist/server/server.mjs').then((r) => r.default || r);
+const getClientManifest = () => import('file:///home/fmq/program/HomePage/.nuxt/dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 const getSSRRenderer = lazyCachedFunction(async () => {
+  const manifest = await getClientManifest();
+  if (!manifest) {
+    throw new Error("client.manifest is not available");
+  }
   const createSSRApp = await getServerEntry();
   if (!createSSRApp) {
     throw new Error("Server bundle is not available");
   }
-  const precomputed = void 0 ;
-  const renderer = createRenderer(createSSRApp, {
-    precomputed,
-    manifest: await getClientManifest() ,
+  const options = {
+    manifest,
     renderToString: renderToString$1,
     buildAssetsURL
-  });
+  };
+  const renderer = createRenderer(createSSRApp, options);
   async function renderToString$1(input, context) {
     const html = await renderToString(input, context);
     if (process.env.NUXT_VITE_NODE_OPTIONS) {
@@ -1631,23 +1322,19 @@ const getSSRRenderer = lazyCachedFunction(async () => {
   return renderer;
 });
 const getSPARenderer = lazyCachedFunction(async () => {
-  const precomputed = void 0 ;
+  const manifest = await getClientManifest();
   const spaTemplate = await Promise.resolve().then(function () { return _virtual__spaTemplate; }).then((r) => r.template).catch(() => "").then((r) => {
     {
-      const APP_SPA_LOADER_OPEN_TAG = `<${appSpaLoaderTag}${propsToString(appSpaLoaderAttrs)}>`;
-      const APP_SPA_LOADER_CLOSE_TAG = `</${appSpaLoaderTag}>`;
-      const appTemplate = APP_ROOT_OPEN_TAG + APP_ROOT_CLOSE_TAG;
-      const loaderTemplate = r ? APP_SPA_LOADER_OPEN_TAG + r + APP_SPA_LOADER_CLOSE_TAG : "";
-      return appTemplate + loaderTemplate;
+      return APP_ROOT_OPEN_TAG + r + APP_ROOT_CLOSE_TAG;
     }
   });
-  const renderer = createRenderer(() => () => {
-  }, {
-    precomputed,
-    manifest: await getClientManifest() ,
+  const options = {
+    manifest,
     renderToString: () => spaTemplate,
     buildAssetsURL
-  });
+  };
+  const renderer = createRenderer(() => () => {
+  }, options);
   const result = await renderer.renderToString({});
   const renderToString = (ssrContext) => {
     const config = useRuntimeConfig(ssrContext.event);
@@ -1776,7 +1463,7 @@ function replaceIslandTeleports(ssrContext, html) {
   return html;
 }
 
-const ISLAND_SUFFIX_RE = /\.json(?:\?.*)?$/;
+const ISLAND_SUFFIX_RE = /\.json(\?.*)?$/;
 const _SxA8c9 = defineEventHandler(async (event) => {
   const nitroApp = useNitroApp();
   setResponseHeaders(event, {
@@ -1791,13 +1478,10 @@ const _SxA8c9 = defineEventHandler(async (event) => {
     url: islandContext.url
   };
   const renderer = await getSSRRenderer();
-  const renderResult = await renderer.renderToString(ssrContext).catch(async (err) => {
-    await ssrContext.nuxt?.hooks.callHook("app:error", err);
-    throw err;
+  const renderResult = await renderer.renderToString(ssrContext).catch(async (error) => {
+    await ssrContext.nuxt?.hooks.callHook("app:error", error);
+    throw error;
   });
-  if (ssrContext.payload?.error) {
-    throw ssrContext.payload.error;
-  }
   const inlinedStyles = await renderInlineStyles(ssrContext.modules ?? []);
   await ssrContext.nuxt?.hooks.callHook("app:rendered", { ssrContext, renderResult });
   if (inlinedStyles.length) {
@@ -1828,6 +1512,8 @@ const _SxA8c9 = defineEventHandler(async (event) => {
       islandHead[key] = value;
     }
   }
+  islandHead.link ||= [];
+  islandHead.style ||= [];
   const islandResponse = {
     id: islandContext.id,
     head: islandHead,
@@ -1856,13 +1542,27 @@ async function getIslandContext(event) {
   return ctx;
 }
 
-const _lazy_Jla5e7 = () => Promise.resolve().then(function () { return renderer$1; });
+const _lazy_9Ui0LK = () => Promise.resolve().then(function () { return changePassword_post$1; });
+const _lazy_I8txN2 = () => Promise.resolve().then(function () { return login_post$1; });
+const _lazy_T1W9YS = () => Promise.resolve().then(function () { return verify_get$1; });
+const _lazy_wRlOEV = () => Promise.resolve().then(function () { return config_get$1; });
+const _lazy_qx2e7a = () => Promise.resolve().then(function () { return config_post$1; });
+const _lazy_4dcBGp = () => Promise.resolve().then(function () { return fetchSiteInfo_get$1; });
+const _lazy_potrqH = () => Promise.resolve().then(function () { return health_get$1; });
+const _lazy_ri5xVP = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
-  { route: '', handler: _d2hhxS, lazy: false, middleware: true, method: undefined },
-  { route: '/__nuxt_error', handler: _lazy_Jla5e7, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _PF3bO6, lazy: false, middleware: true, method: undefined },
+  { route: '/api/auth/change-password', handler: _lazy_9Ui0LK, lazy: true, middleware: false, method: "post" },
+  { route: '/api/auth/login', handler: _lazy_I8txN2, lazy: true, middleware: false, method: "post" },
+  { route: '/api/auth/verify', handler: _lazy_T1W9YS, lazy: true, middleware: false, method: "get" },
+  { route: '/api/config', handler: _lazy_wRlOEV, lazy: true, middleware: false, method: "get" },
+  { route: '/api/config', handler: _lazy_qx2e7a, lazy: true, middleware: false, method: "post" },
+  { route: '/api/fetch-site-info', handler: _lazy_4dcBGp, lazy: true, middleware: false, method: "get" },
+  { route: '/api/health', handler: _lazy_potrqH, lazy: true, middleware: false, method: "get" },
+  { route: '/__nuxt_error', handler: _lazy_ri5xVP, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_Jla5e7, lazy: true, middleware: false, method: undefined }
+  { route: '/**', handler: _lazy_ri5xVP, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {
@@ -2168,30 +1868,544 @@ async function shutdown() {
   parentPort?.postMessage({ event: "exit" });
 }
 
-const _messages = { "appName": "Nuxt", "statusCode": 500, "statusMessage": "Internal server error", "description": "This page is temporarily unavailable.", "refresh": "Refresh this page" };
+const _messages = { "appName": "Nuxt", "version": "", "statusCode": 500, "statusMessage": "Server error", "description": "An error occurred in the application and the page could not be served. If you are the application owner, check your server logs for details.", "stack": "" };
 const template$1 = (messages) => {
   messages = { ..._messages, ...messages };
-  return '<!DOCTYPE html><html lang="en"><head><title>' + escapeHtml(messages.statusCode) + " - " + escapeHtml(messages.statusMessage) + " | " + escapeHtml(messages.appName) + `</title><meta charset="utf-8"><meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0" name="viewport"><script>!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver(e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)"LINK"===e.tagName&&"modulepreload"===e.rel&&r(e)}).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),"use-credentials"===e.crossOrigin?r.credentials="include":"anonymous"===e.crossOrigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();<\/script><style>*,:after,:before{border-color:var(--un-default-border-color,#e5e7eb);border-style:solid;border-width:0;box-sizing:border-box}:after,:before{--un-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-moz-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent}body{line-height:inherit;margin:0}h1,h2{font-size:inherit;font-weight:inherit}h1,h2,p{margin:0}*,:after,:before{--un-rotate:0;--un-rotate-x:0;--un-rotate-y:0;--un-rotate-z:0;--un-scale-x:1;--un-scale-y:1;--un-scale-z:1;--un-skew-x:0;--un-skew-y:0;--un-translate-x:0;--un-translate-y:0;--un-translate-z:0;--un-pan-x: ;--un-pan-y: ;--un-pinch-zoom: ;--un-scroll-snap-strictness:proximity;--un-ordinal: ;--un-slashed-zero: ;--un-numeric-figure: ;--un-numeric-spacing: ;--un-numeric-fraction: ;--un-border-spacing-x:0;--un-border-spacing-y:0;--un-ring-offset-shadow:0 0 transparent;--un-ring-shadow:0 0 transparent;--un-shadow-inset: ;--un-shadow:0 0 transparent;--un-ring-inset: ;--un-ring-offset-width:0px;--un-ring-offset-color:#fff;--un-ring-width:0px;--un-ring-color:rgba(147,197,253,.5);--un-blur: ;--un-brightness: ;--un-contrast: ;--un-drop-shadow: ;--un-grayscale: ;--un-hue-rotate: ;--un-invert: ;--un-saturate: ;--un-sepia: ;--un-backdrop-blur: ;--un-backdrop-brightness: ;--un-backdrop-contrast: ;--un-backdrop-grayscale: ;--un-backdrop-hue-rotate: ;--un-backdrop-invert: ;--un-backdrop-opacity: ;--un-backdrop-saturate: ;--un-backdrop-sepia: }.grid{display:grid}.mb-2{margin-bottom:.5rem}.mb-4{margin-bottom:1rem}.max-w-520px{max-width:520px}.min-h-screen{min-height:100vh}.place-content-center{place-content:center}.overflow-hidden{overflow:hidden}.bg-white{--un-bg-opacity:1;background-color:rgb(255 255 255/var(--un-bg-opacity))}.px-2{padding-left:.5rem;padding-right:.5rem}.text-center{text-align:center}.text-\\[80px\\]{font-size:80px}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\\[\\#020420\\]{--un-text-opacity:1;color:rgb(2 4 32/var(--un-text-opacity))}.text-\\[\\#64748B\\]{--un-text-opacity:1;color:rgb(100 116 139/var(--un-text-opacity))}.font-semibold{font-weight:600}.leading-none{line-height:1}.tracking-wide{letter-spacing:.025em}.font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji}.tabular-nums{--un-numeric-spacing:tabular-nums;font-variant-numeric:var(--un-ordinal) var(--un-slashed-zero) var(--un-numeric-figure) var(--un-numeric-spacing) var(--un-numeric-fraction)}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}@media(prefers-color-scheme:dark){.dark\\:bg-\\[\\#020420\\]{--un-bg-opacity:1;background-color:rgb(2 4 32/var(--un-bg-opacity))}.dark\\:text-white{--un-text-opacity:1;color:rgb(255 255 255/var(--un-text-opacity))}}@media(min-width:640px){.sm\\:text-\\[110px\\]{font-size:110px}.sm\\:text-3xl{font-size:1.875rem;line-height:2.25rem}}</style></head><body class="antialiased bg-white dark:bg-[#020420] dark:text-white font-sans grid min-h-screen overflow-hidden place-content-center text-[#020420] tracking-wide"><div class="max-w-520px text-center"><h1 class="font-semibold leading-none mb-4 sm:text-[110px] tabular-nums text-[80px]">` + escapeHtml(messages.statusCode) + '</h1><h2 class="font-semibold mb-2 sm:text-3xl text-2xl">' + escapeHtml(messages.statusMessage) + '</h2><p class="mb-4 px-2 text-[#64748B] text-md">' + escapeHtml(messages.description) + "</p></div></body></html>";
+  return '<!DOCTYPE html><html lang="en"><head><title>' + escapeHtml(messages.statusCode) + " - " + escapeHtml(messages.statusMessage || "Internal Server Error") + `</title><meta charset="utf-8"><meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0" name="viewport"><style>.spotlight{background:linear-gradient(45deg,#00dc82,#36e4da 50%,#0047e1);bottom:-40vh;filter:blur(30vh);height:60vh;opacity:.8}*,:after,:before{border-color:var(--un-default-border-color,#e5e7eb);border-style:solid;border-width:0;box-sizing:border-box}:after,:before{--un-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-moz-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent}body{line-height:inherit;margin:0}h1{font-size:inherit;font-weight:inherit}h1,p{margin:0}*,:after,:before{--un-rotate:0;--un-rotate-x:0;--un-rotate-y:0;--un-rotate-z:0;--un-scale-x:1;--un-scale-y:1;--un-scale-z:1;--un-skew-x:0;--un-skew-y:0;--un-translate-x:0;--un-translate-y:0;--un-translate-z:0;--un-pan-x: ;--un-pan-y: ;--un-pinch-zoom: ;--un-scroll-snap-strictness:proximity;--un-ordinal: ;--un-slashed-zero: ;--un-numeric-figure: ;--un-numeric-spacing: ;--un-numeric-fraction: ;--un-border-spacing-x:0;--un-border-spacing-y:0;--un-ring-offset-shadow:0 0 transparent;--un-ring-shadow:0 0 transparent;--un-shadow-inset: ;--un-shadow:0 0 transparent;--un-ring-inset: ;--un-ring-offset-width:0px;--un-ring-offset-color:#fff;--un-ring-width:0px;--un-ring-color:rgba(147,197,253,.5);--un-blur: ;--un-brightness: ;--un-contrast: ;--un-drop-shadow: ;--un-grayscale: ;--un-hue-rotate: ;--un-invert: ;--un-saturate: ;--un-sepia: ;--un-backdrop-blur: ;--un-backdrop-brightness: ;--un-backdrop-contrast: ;--un-backdrop-grayscale: ;--un-backdrop-hue-rotate: ;--un-backdrop-invert: ;--un-backdrop-opacity: ;--un-backdrop-saturate: ;--un-backdrop-sepia: }.pointer-events-none{pointer-events:none}.fixed{position:fixed}.left-0{left:0}.right-0{right:0}.z-10{z-index:10}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.h-auto{height:auto}.min-h-screen{min-height:100vh}.flex{display:flex}.flex-1{flex:1 1 0%}.flex-col{flex-direction:column}.overflow-y-auto{overflow-y:auto}.rounded-t-md{border-top-left-radius:.375rem;border-top-right-radius:.375rem}.bg-black\\/5{background-color:#0000000d}.bg-white{--un-bg-opacity:1;background-color:rgb(255 255 255/var(--un-bg-opacity))}.p-8{padding:2rem}.px-10{padding-left:2.5rem;padding-right:2.5rem}.pt-14{padding-top:3.5rem}.text-6xl{font-size:3.75rem;line-height:1}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-black{--un-text-opacity:1;color:rgb(0 0 0/var(--un-text-opacity))}.font-light{font-weight:300}.font-medium{font-weight:500}.leading-tight{line-height:1.25}.font-sans{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}@media (prefers-color-scheme:dark){.dark\\:bg-black{--un-bg-opacity:1;background-color:rgb(0 0 0/var(--un-bg-opacity))}.dark\\:bg-white\\/10{background-color:#ffffff1a}.dark\\:text-white{--un-text-opacity:1;color:rgb(255 255 255/var(--un-text-opacity))}}@media (min-width:640px){.sm\\:text-2xl{font-size:1.5rem;line-height:2rem}.sm\\:text-8xl{font-size:6rem;line-height:1}}</style><script>!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver((e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)"LINK"===e.tagName&&"modulepreload"===e.rel&&r(e)})).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),"use-credentials"===e.crossOrigin?r.credentials="include":"anonymous"===e.crossOrigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();<\/script></head><body class="antialiased bg-white dark:bg-black dark:text-white flex flex-col font-sans min-h-screen pt-14 px-10 text-black"><div class="fixed left-0 pointer-events-none right-0 spotlight"></div><h1 class="font-medium mb-6 sm:text-8xl text-6xl">` + escapeHtml(messages.statusCode) + '</h1><p class="font-light leading-tight mb-8 sm:text-2xl text-xl">' + escapeHtml(messages.description) + '</p><div class="bg-black/5 bg-white dark:bg-white/10 flex-1 h-auto overflow-y-auto rounded-t-md"><div class="font-light leading-tight p-8 text-xl z-10">' + escapeHtml(messages.stack) + "</div></div></body></html>";
 };
 
-const error500 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const errorDev = /*#__PURE__*/Object.freeze({
   __proto__: null,
   template: template$1
-}, Symbol.toStringTag, { value: 'Module' }));
+});
 
 const template = "";
 
-const _virtual__spaTemplate = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const _virtual__spaTemplate = /*#__PURE__*/Object.freeze({
   __proto__: null,
   template: template
-}, Symbol.toStringTag, { value: 'Module' }));
+});
 
 const styles = {};
 
-const styles$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const styles$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: styles
-}, Symbol.toStringTag, { value: 'Module' }));
+});
+
+const changePassword_post = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const token = ((_a = getHeader(event, "authorization")) == null ? void 0 : _a.replace("Bearer ", "")) || getQuery$1(event).token;
+    if (!token) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: "\u672A\u6388\u6743"
+      });
+    }
+    const config = useRuntimeConfig();
+    const decoded = jwt.verify(token, config.jwtSecret);
+    if (!decoded.admin) {
+      throw createError({
+        statusCode: 403,
+        statusMessage: "\u6743\u9650\u4E0D\u8DB3"
+      });
+    }
+    const body = await readBody(event);
+    const { currentPassword, newPassword } = body;
+    if (!currentPassword || !newPassword) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "\u8BF7\u63D0\u4F9B\u5F53\u524D\u5BC6\u7801\u548C\u65B0\u5BC6\u7801"
+      });
+    }
+    if (currentPassword !== config.adminPassword) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: "\u5F53\u524D\u5BC6\u7801\u9519\u8BEF"
+      });
+    }
+    return {
+      success: true,
+      message: "\u5BC6\u7801\u4FEE\u6539\u6210\u529F"
+    };
+  } catch (error) {
+    if (error.name === "JsonWebTokenError") {
+      throw createError({
+        statusCode: 403,
+        statusMessage: "\u65E0\u6548\u7684 token"
+      });
+    }
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "\u4FEE\u6539\u5BC6\u7801\u5931\u8D25"
+    });
+  }
+});
+
+const changePassword_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: changePassword_post
+});
+
+const login_post = defineEventHandler(async (event) => {
+  try {
+    const body = await readBody(event);
+    const { password } = body;
+    if (!password) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "\u8BF7\u63D0\u4F9B\u5BC6\u7801"
+      });
+    }
+    const config = useRuntimeConfig();
+    const adminPassword = String(config.adminPassword);
+    if (password !== adminPassword) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: "\u5BC6\u7801\u9519\u8BEF"
+      });
+    }
+    const token = jwt.sign(
+      { admin: true },
+      config.jwtSecret || "default-secret",
+      { expiresIn: "24h" }
+    );
+    return {
+      success: true,
+      token
+    };
+  } catch (error) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "\u767B\u5F55\u5931\u8D25"
+    });
+  }
+});
+
+const login_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: login_post
+});
+
+const verify_get = defineEventHandler(async (event) => {
+  var _a;
+  const token = ((_a = getHeader(event, "authorization")) == null ? void 0 : _a.replace("Bearer ", "")) || getQuery$1(event).token;
+  if (!token) {
+    return false;
+  }
+  try {
+    const config = useRuntimeConfig();
+    const decoded = jwt.verify(token, config.jwtSecret);
+    return decoded.admin === true;
+  } catch (error) {
+    return false;
+  }
+});
+
+const verify_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: verify_get
+});
+
+const defaultConfig = {
+  title: "fmq\u7684\u4E3B\u9875",
+  keywords: "",
+  description: "",
+  author: "Asfmq",
+  favicon: "/img/ico/fmq.ico",
+  backgroundImage: "https://ts1.cn.mm.bing.net/th/id/R-C.5245729f06d893bb71f1ef22d1701e99?rik=UUiU5%2f9nqV5QWA&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20181109%2fa6fcad52457646ef8b3d3c3b3b12e8ab.jpeg&ehk=UIlATT2VKn8IqNzCFFGKXvl11vSYf%2flqCueyxilmefg%3d&risl=&pid=ImgRaw&r=0",
+  links: {
+    navItems: [
+      {
+        name: "\u4E3B\u9875",
+        url: "https://home.asfmq.cn/",
+        id: "home-link"
+      },
+      {
+        name: "\u535A\u5BA2",
+        url: "https://blog.asfmq.cn/",
+        id: "blog-link"
+      },
+      {
+        name: "Github",
+        url: "https://github.com/Asfmq",
+        id: "github-link"
+      }
+    ],
+    searchEngines: [
+      {
+        name: "Bing",
+        url: "https://cn.bing.com/search?q=",
+        placeholder: "\u5FAE\u8F6F\u5FC5\u5E94\u641C\u7D22",
+        icon: "#icon-bing",
+        color: "#696a6d"
+      },
+      {
+        name: "\u767E\u5EA6",
+        url: "https://www.baidu.com/s?word=",
+        placeholder: "\u767E\u5EA6\u4E00\u4E0B\uFF0C\u4F60\u5C31\u77E5\u9053",
+        icon: "#icon-icon_baidulogo",
+        color: "#0c498c"
+      },
+      {
+        name: "\u641C\u72D7",
+        url: "https://www.sogou.com/web?query=",
+        placeholder: "\u4E0A\u7F51\u4ECE\u641C\u72D7\u5F00\u59CB",
+        icon: "#icon-sougou",
+        color: "#696a6d"
+      },
+      {
+        name: "\u77E5\u4E4E",
+        url: "https://www.zhihu.com/search?q=",
+        placeholder: "\u6709\u95EE\u9898\uFF0C\u4E0A\u77E5\u4E4E",
+        icon: "#icon-zhihu",
+        color: "#0084fe"
+      },
+      {
+        name: "Blibili",
+        url: "https://search.bilibili.com/all?keyword=",
+        icon: "#icon-bili",
+        placeholder: "(\u309C-\u309C)\u3064\u30ED \u5E72\u676F~"
+      },
+      {
+        name: "\u5FAE\u535A",
+        url: "https://s.weibo.com/weibo/",
+        placeholder: "\u968F\u65F6\u968F\u5730\u53D1\u73B0\u65B0\u9C9C\u4E8B",
+        icon: "#icon-weibo",
+        color: "#ff5722"
+      },
+      {
+        name: "\u8C37\u6B4C",
+        url: "https://search.njau.cf/extdomains/www.google.com.hk/search?q=",
+        icon: "#icon-google00",
+        placeholder: "\u503C\u5F97\u4FE1\u4EFB\u7684\u641C\u7D22\u5F15\u64CE"
+      },
+      {
+        name: "\u7FFB\u8BD1",
+        url: "https://translate.google.cn/?hl=zh-CN&sl=auto&tl=zh-CN&text=",
+        placeholder: "\u8F93\u5165\u7FFB\u8BD1\u5185\u5BB9\uFF08\u81EA\u52A8\u68C0\u6D4B\u8BED\u8A00\uFF09",
+        icon: "#icon-fanyi",
+        color: "#0084fe"
+      }
+    ],
+    categories: [
+      {
+        title: "\u6211\u7684\u670D\u52A1",
+        icon: "#icon-home",
+        links: [
+          {
+            name: "\u672C\u5730\u670D\u52A1",
+            url: "/local",
+            icon: "/img/ico/fmq.ico"
+          },
+          {
+            name: "transmission",
+            url: "https://transmission.asfmq.cn",
+            icon: "/img/ico/Transmission.png"
+          },
+          {
+            name: "immich",
+            url: "https://immich.asfmq.cn",
+            icon: "/img/ico/immich.ico"
+          },
+          {
+            name: "jellyfin",
+            url: "https://jellyfin.asfmq.cn",
+            icon: "/img/ico/jellyfin.jpg"
+          },
+          {
+            name: "calibre",
+            url: "https://calibre.asfmq.cn",
+            icon: "/img/ico/calibre.png"
+          },
+          {
+            name: "alist",
+            url: "https://alist.asfmq.cn",
+            icon: "/img/ico/alist.png"
+          },
+          {
+            name: "xiaoya",
+            url: "https://xiaoya.asfmq.cn",
+            icon: "/img/ico/xiaoya.jpg"
+          },
+          {
+            name: "ollama",
+            url: "https://llm.asfmq.cn",
+            icon: "/img/ico/ollama.jpg"
+          },
+          {
+            name: "1panel",
+            url: "https://1panel.asfmq.cn/",
+            icon: "#icon-1panel"
+          },
+          {
+            name: "frp",
+            url: "https://frp.asfmq.cn",
+            icon: "/img/ico/frps.svg"
+          },
+          {
+            name: "\u601D\u6E90\u7B14\u8BB0",
+            url: "https://note.asfmq.cn/",
+            icon: "https://note.asfmq.cn/favicon.ico"
+          }
+        ]
+      },
+      {
+        title: "\u79D1\u7814",
+        icon: "#icon-search",
+        links: [
+          {
+            name: "ArXiv",
+            url: "https://arxiv.org/",
+            icon: "/img/ico/img_66ff54aa5775c.ico"
+          },
+          {
+            name: "GitHub",
+            url: "https://github.com/",
+            icon: "/img/ico/img_66ff58e4c794c.png"
+          },
+          {
+            name: "Gitee",
+            url: "https://gitee.com/",
+            icon: "/img/ico/img_66ff590389ea3.ico"
+          },
+          {
+            name: "\u79D1\u7814\u5E9F\u7269\u5BFC\u822A",
+            url: "https://www.yanweb.top/",
+            icon: "/img/ico/img_66ff5fa92663b.png"
+          },
+          {
+            name: "DeepL",
+            url: "https://www.deepl.com/zh/translator",
+            icon: "/img/ico/deepl-logo-blue.svg"
+          },
+          {
+            name: "\u5C0F\u7EFF\u9CB8",
+            url: "https://www.xljsci.com/editor/",
+            icon: "/img/ico/img_66ff54da46c79.ico"
+          },
+          {
+            name: "overleaf",
+            url: "https://cn.overleaf.com/",
+            icon: "/img/ico/img_66ff551b97ece.ico"
+          }
+        ]
+      },
+      {
+        title: "AI",
+        icon: "#icon-ai",
+        links: [
+          {
+            name: "ChatGPT",
+            url: "https://chat.openai.com/",
+            icon: "/img/ico/chatgpt.jpg"
+          },
+          {
+            name: "DeepSeek",
+            url: "https://chat.deepseek.com/",
+            icon: "https://chat.deepseek.com/favicon.svg"
+          },
+          {
+            name: "Qwen Chat",
+            url: "https://chat.qwen.ai/",
+            icon: "https://assets.alicdn.com/g/qwenweb/qwen-webui-fe/0.0.69/favicon.png"
+          },
+          {
+            name: "\u901A\u4E49",
+            url: "https://tongyi.aliyun.com/",
+            icon: "https://img.alicdn.com/imgextra/i4/O1CN01EfJVFQ1uZPd7W4W6i_!!6000000006051-2-tps-112-112.png"
+          },
+          {
+            name: "\u667A\u8C31\u6E05\u8A00",
+            url: "https://chatglm.cn/",
+            icon: "https://chatglm.cn/img/icons/favicon.svg"
+          },
+          {
+            name: "\u6587\u5FC3\u4E00\u8A00",
+            url: "https://yiyan.baidu.com/",
+            icon: "https://nlp-eb.cdn.bcebos.com/logo/favicon.ico"
+          },
+          {
+            name: "txyz",
+            url: "https://app.txyz.ai/",
+            icon: "/img/ico/img_674c653aa6f60.png"
+          },
+          {
+            name: "storm",
+            url: "https://storm.genie.stanford.edu/",
+            icon: "/img/ico/img_674c65a506906.ico"
+          },
+          {
+            name: "huggingface",
+            url: "https://huggingface.co/",
+            icon: "/img/ico/img_6755ab0e9a949.png"
+          }
+        ]
+      }
+    ]
+  },
+  copyright: {
+    show: true,
+    text: "2024",
+    target: "asfmq.cn",
+    showRecord: true,
+    record: "\u6E58ICP\u59072024096819\u53F7",
+    recordUrl: "https://beian.miit.gov.cn"
+  }
+};
+
+const config_get = defineEventHandler(async (event) => {
+  return defaultConfig;
+});
+
+const config_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: config_get
+});
+
+const config_post = defineEventHandler(async (event) => {
+  var _a;
+  const token = ((_a = getHeader(event, "authorization")) == null ? void 0 : _a.replace("Bearer ", "")) || getQuery$1(event).token;
+  if (!token) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: "\u672A\u6388\u6743"
+    });
+  }
+  try {
+    const config = useRuntimeConfig();
+    const decoded = jwt.verify(token, config.jwtSecret);
+    if (!decoded.admin) {
+      throw createError({
+        statusCode: 403,
+        statusMessage: "\u6743\u9650\u4E0D\u8DB3"
+      });
+    }
+    const body = await readBody(event);
+    const newConfig = body;
+    if (!newConfig || !newConfig.links) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "\u65E0\u6548\u7684\u914D\u7F6E\u6570\u636E"
+      });
+    }
+    return {
+      message: "\u914D\u7F6E\u5DF2\u66F4\u65B0"
+    };
+  } catch (error) {
+    if (error.name === "JsonWebTokenError") {
+      throw createError({
+        statusCode: 403,
+        statusMessage: "\u65E0\u6548\u7684 token"
+      });
+    }
+    throw error;
+  }
+});
+
+const config_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: config_post
+});
+
+const fetchSiteInfo_get = defineEventHandler(async (event) => {
+  try {
+    const query = getQuery$1(event);
+    const urlString = query.url;
+    if (!urlString) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "\u8BF7\u63D0\u4F9BURL"
+      });
+    }
+    try {
+      new URL(urlString);
+    } catch {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "\u65E0\u6548\u7684URL\u683C\u5F0F"
+      });
+    }
+    const response = await fetch(urlString, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+      }
+    });
+    if (!response.ok) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "\u65E0\u6CD5\u83B7\u53D6\u7F51\u7AD9\u4FE1\u606F"
+      });
+    }
+    const html = await response.text();
+    const url = new URL(urlString);
+    let title = "";
+    let favicon = "";
+    const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+    if (titleMatch) {
+      title = titleMatch[1].trim();
+    }
+    if (!title) {
+      const ogTitleMatch = html.match(/<meta[^>]*property=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*>/i);
+      if (ogTitleMatch) {
+        title = ogTitleMatch[1].trim();
+      }
+    }
+    const faviconSelectors = [
+      /<link[^>]*rel=["']icon["'][^>]*href=["']([^"']*)["'][^>]*>/i,
+      /<link[^>]*rel=["']shortcut icon["'][^>]*href=["']([^"']*)["'][^>]*>/i,
+      /<link[^>]*rel=["']apple-touch-icon["'][^>]*href=["']([^"']*)["'][^>]*>/i,
+      /<link[^>]*rel=["']apple-touch-icon-precomposed["'][^>]*href=["']([^"']*)["'][^>]*>/i
+    ];
+    for (const selector of faviconSelectors) {
+      const match = html.match(selector);
+      if (match) {
+        favicon = match[1];
+        break;
+      }
+    }
+    if (favicon) {
+      if (!favicon.startsWith("http")) {
+        if (favicon.startsWith("/")) {
+          favicon = new URL(favicon, url).toString();
+        } else {
+          favicon = new URL(favicon, url).toString();
+        }
+      }
+    } else {
+      favicon = new URL("/favicon.ico", url).toString();
+    }
+    return {
+      title,
+      favicon
+    };
+  } catch (error) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || "\u83B7\u53D6\u7F51\u7AD9\u4FE1\u606F\u5931\u8D25"
+    });
+  }
+});
+
+const fetchSiteInfo_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: fetchSiteInfo_get
+});
+
+const health_get = defineEventHandler(async (event) => {
+  return {
+    status: "ok",
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    version: "1.0.0",
+    uptime: process.uptime()
+  };
+});
+
+const health_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: health_get
+});
 
 function renderPayloadResponse(ssrContext) {
   return {
@@ -2234,7 +2448,7 @@ function splitPayload(ssrContext) {
   };
 }
 
-const renderSSRHeadOptions = {"omitLineBreaks":true};
+const renderSSRHeadOptions = {"omitLineBreaks":false};
 
 globalThis.__buildAssetsURL = buildAssetsURL;
 globalThis.__publicAssetsURL = publicAssetsURL;
@@ -2256,12 +2470,6 @@ const renderer = defineRenderHandler(async (event) => {
   ssrContext.head.push(appHead, headEntryOptions);
   if (ssrError) {
     ssrError.statusCode &&= Number.parseInt(ssrError.statusCode);
-    if (typeof ssrError.data === "string") {
-      try {
-        ssrError.data = destr(ssrError.data);
-      } catch {
-      }
-    }
     setSSRError(ssrContext, ssrError);
   }
   const isRenderingPayload = PAYLOAD_URL_RE.test(ssrContext.url);
@@ -2334,7 +2542,6 @@ const renderer = defineRenderHandler(async (event) => {
     });
   }
   if (!routeOptions.noScripts) {
-    const tagPosition = "head";
     ssrContext.head.push({
       script: Object.values(scripts).map((resource) => ({
         type: resource.module ? "module" : null,
@@ -2342,7 +2549,7 @@ const renderer = defineRenderHandler(async (event) => {
         defer: resource.module ? null : true,
         // if we are rendering script tag payloads that import an async payload
         // we need to ensure this resolves before executing the Nuxt entry
-        tagPosition,
+        tagPosition: "head",
         crossorigin: ""
       }))
     }, headEntryOptions);
@@ -2371,14 +2578,7 @@ const renderer = defineRenderHandler(async (event) => {
   };
 });
 function normalizeChunks(chunks) {
-  const result = [];
-  for (const _chunk of chunks) {
-    const chunk = _chunk?.trim();
-    if (chunk) {
-      result.push(chunk);
-    }
-  }
-  return result;
+  return chunks.filter(Boolean).map((i) => i.trim());
 }
 function joinTags(tags) {
   return tags.join("");
@@ -2393,8 +2593,8 @@ function renderHTMLDocument(html) {
   return `<!DOCTYPE html><html${joinAttrs(html.htmlAttrs)}><head>${joinTags(html.head)}</head><body${joinAttrs(html.bodyAttrs)}>${joinTags(html.bodyPrepend)}${joinTags(html.body)}${joinTags(html.bodyAppend)}</body></html>`;
 }
 
-const renderer$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+const renderer$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: renderer
-}, Symbol.toStringTag, { value: 'Module' }));
+});
 //# sourceMappingURL=index.mjs.map

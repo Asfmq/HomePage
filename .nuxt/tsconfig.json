@@ -25,23 +25,11 @@
       "@unhead/vue": [
         "../node_modules/@unhead/vue"
       ],
-      "@nuxt/devtools": [
-        "../node_modules/@nuxt/devtools"
-      ],
-      "vue": [
-        "../node_modules/vue"
-      ],
       "@vue/runtime-core": [
         "../node_modules/@vue/runtime-core"
       ],
       "@vue/compiler-sfc": [
         "../node_modules/@vue/compiler-sfc"
-      ],
-      "vue-router": [
-        "../node_modules/vue-router"
-      ],
-      "vue-router/auto-routes": [
-        "../node_modules/vue-router/vue-router-auto-routes"
       ],
       "unplugin-vue-router/client": [
         "../node_modules/unplugin-vue-router/client"
@@ -82,8 +70,17 @@
       "#shared": [
         "../shared"
       ],
-      "#shared/*": [
-        "../shared/*"
+      "assets": [
+        "../assets"
+      ],
+      "assets/*": [
+        "../assets/*"
+      ],
+      "public": [
+        "../public"
+      ],
+      "public/*": [
+        "../public/*"
       ],
       "#app": [
         "../node_modules/nuxt/dist/app"
@@ -98,7 +95,7 @@
         "../node_modules/vue-router"
       ],
       "#unhead/composables": [
-        "../node_modules/nuxt/dist/head/runtime/composables"
+        "../node_modules/nuxt/dist/head/runtime/composables/v3"
       ],
       "#imports": [
         "./imports"
@@ -125,10 +122,10 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
-    "module": "preserve",
+    "module": "ESNext",
     "noEmit": true,
     "lib": [
       "ESNext",
@@ -145,40 +142,26 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "./nuxt.d.ts",
     "../**/*",
-    "../modules/*/runtime/**/*",
-    "../layers/*/app/**/*",
-    "../layers/*/modules/*/runtime/**/*",
-    "../shared/**/*.d.ts",
-    "../modules/*/shared/**/*.d.ts",
-    "../layers/*/shared/**/*.d.ts",
-    "../*.d.ts",
-    "../layers/*/*.d.ts",
-    "./nuxt.node.d.ts",
-    "../modules/*.*",
-    "../nuxt.config.*",
     "../.config/nuxt.*",
-    "../layers/*/nuxt.config.*",
-    "../layers/*/.config/nuxt.*",
-    "../layers/*/modules/**/*",
-    "../shared/**/*",
-    "../modules/*/shared/**/*",
-    "../layers/*/shared/**/*",
-    "../node_modules/runtime",
-    "../node_modules/dist/runtime"
+    "./nuxt.d.ts",
+    "../node_modules/@nuxt/devtools/runtime",
+    "../node_modules/@nuxt/devtools/dist/runtime",
+    "../node_modules/@nuxt/telemetry/runtime",
+    "../node_modules/@nuxt/telemetry/dist/runtime",
+    ".."
   ],
   "exclude": [
+    "../dist",
+    "../.data",
     "../node_modules",
     "../node_modules/nuxt/node_modules",
     "../node_modules/@nuxt/devtools/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
-    "../dist",
-    "../.data",
-    "../modules/*/runtime/server/**/*",
-    "../layers/*/server/**/*",
-    "../layers/*/modules/*/runtime/server/**/*",
-    "../node_modules/runtime/server",
-    "../node_modules/dist/runtime/server"
+    "../node_modules/@nuxt/devtools/runtime/server",
+    "../node_modules/@nuxt/devtools/dist/runtime/server",
+    "../node_modules/@nuxt/telemetry/runtime/server",
+    "../node_modules/@nuxt/telemetry/dist/runtime/server",
+    "dev"
   ]
 }
