@@ -115,10 +115,10 @@ useHead({
 const copyrightHtml = computed(() => {
   if (!config.value.copyright.show) return ''
 
-  let html = `Copyright ©${config.value.copyright.text} <a href='/' target='_blank'>${config.value.copyright.target}</a>. All Rights Reserved.`
+  let html = `<span style="color: #87CEEB;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
 
   if (config.value.copyright.showRecord) {
-    html += `<br><a href="${config.value.copyright.recordUrl}" target="_blank">${config.value.copyright.record}</a>`
+    html += `<br><span style="color: #87CEEB;"><a href="${config.value.copyright.recordUrl}" target="_blank" style="color: #87CEEB;">${config.value.copyright.record}</a></span>`
   }
 
   return html
@@ -471,12 +471,12 @@ li.nav-item a {
 
 .footer p {
   margin: 5px 0;
-  color: #fff !important;
+  color: #ffffff !important;
   text-shadow: 0px 1px 0px #252525;
 }
 
 .footer a {
-  color: #fff !important;
+  color: #ffffff !important;
   text-decoration: none;
 }
 
