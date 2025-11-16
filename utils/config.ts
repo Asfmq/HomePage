@@ -234,6 +234,105 @@ export const defaultConfig: SiteConfig = {
             icon: "/img/ico/img_6755ab0e9a949.png"
           }
         ]
+      },
+      {
+        title: "天文",
+        icon: "#icon-astro",
+        links: [
+          {
+            name: "ADS/NASA",
+            url: "https://ui.adsabs.harvard.edu/",
+            icon: "/img/ico/img_66ff59385530f.ico"
+          },
+          {
+            name: "CDS",
+            url: "https://cds.u-strasbg.fr/",
+            icon: "/img/ico/img_66ff5a4793f4b.ico"
+          },
+          {
+            name: "NADC",
+            url: "https://nadc.china-vo.org/?&locale=zh_CN",
+            icon: "/img/ico/img_66ff5cdae29f2.ico"
+          },
+          {
+            name: "svo",
+            url: "http://svo2.cab.inta-csic.es/theory/main/",
+            icon: "/img/ico/svo.png"
+          },
+          {
+            name: "MESA",
+            url: "https://docs.mesastar.org/",
+            icon: "/img/ico/MESA.png"
+          },
+          {
+            name: "MIST",
+            url: "https://waps.cfa.harvard.edu/MIST/",
+            icon: "https://waps.cfa.harvard.edu/favicon.ico"
+          },
+          {
+            name: "Gaia Archive",
+            url: "https://gea.esac.esa.int/archive/",
+            icon: "https://gea.esac.esa.int/archive/images/favicon.ico"
+          }
+        ]
+      },
+      {
+        title: "娱乐",
+        icon: "#icon-vedio",
+        links: [
+          {
+            name: "哔哩哔哩",
+            url: "https://www.bilibili.com/",
+            icon: "/img/ico/img_66ff5f7e2c597.png"
+          },
+          {
+            name: "知乎",
+            url: "https://www.zhihu.com/",
+            icon: "/img/ico/img_66ff5e925416b.ico"
+          },
+          {
+            name: "抖音",
+            url: "https://www.douyin.com/",
+            icon: "/img/ico/img_66ff651a39877.ico"
+          },
+          {
+            name: "youtube",
+            url: "https://www.youtube.com/",
+            icon: "/img/ico/youtube.jpg"
+          }
+        ]
+      },
+      {
+        title: "游戏",
+        icon: "#icon-game",
+        links: [
+          {
+            name: "云·原神",
+            url: "https://ys.mihoyo.com/cloud/?utm_source=default#/",
+            icon: "/img/ico/img_66ff6012160c3.ico"
+          },
+          {
+            name: "云·星穹铁道",
+            url: "https://sr.mihoyo.com/cloud/?from_channel=adbdpz#/",
+            icon: "/img/ico/img_66ff6024a45bd.ico"
+          },
+          {
+            name: "3DM",
+            url: "https://www.3dmgame.com/",
+            icon: "https://www.3dmgame.com/favicon.ico"
+          }
+        ]
+      },
+      {
+        title: "world",
+        icon: "#icon-world",
+        links: [
+          {
+            name: "Cloudflare",
+            url: "https://dash.cloudflare.com/",
+            icon: "/img/ico/img_671e1295a09de.ico"
+          }
+        ]
       }
     ]
   },

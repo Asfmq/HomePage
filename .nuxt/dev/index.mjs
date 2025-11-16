@@ -1026,7 +1026,7 @@ const _ECYLlraUqjUXxSahy0kjibY14hIlLOIw9TNzT4Xs6ek = (function(nitro) {
 
 const rootDir = "/home/fmq/program/HomePage";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":""},{"name":"keywords","content":""}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"title":"fmq的主页"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":""},{"name":"keywords","content":""}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"}],"style":[],"script":[],"noscript":[],"title":"fmq的主页"};
 
 const appRootTag = "div";
 
@@ -1117,22 +1117,7 @@ const plugins = [
 _iWmMsmHkE09VpkZjgWOt8sVgbmLGTAEGKKn7v1lHmLQ
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"16239-Og2E9VpuRoSPkzTIa1OsrWKnSXw\"",
-    "mtime": "2025-11-14T03:18:30.362Z",
-    "size": 90681,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"542b6-UyHWFxjjZsBR4IDaW8UWWUcOj3A\"",
-    "mtime": "2025-11-14T03:18:30.363Z",
-    "size": 344758,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -2240,6 +2225,105 @@ const defaultConfig = {
             name: "huggingface",
             url: "https://huggingface.co/",
             icon: "/img/ico/img_6755ab0e9a949.png"
+          }
+        ]
+      },
+      {
+        title: "\u5929\u6587",
+        icon: "#icon-astro",
+        links: [
+          {
+            name: "ADS/NASA",
+            url: "https://ui.adsabs.harvard.edu/",
+            icon: "/img/ico/img_66ff59385530f.ico"
+          },
+          {
+            name: "CDS",
+            url: "https://cds.u-strasbg.fr/",
+            icon: "/img/ico/img_66ff5a4793f4b.ico"
+          },
+          {
+            name: "NADC",
+            url: "https://nadc.china-vo.org/?&locale=zh_CN",
+            icon: "/img/ico/img_66ff5cdae29f2.ico"
+          },
+          {
+            name: "svo",
+            url: "http://svo2.cab.inta-csic.es/theory/main/",
+            icon: "/img/ico/svo.png"
+          },
+          {
+            name: "MESA",
+            url: "https://docs.mesastar.org/",
+            icon: "/img/ico/MESA.png"
+          },
+          {
+            name: "MIST",
+            url: "https://waps.cfa.harvard.edu/MIST/",
+            icon: "https://waps.cfa.harvard.edu/favicon.ico"
+          },
+          {
+            name: "Gaia Archive",
+            url: "https://gea.esac.esa.int/archive/",
+            icon: "https://gea.esac.esa.int/archive/images/favicon.ico"
+          }
+        ]
+      },
+      {
+        title: "\u5A31\u4E50",
+        icon: "#icon-vedio",
+        links: [
+          {
+            name: "\u54D4\u54E9\u54D4\u54E9",
+            url: "https://www.bilibili.com/",
+            icon: "/img/ico/img_66ff5f7e2c597.png"
+          },
+          {
+            name: "\u77E5\u4E4E",
+            url: "https://www.zhihu.com/",
+            icon: "/img/ico/img_66ff5e925416b.ico"
+          },
+          {
+            name: "\u6296\u97F3",
+            url: "https://www.douyin.com/",
+            icon: "/img/ico/img_66ff651a39877.ico"
+          },
+          {
+            name: "youtube",
+            url: "https://www.youtube.com/",
+            icon: "/img/ico/youtube.jpg"
+          }
+        ]
+      },
+      {
+        title: "\u6E38\u620F",
+        icon: "#icon-game",
+        links: [
+          {
+            name: "\u4E91\xB7\u539F\u795E",
+            url: "https://ys.mihoyo.com/cloud/?utm_source=default#/",
+            icon: "/img/ico/img_66ff6012160c3.ico"
+          },
+          {
+            name: "\u4E91\xB7\u661F\u7A79\u94C1\u9053",
+            url: "https://sr.mihoyo.com/cloud/?from_channel=adbdpz#/",
+            icon: "/img/ico/img_66ff6024a45bd.ico"
+          },
+          {
+            name: "3DM",
+            url: "https://www.3dmgame.com/",
+            icon: "https://www.3dmgame.com/favicon.ico"
+          }
+        ]
+      },
+      {
+        title: "world",
+        icon: "#icon-world",
+        links: [
+          {
+            name: "Cloudflare",
+            url: "https://dash.cloudflare.com/",
+            icon: "/img/ico/img_671e1295a09de.ico"
           }
         ]
       }

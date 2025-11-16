@@ -1,40 +1,23 @@
 <template>
   <div class="login-container">
-    <div class="login-card">
-      <div class="login-header">
-        <h2>管理员登录</h2>
-        <p class="text-muted">请输入管理员密码</p>
+    <form @submit.prevent="handleLogin" class="login-form">
+      <h2 class="login-title">管理员登录</h2>
+      <input
+        v-model="password"
+        type="password"
+        class="form-control"
+        :class="{ 'is-invalid': error }"
+        placeholder="请输入密码"
+        required
+        autofocus
+      >
+      <div v-if="error" class="invalid-feedback d-block text-center mt-2">
+        {{ error }}
       </div>
-
-      <form @submit.prevent="handleLogin" class="login-form">
-        <div class="form-group">
-          <label for="password">密码</label>
-          <input
-            id="password"
-            v-model="password"
-            type="password"
-            class="form-control"
-            :class="{ 'is-invalid': error }"
-            placeholder="请输入管理员密码"
-            required
-          >
-          <div v-if="error" class="invalid-feedback">
-            {{ error }}
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
-          <span v-if="loading" class="spinner-border spinner-border-sm mr-2"></span>
-          {{ loading ? '登录中...' : '登录' }}
-        </button>
-      </form>
-
-      <div class="login-footer">
-        <p class="text-muted small">
-          如忘记密码，请联系管理员
-        </p>
-      </div>
-    </div>
+      <button type="submit" class="btn btn-primary btn-block" :disabled="loading">
+        {{ loading ? '登录中...' : '登录' }}
+      </button>
+    </form>
   </div>
 </template>
 
@@ -45,6 +28,33 @@ const { data: isAuthenticated } = await useFetch('/api/auth/verify')
 if (isAuthenticated.value) {
   await navigateTo('/admin')
 }
+
+// Load background image and favicon from config
+onMounted(async () => {
+  try {
+    const config = await $fetch('/api/config/public')
+
+    // Set background image
+    if (config?.backgroundImage) {
+      document.body.style.backgroundImage = `url(${config.backgroundImage})`
+    } else {
+      // Set default background color
+      document.body.style.backgroundColor = '#f5f5f5'
+    }
+
+    // Set favicon
+    if (config?.favicon) {
+      const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement || document.createElement('link')
+      link.rel = 'icon'
+      link.href = config.favicon
+      document.head.appendChild(link)
+    }
+  } catch (error) {
+    console.error('加载配置失败:', error)
+    // Set default background color
+    document.body.style.backgroundColor = '#f5f5f5'
+  }
+})
 
 // State
 const password = ref('')
@@ -63,10 +73,14 @@ const handleLogin = async () => {
     })
 
     if (response?.success && response?.token) {
-      // Store token in localStorage
-      if (process.client) {
+      // Store token in both localStorage and cookie
+      if (typeof localStorage !== 'undefined') {
         localStorage.setItem('admin_token', response.token)
       }
+
+      // Set cookie for server-side access
+      const cookie = useCookie('admin_token')
+      cookie.value = response.token
 
       // Redirect to admin page
       await navigateTo('/admin')
@@ -83,99 +97,70 @@ const handleLogin = async () => {
 
 <style scoped>
 .login-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-.login-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+.login-form {
   width: 100%;
   max-width: 400px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.login-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.login-header h2 {
-  color: #333;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.login-form .form-group {
-  margin-bottom: 25px;
-}
-
-.login-form label {
-  color: #555;
-  font-weight: 500;
-  margin-bottom: 8px;
+  width: 90%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .login-form .form-control {
-  height: 50px;
-  border-radius: 10px;
+  height: auto;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
   border: 1px solid #ddd;
-  padding: 0 15px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.login-form .btn {
+  padding: 12px;
   font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.login-form .form-control:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  background-color: #007bff;
   border: none;
-  border-radius: 10px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+.login-form .btn:hover {
+  background-color: #0056b3;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
 }
 
-.btn-primary:disabled {
-  opacity: 0.7;
-  transform: none;
-  box-shadow: none;
-}
-
-.login-footer {
+.login-title {
+  color: #333;
+  margin-bottom: 30px;
   text-align: center;
-  margin-top: 25px;
+  font-weight: 500;
 }
 
-.spinner-border {
-  width: 16px;
-  height: 16px;
-  border-width: 2px;
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #80bdff;
 }
 
-.mr-2 {
-  margin-right: 8px;
+.btn-block {
+  width: 100%;
 }
 
-@media (max-width: 480px) {
-  .login-card {
-    padding: 30px 20px;
-  }
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 </style>

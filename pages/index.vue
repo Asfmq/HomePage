@@ -1,110 +1,99 @@
 <template>
   <div>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">{{ config.title }}</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto" id="nav-items">
-            <li v-for="item in config.links.navItems" :key="item.id" class="nav-item">
-              <a class="nav-link" :href="item.url" :id="item.id">{{ item.name }}</a>
-            </li>
-          </ul>
-        </div>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+      <button
+        class="navbar-toggler"
+        :class="{ collapsed: !isMenuOpen }"
+        type="button"
+        @click="toggleMenu"
+      >
+        <IconComponent icon="#icon-menus" size="24" />
+        <span v-if="isMenuOpen">
+          <IconComponent icon="#icon-closes" size="24" />
+        </span>
+      </button>
+      <div class="collapse navbar-collapse" :class="{ show: isMenuOpen }" id="navbarsExample05">
+        <ul class="navbar-nav mr-auto" id="nav-items">
+          <li v-for="item in config.links.navItems" :key="item.id" class="nav-item">
+            <a class="nav-link" :href="item.url" :id="item.id">{{ item.name }}</a>
+          </li>
+        </ul>
+        <div id="he-plugin-simple"></div>
       </div>
     </nav>
 
     <!-- Main Content -->
-    <div id="main" class="container">
-      <!-- Time Display -->
-      <div class="time-display">
-        <div id="show_time">{{ currentTime }}</div>
-        <div id="show_date">{{ currentDate }}</div>
-      </div>
-
-      <!-- Search Section -->
-      <div class="search-container">
-        <div class="search-engine-selector">
-          <select id="checke-so" v-model="selectedSearchEngine" class="form-control">
-            <option v-for="engine in config.links.searchEngines" :key="engine.name" :value="engine">
-              {{ engine.name }}
-            </option>
-          </select>
+    <main class="container" style="margin-top:10vh;">
+      <div id="main">
+        <!-- Time Display -->
+        <div class="time-display">
+          <div id="show_time">{{ currentTime }}</div>
+          <div id="show_date">{{ currentDate }}</div>
         </div>
-        <form id="search-lylme" @submit.prevent="performSearch" class="search-box">
-          <input
-            id="search-text"
-            v-model="searchQuery"
-            type="text"
-            :placeholder="selectedSearchEngine.placeholder || selectedSearchEngine.name"
-            class="form-control"
-            required
-          >
-          <button id="search-submit" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-      </div>
 
-      <!-- Categories -->
-      <div class="categories-container">
-        <div v-for="category in config.links.categories" :key="category.title" class="category-section">
-          <h3 class="category-title">
-            <i v-if="category.icon" :class="getIconClass(category.icon)"></i>
-            {{ category.title }}
-          </h3>
-          <div class="links-grid">
-            <a
-              v-for="link in category.links"
-              :key="link.name"
-              :href="link.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link-card"
-            >
-              <div class="link-icon">
-                <img v-if="isImageUrl(link.icon)" :src="link.icon" :alt="link.name" class="icon-img">
-                <i v-else-if="link.icon" :class="getIconClass(link.icon)"></i>
-              </div>
-              <span class="link-name">{{ link.name }}</span>
-            </a>
+        <!-- Search Box Component -->
+        <SearchBox
+          :search-engines="config.links.searchEngines"
+          :initial-engine="config.links.searchEngines[0]"
+          @search="handleSearch"
+        />
+
+        <!-- Categories -->
+        <div id="categories">
+          <div v-for="category in config.links.categories" :key="category.title" class="category-container">
+            <div class="category-title">
+              <IconComponent :icon="category.icon" type="title" size="20" class="title-icon" />
+              <span>{{ category.title }}</span>
+            </div>
+            <ul class="category-links">
+              <li v-for="link in category.links" :key="link.url" class="lylme-3">
+                <a :href="link.url" target="_blank" rel="nofollow">
+                  <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
+                  <span>{{ link.name }}</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
+    </main>
+
+    <!-- Back to Top -->
+    <div v-show="showBackToTop" class="back-to" id="toolBackTop">
+      <a title="返回顶部" @click="scrollToTop" class="back-top"></a>
     </div>
 
     <!-- Footer -->
-    <footer v-if="config.copyright.show" class="footer">
-      <div class="container text-center">
-        <p>&copy; {{ config.copyright.text }} {{ config.copyright.target }}</p>
-        <p v-if="config.copyright.showRecord" class="icp">
-          <a :href="config.copyright.recordUrl" target="_blank" rel="noopener noreferrer">
-            {{ config.copyright.record }}
-          </a>
-        </p>
-      </div>
+    <footer class="mt-5 mb-3 footer text-muted text-center">
+      <p v-html="copyrightHtml" id="copyright"></p>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import type { SiteConfig, SearchEngine } from '~/types/config'
 import { defaultConfig } from '~/utils/config'
+import IconComponent from '~/components/IconComponent.vue'
+import SearchBox from '~/components/SearchBox.vue'
 
 // State
 const config = ref<SiteConfig>(defaultConfig)
 const currentTime = ref('')
 const currentDate = ref('')
-const searchQuery = ref('')
-const selectedSearchEngine = ref<SearchEngine>(defaultConfig.links.searchEngines[0])
+const isMenuOpen = ref(false)
+const showBackToTop = ref(false)
 
 // Load config
-const { data: siteConfig } = await $fetch<SiteConfig>('/api/config').catch(() => ({ data: defaultConfig }))
-if (siteConfig) {
-  config.value = siteConfig
+try {
+  const siteConfig = await $fetch<SiteConfig>('/api/config')
+  if (siteConfig) {
+    config.value = siteConfig
+  }
+} catch (error) {
+  console.warn('Failed to load site config, using default:', error)
+  // Keep using defaultConfig
 }
 
 // Update head based on config
@@ -120,16 +109,38 @@ useHead({
   ]
 })
 
-// Set background
-onMounted(() => {
-  if (config.value.backgroundImage) {
-    document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
-    document.body.style.backgroundSize = 'cover'
-    document.body.style.backgroundPosition = 'center'
-    document.body.style.backgroundRepeat = 'no-repeat'
-    document.body.style.backgroundAttachment = 'fixed'
+// SVG icons are loaded by plugin
+
+// Computed
+const copyrightHtml = computed(() => {
+  if (!config.value.copyright.show) return ''
+
+  let html = `Copyright ©${config.value.copyright.text} <a href='/' target='_blank'>${config.value.copyright.target}</a>. All Rights Reserved.`
+
+  if (config.value.copyright.showRecord) {
+    html += `<br><a href="${config.value.copyright.recordUrl}" target="_blank">${config.value.copyright.record}</a>`
   }
+
+  return html
 })
+
+// Methods
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const handleSearch = (query: string, engine: SearchEngine) => {
+  // This event handler is called by the SearchBox component
+  console.log('Search triggered:', query, engine.name)
+}
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const handleScroll = () => {
+  showBackToTop.value = window.scrollY > 100
+}
 
 // Time display
 const updateTime = () => {
@@ -143,40 +154,76 @@ const updateTime = () => {
   })
 }
 
+// Lifecycle
 onMounted(() => {
+  // Set background
+  if (config.value.backgroundImage) {
+    document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
+    document.body.style.backgroundSize = 'cover'
+    document.body.style.backgroundPosition = 'center'
+    document.body.style.backgroundRepeat = 'no-repeat'
+    document.body.style.backgroundAttachment = 'fixed'
+  }
+
+  // Load weather widget with error handling
+  if (typeof window !== 'undefined') {
+    // Extend Window interface for weather widget
+    ;(window as any).WIDGET = {
+      "CONFIG": {
+        "modules": "12043",
+        "background": "5",
+        "tmpColor": "FFFFFF",
+        "tmpSize": "16",
+        "cityColor": "FFFFFF",
+        "citySize": "18",
+        "aqiColor": "FFFFFF",
+        "aqiSize": "16",
+        "weatherIconSize": "24",
+        "alertIconSize": "18",
+        "padding": "0px 0px 0px 0px",
+        "shadow": "0",
+        "language": "auto",
+        "fixed": "false",
+        "vertical": "center",
+        "horizontal": "center",
+        "right": "0",
+        "top": "0",
+        "key": "9d714f8dd6b94c7696f9cea8dc3ed1c5"
+      }
+    }
+
+    // Load weather widget script with error handling
+    const weatherScript = document.createElement('script')
+    weatherScript.src = 'https://apip.weatherdt.com/view/staticJS/rain.jsv2.js'
+    weatherScript.onload = () => {
+      console.log('Weather widget loaded successfully')
+    }
+    weatherScript.onerror = () => {
+      console.warn('Weather widget failed to load - this is expected due to SSL/network issues')
+      // Hide weather widget container if script fails to load
+      const weatherContainer = document.getElementById('he-plugin-simple')
+      if (weatherContainer) {
+        weatherContainer.style.display = 'none'
+      }
+    }
+    document.head.appendChild(weatherScript)
+  }
+
+  // Initialize time
   updateTime()
   setInterval(updateTime, 1000)
+
+  // Add scroll listener
+  window.addEventListener('scroll', handleScroll)
 })
 
-// Search functionality
-const performSearch = () => {
-  if (searchQuery.value.trim() && selectedSearchEngine.value) {
-    const searchUrl = selectedSearchEngine.value.url + encodeURIComponent(searchQuery.value.trim())
-    window.open(searchUrl, '_blank')
-  }
-}
-
-// Utility functions
-const isImageUrl = (icon: string): boolean => {
-  return icon.startsWith('http') || icon.startsWith('/') || icon.endsWith('.ico') || icon.endsWith('.png') || icon.endsWith('.jpg') || icon.endsWith('.svg')
-}
-
-const getIconClass = (icon: string): string => {
-  // Handle FontAwesome icons or other icon classes
-  if (icon.startsWith('#')) {
-    // Handle SVG icon references or custom icon mapping
-    return 'fas fa-external-link-alt' // Default fallback
-  }
-  return icon
-}
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <style scoped>
-.navbar {
-  background-color: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-}
-
+/* Time Display */
 .time-display {
   margin: 40px 0;
   text-align: center;
@@ -195,153 +242,241 @@ const getIconClass = (icon: string): string => {
   text-shadow: 0px 1px 0px #252525;
 }
 
-.search-container {
-  max-width: 600px;
-  margin: 40px auto;
-}
+/* Search Box - styles moved to SearchBox component */
 
-.search-engine-selector {
-  margin-bottom: 15px;
-}
-
-#checke-so {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-}
-
-#checke-so option {
-  background: #333;
-  color: #fff;
-}
-
-.search-box {
-  position: relative;
-  backdrop-filter: saturate(100%) blur(10px);
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 15px;
-  box-shadow: 0px 2px 12px 0px rgb(34 34 38 / 10%);
-  overflow: hidden;
-}
-
-#search-text {
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  padding: 15px 50px 15px 20px;
-  width: 100%;
-  color: #222226;
-  outline: none;
-}
-
-#search-text::placeholder {
-  color: #555666;
-}
-
-#search-submit {
+/* Search Engine Selection */
+.search-type {
+  white-space: nowrap;
+  margin: 0;
+  padding: 10px 0;
   position: absolute;
-  top: 0;
+  top: 100%;
+  left: 0;
   right: 0;
-  background: none;
-  border: none;
-  padding: 15px 20px;
-  color: #222226;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.search-type li {
+  margin: 0;
+  padding: 8px 15px;
+  display: block;
   cursor: pointer;
-  outline: none;
+  transition: background-color 0.2s;
 }
 
-#search-submit:hover {
-  background-color: rgba(255, 255, 255, 0.342);
+.search-type li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-.categories-container {
+/* Search Suggestions */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-suggestions li {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-suggestions li:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Categories */
+.category-container {
+  width: 100%;
   max-width: 1200px;
-  margin: 60px auto;
+  margin: 0 auto 30px auto;
   padding: 0 20px;
-}
-
-.category-section {
-  margin-bottom: 50px;
 }
 
 .category-title {
-  color: #fff;
-  font-size: 24px;
-  margin-bottom: 25px;
-  text-align: center;
-  text-shadow: 0px 1px 0px #252525;
-}
-
-.category-title i {
-  margin-right: 10px;
-}
-
-.links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
-  padding: 0 20px;
-}
-
-.link-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 15px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  text-decoration: none;
-  color: #fff;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.link-card:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-5px);
-  color: #fff;
-  text-decoration: none;
-}
-
-.link-icon {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+  height: 35px;
+  line-height: 33px;
   margin-bottom: 10px;
+  margin-top: 20px;
+  font-size: 17px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  text-align: left !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.icon-img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
+.category-title:hover {
+  opacity: 0.8;
 }
 
-.link-name {
+.category-title .title-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.category-links {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lylme-3 {
+  width: 100px;
+  transition: 0.3s all linear;
   font-size: 14px;
-  text-align: center;
-  line-height: 1.2;
-  text-shadow: 0px 1px 0px #252525;
+  overflow: hidden;
+  padding: 10px 2px;
+  box-shadow: 2px 2px 10px 0px rgb(0 0 0 / 40%);
+  backdrop-filter: saturate(100%) blur(30px);
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
 }
 
-.footer {
-  background: rgba(0, 0, 0, 0.2);
+.lylme-3:hover {
+  backdrop-filter: blur(0px);
+  transform: translateY(5px);
+}
+
+.lylme-3 svg,
+.lylme-3 img {
+  display: block;
+  width: 45px;
+  height: 45px;
+  padding: 4px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  margin: 0 auto 0.3rem;
+}
+
+.lylme-3 span {
+  width: 100%;
+  text-align: center;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lylme-3 a {
+  width: 100%;
   color: #fff;
-  padding: 30px 0;
+  display: block;
+  text-decoration: none;
+}
+
+/* Navigation */
+.navbar-light .navbar-nav .nav-link {
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0px 1px 0px #000;
+}
+
+li.nav-item a {
+  color: #fff !important;
+}
+
+/* Force navbar items to be horizontal */
+#nav-items {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
+#nav-items .nav-item {
+  display: block !important;
+  float: left !important;
+  margin-right: 1rem !important;
+}
+
+#nav-items .nav-link {
+  display: block !important;
+  float: left !important;
+}
+
+/* Bootstrap override fix */
+.navbar-expand-lg .navbar-nav {
+  flex-direction: row !important;
+}
+
+.navbar-expand-lg .navbar-nav .nav-item {
+  float: left !important;
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+  float: left !important;
+}
+
+/* Ensure navbar nav items are horizontally aligned */
+.navbar-nav {
+  flex-direction: row !important;
+  display: flex !important;
+}
+
+.navbar-nav .nav-item {
+  display: inline-block !important;
+}
+
+.navbar-nav .nav-link {
+  display: inline-block !important;
+}
+
+/* Force horizontal layout for all screen sizes */
+@media (min-width: 1px) {
+  .navbar-nav {
+    flex-direction: row !important;
+  }
+
+  .navbar-nav .nav-item {
+    display: inline-block !important;
+    margin-right: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    display: inline-block !important;
+  }
+}
+
+/* Footer */
+.footer {
   margin-top: 60px;
-  backdrop-filter: blur(10px);
+  text-align: center;
 }
 
 .footer p {
   margin: 5px 0;
-  color: #fff;
+  color: #fff !important;
   text-shadow: 0px 1px 0px #252525;
 }
 
 .footer a {
-  color: #fff;
+  color: #fff !important;
   text-decoration: none;
 }
 
@@ -349,18 +484,76 @@ const getIconClass = (icon: string): string => {
   text-decoration: underline;
 }
 
+/* Back to Top */
+.back-to {
+  position: fixed;
+  bottom: 66px;
+  right: 10px;
+  z-index: 999;
+}
+
+.back-top {
+  display: block;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAWBAMAAADZWBo2AAAALVBMVEUAAAB5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4rtNiAAAADnRSTlMARHe7Zu7dMxGIIqqZzHSj3DwAAAB/SURBVVBjTYwADPgYk8OABgs2HLPUAjBA6+JAk4FJ8UJLqYLKxsQNTXhIDs/GWBoZCPcEFeop6CnyKvhMYGOQYGJIYmBL4BBgfgDjsrxi4nvMJsCSAOCChh3yHjjqAZV4wcDznO6TFANYTwsASwCfAAOFMFRCdAOd0v3vdAOIAANnHHKk0/kXuAAAAAElFTkSuQmCC');
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  border: 1px solid #d8d8d8;
+  box-sizing: border-box;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.back-top:hover {
+  opacity: 1;
+}
+
+/* SVG Icons */
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+}
+
+.engine-icon,
+.link-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
   #show_time {
     font-size: 50px;
   }
 
-  .links-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 15px;
+  .category-links {
+    justify-content: center;
   }
 
-  .search-container {
-    margin: 20px;
+  .lylme-3 {
+    width: 80px;
+  }
+
+  .lylme-3 svg,
+  .lylme-3 img {
+    width: 35px;
+    height: 35px;
+  }
+
+  div#navbarsExample05 {
+    background: rgba(0,0,0,0.8);
+    padding: 10px 30px;
+    border-radius: 20px;
+  }
+
+  #he-plugin-simple {
+    display: none !important;
   }
 }
 </style>

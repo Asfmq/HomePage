@@ -1,0 +1,66 @@
+/* Performance optimizations */
+
+/* Reduce paint on scroll */
+#categories,
+.category-links {
+  will-change: transform;
+}
+
+/* Optimize images */
+.link-icon img {
+  content-visibility: auto;
+  contain-intrinsic-size: 45px 45px;
+}
+
+/* Smooth animations with GPU acceleration */
+.lylme-3 {
+  will-change: transform;
+  transform: translateZ(0); /* Force GPU acceleration */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize search suggestions */
+.search-suggestions {
+  will-change: opacity, transform;
+  transform: translateZ(0);
+}
+
+/* Prevent layout thrashing */
+.search-engine-dropdown {
+  contain: layout style paint;
+}
+
+/* Improve scrolling performance */
+.navbar {
+  will-change: transform;
+}
+
+/* Optimize backdrop filters */
+#search-lylme {
+  will-change: backdrop-filter;
+}
+
+/* CSS containment for better performance */
+.category-container {
+  contain: layout;
+}
+
+/* Optimize font rendering */
+body {
+  font-display: swap;
+}
+
+/* Preload critical resources */
+@font-face {
+  font-display: swap;
+}
+
+/* Reduce repaints for hover effects */
+.lylme-3:hover {
+  will-change: transform, backdrop-filter;
+}
+
+.category-title:hover {
+  will-change: opacity;
+}

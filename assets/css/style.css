@@ -1,5 +1,5 @@
 /* Import FontAwesome */
-@import url('./fontawesome-free5.13.0.css');
+/* FontAwesome CSS is now loaded via CDN in nuxt.config.ts */
 
 /* Additional Nuxt-specific styles */
 body {

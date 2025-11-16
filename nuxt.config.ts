@@ -1,7 +1,8 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   css: [
-    '~/assets/css/style.css'
+    '~/assets/css/style.css',
+    '~/assets/css/performance.css'
   ],
   app: {
     head: {
@@ -13,7 +14,8 @@ export default defineNuxtConfig({
         { name: 'keywords', content: '' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' }
       ]
     }
   },
