@@ -1117,7 +1117,22 @@ const plugins = [
 _iWmMsmHkE09VpkZjgWOt8sVgbmLGTAEGKKn7v1lHmLQ
 ];
 
-const assets = {};
+const assets = {
+  "/index.mjs": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"16a43-6t2sAEkh7/F9OKqb9ldqKCCYjAU\"",
+    "mtime": "2025-11-16T13:55:00.793Z",
+    "size": 92739,
+    "path": "index.mjs"
+  },
+  "/index.mjs.map": {
+    "type": "application/json",
+    "etag": "\"5700a-axE2ds5FegPCKK41j5SwSibcWHI\"",
+    "mtime": "2025-11-16T13:55:00.794Z",
+    "size": 356362,
+    "path": "index.mjs.map"
+  }
+};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
@@ -1532,6 +1547,7 @@ const _lazy_I8txN2 = () => Promise.resolve().then(function () { return login_pos
 const _lazy_T1W9YS = () => Promise.resolve().then(function () { return verify_get$1; });
 const _lazy_wRlOEV = () => Promise.resolve().then(function () { return config_get$1; });
 const _lazy_qx2e7a = () => Promise.resolve().then(function () { return config_post$1; });
+const _lazy_aDk8DW = () => Promise.resolve().then(function () { return config_public_get$1; });
 const _lazy_4dcBGp = () => Promise.resolve().then(function () { return fetchSiteInfo_get$1; });
 const _lazy_potrqH = () => Promise.resolve().then(function () { return health_get$1; });
 const _lazy_ri5xVP = () => Promise.resolve().then(function () { return renderer$1; });
@@ -1543,6 +1559,7 @@ const handlers = [
   { route: '/api/auth/verify', handler: _lazy_T1W9YS, lazy: true, middleware: false, method: "get" },
   { route: '/api/config', handler: _lazy_wRlOEV, lazy: true, middleware: false, method: "get" },
   { route: '/api/config', handler: _lazy_qx2e7a, lazy: true, middleware: false, method: "post" },
+  { route: '/api/config.public', handler: _lazy_aDk8DW, lazy: true, middleware: false, method: "get" },
   { route: '/api/fetch-site-info', handler: _lazy_4dcBGp, lazy: true, middleware: false, method: "get" },
   { route: '/api/health', handler: _lazy_potrqH, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_ri5xVP, lazy: true, middleware: false, method: undefined },
@@ -2050,8 +2067,9 @@ const defaultConfig = {
       {
         name: "Blibili",
         url: "https://search.bilibili.com/all?keyword=",
-        icon: "#icon-bili",
-        placeholder: "(\u309C-\u309C)\u3064\u30ED \u5E72\u676F~"
+        icon: "#icon-bilibili",
+        placeholder: "(\u309C-\u309C)\u3064\u30ED \u5E72\u676F~",
+        color: "#00a1d6"
       },
       {
         name: "\u5FAE\u535A",
@@ -2063,14 +2081,14 @@ const defaultConfig = {
       {
         name: "\u8C37\u6B4C",
         url: "https://search.njau.cf/extdomains/www.google.com.hk/search?q=",
-        icon: "#icon-google00",
+        icon: "#icon-google",
         placeholder: "\u503C\u5F97\u4FE1\u4EFB\u7684\u641C\u7D22\u5F15\u64CE"
       },
       {
         name: "\u7FFB\u8BD1",
         url: "https://translate.google.cn/?hl=zh-CN&sl=auto&tl=zh-CN&text=",
         placeholder: "\u8F93\u5165\u7FFB\u8BD1\u5185\u5BB9\uFF08\u81EA\u52A8\u68C0\u6D4B\u8BED\u8A00\uFF09",
-        icon: "#icon-fanyi",
+        icon: "#icon-search",
         color: "#0084fe"
       }
     ],
@@ -2391,6 +2409,30 @@ const config_post = defineEventHandler(async (event) => {
 const config_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: config_post
+});
+
+const config_public_get = defineEventHandler(async (event) => {
+  try {
+    return {
+      backgroundImage: defaultConfig.backgroundImage,
+      favicon: defaultConfig.favicon,
+      title: defaultConfig.title,
+      description: defaultConfig.description,
+      keywords: defaultConfig.keywords,
+      author: defaultConfig.author
+    };
+  } catch (error) {
+    console.error("Error fetching public config:", error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed to fetch public configuration"
+    });
+  }
+});
+
+const config_public_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: config_public_get
 });
 
 const fetchSiteInfo_get = defineEventHandler(async (event) => {

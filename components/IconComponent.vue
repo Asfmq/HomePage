@@ -4,7 +4,9 @@
     v-bind="memoizedIconProps"
     :class="iconClass"
     :style="iconStyle"
-  />
+  >
+    <use v-if="iconComponent === 'svg' && props.icon" :xlink:href="props.icon" />
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -46,9 +48,7 @@ const iconComponent = computed(() => {
 })
 
 // Memoize icon props to prevent unnecessary recalculations
-const memoizedIconProps = computed(() => iconProps.value)
-
-const iconProps = computed(() => {
+const memoizedIconProps = computed(() => {
   if (!props.icon) return {}
 
   if (props.icon.startsWith('<svg')) {
@@ -60,7 +60,9 @@ const iconProps = computed(() => {
 
   if (props.icon.startsWith('#')) {
     return {
-      class: ['icon', 'aria-hidden', 'true', props.class].filter(Boolean).join(' ')
+      class: ['icon', 'aria-hidden', 'true', props.class].filter(Boolean).join(' '),
+      role: 'img',
+      'aria-hidden': 'true'
     }
   }
 
@@ -96,12 +98,12 @@ const iconStyle = computed(() => {
   const style: Record<string, any> = {}
 
   // Add size style if needed
-  if (props.size && (props.iconComponent === 'img' || props.iconComponent === 'svg')) {
+  if (props.size && (iconComponent.value === 'img' || iconComponent.value === 'svg')) {
     style.width = typeof props.size === 'string' ? props.size : `${props.size}px`
     style.height = typeof props.size === 'string' ? props.size : `${props.size}px`
   }
 
-  if (props.iconComponent === 'img') {
+  if (iconComponent.value === 'img') {
     style.objectFit = 'contain'
   }
 

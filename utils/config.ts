@@ -57,8 +57,9 @@ export const defaultConfig: SiteConfig = {
       {
         name: "Blibili",
         url: "https://search.bilibili.com/all?keyword=",
-        icon: "#icon-bili",
-        placeholder: "(゜-゜)つロ 干杯~"
+        icon: "#icon-bilibili",
+        placeholder: "(゜-゜)つロ 干杯~",
+        color: "#00a1d6"
       },
       {
         name: "微博",
@@ -70,14 +71,14 @@ export const defaultConfig: SiteConfig = {
       {
         name: "谷歌",
         url: "https://search.njau.cf/extdomains/www.google.com.hk/search?q=",
-        icon: "#icon-google00",
+        icon: "#icon-google",
         placeholder: "值得信任的搜索引擎"
       },
       {
         name: "翻译",
         url: "https://translate.google.cn/?hl=zh-CN&sl=auto&tl=zh-CN&text=",
         placeholder: "输入翻译内容（自动检测语言）",
-        icon: "#icon-fanyi",
+        icon: "#icon-search",
         color: "#0084fe"
       }
     ],

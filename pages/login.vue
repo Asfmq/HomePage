@@ -29,24 +29,26 @@ if (isAuthenticated.value) {
   await navigateTo('/admin')
 }
 
-// Load background image and favicon from config
-onMounted(async () => {
+// Load config and set background image
+const loadConfig = async () => {
   try {
-    const config = await $fetch('/api/config/public')
-
-    // Set background image
-    if (config?.backgroundImage) {
-      document.body.style.backgroundImage = `url(${config.backgroundImage})`
+    const siteConfig = await $fetch('/api/config')
+    if (siteConfig?.backgroundImage) {
+      document.body.style.backgroundImage = `url(${siteConfig.backgroundImage})`
+      document.body.style.backgroundSize = 'cover'
+      document.body.style.backgroundPosition = 'center'
+      document.body.style.backgroundRepeat = 'no-repeat'
+      document.body.style.backgroundAttachment = 'fixed'
     } else {
       // Set default background color
       document.body.style.backgroundColor = '#f5f5f5'
     }
 
     // Set favicon
-    if (config?.favicon) {
+    if (siteConfig?.favicon) {
       const link = document.querySelector("link[rel~='icon']") as HTMLLinkElement || document.createElement('link')
       link.rel = 'icon'
-      link.href = config.favicon
+      link.href = siteConfig.favicon
       document.head.appendChild(link)
     }
   } catch (error) {
@@ -54,6 +56,11 @@ onMounted(async () => {
     // Set default background color
     document.body.style.backgroundColor = '#f5f5f5'
   }
+}
+
+// Load background image and favicon from config
+onMounted(async () => {
+  await loadConfig()
 })
 
 // State
@@ -108,9 +115,8 @@ const handleLogin = async () => {
 }
 
 .login-form {
-  width: 100%;
-  max-width: 400px;
   width: 90%;
+  max-width: 400px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   padding: 30px;
@@ -119,6 +125,7 @@ const handleLogin = async () => {
 }
 
 .login-form .form-control {
+  width: 100%;
   height: auto;
   padding: 12px;
   font-size: 16px;
@@ -126,6 +133,7 @@ const handleLogin = async () => {
   margin-bottom: 20px;
   border: 1px solid #ddd;
   background: rgba(255, 255, 255, 0.8);
+  box-sizing: border-box;
 }
 
 .login-form .btn {

@@ -2,14 +2,15 @@
   <div class="admin-page">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-      <button class="navbar-toggler collapsed" type="button" @click="toggleMobileMenu">
-        <svg class="icon" width="200" height="200">
-          <use href="#icon-menus"></use>
-        </svg>
-        <span>
-          <svg class="bi bi-x" fill="currentColor" id="x">
-            <use href="#icon-closes"></use>
-          </svg>
+      <button
+        class="navbar-toggler"
+        :class="{ collapsed: !mobileMenuOpen }"
+        type="button"
+        @click="toggleMobileMenu"
+      >
+        <IconComponent icon="#icon-menus" size="24" />
+        <span v-if="mobileMenuOpen">
+          <IconComponent icon="#icon-closes" size="24" />
         </span>
       </button>
       <div class="collapse navbar-collapse" :class="{ show: mobileMenuOpen }" id="navbarsExample05">
@@ -19,16 +20,12 @@
           </li>
         </ul>
         <button class="btn nav-link text-white" style="border: none; background: none;" @click="showSiteInfoModal = true">
-          <svg class="icon" aria-hidden="true">
-            <use href="#icon-setting"></use>
-          </svg>
+          <IconComponent icon="#icon-setting" size="16" />
           网站信息
         </button>
         <div class="nav-item dropdown">
           <button class="btn nav-link text-white" style="border: none; background: none;" type="button" @click="adminDropdownOpen = !adminDropdownOpen">
-            <svg class="icon" aria-hidden="true">
-              <use href="#icon-admin"></use>
-            </svg>
+            <IconComponent icon="#icon-admin" size="16" />
             管理员
           </button>
           <div class="dropdown-menu" :class="{ show: adminDropdownOpen }" v-if="adminDropdownOpen">
@@ -47,100 +44,42 @@
         <div id="show_date">{{ currentDate }}</div>
       </div>
 
-      <!-- Search Box -->
-      <div id="search" class="s-search s-curren">
-        <div id="search-list" class="hide-type-list">
-          <div class="search-group group-a">
-            <div class="search-box">
-              <div id="search-lylme">
-                <form :action="currentSearchEngine.url" method="get" target="_blank" id="super-search-fm">
-                  <div id="checke-so" @click="toggleSearchList">
-                    <svg class="lylme" aria-hidden="true" v-html="currentSearchEngine.icon"></svg>
-                    <svg class="sw" id="lylme-up" :style="{ display: searchListOpen ? 'inline' : 'none' }" aria-hidden="true">
-                      <use href="#icon-up"></use>
-                    </svg>
-                    <svg class="sw" id="lylme-down" :style="{ display: searchListOpen ? 'none' : 'inline' }" aria-hidden="true">
-                      <use href="#icon-down"></use>
-                    </svg>
-                  </div>
-                  <input type="text" id="search-text" :placeholder="currentSearchEngine.placeholder" style="outline:0" autocomplete="off">
-                  <button class="submit" id="search-submit" type="submit">
-                    <svg style="width: 22px; height: 22px; margin: 0 20px; color: #fff;" class="icon" aria-hidden="true">
-                      <use href="#icon-sousuo"></use>
-                    </svg>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Search Engine Selection -->
-        <ul class="search-type" :class="{ 'show-type-list': searchListOpen }" id="chso">
-          <li v-for="(engine, index) in config.links.searchEngines" :key="index">
-            <input hidden="" type="radio" name="type" :id="engine.name" :value="engine.url"
-                   :data-placeholder="engine.placeholder" v-model="currentSearchEngineIndex">
-            <label :for="engine.name" @click="selectSearchEngine(index)" style="font-weight:600">
-              <span v-html="engine.icon" v-if="engine.icon"></span>
-              <span style="color:#0c498c">{{ engine.name }}</span>
-            </label>
-          </li>
-          <li class="add-engine">
-            <input hidden="" type="radio" name="type" id="add-engine">
-            <label for="add-engine" @click="showAddEngineModal = true" style="font-weight:600">
-              <svg class="icon" aria-hidden="true">
-                <use href="#icon-add"></use>
-              </svg>
-              <span style="color:#0c498c">添加搜索引擎</span>
-            </label>
-          </li>
-        </ul>
-      </div>
+      <!-- Search Box Component -->
+      <SearchBox
+        :search-engines="config.links.searchEngines"
+        :initial-engine="config.links.searchEngines?.[0]"
+        @search="handleSearch"
+      />
 
       <!-- Categories -->
       <ul class="mylist row" id="categories">
         <template v-for="(category, categoryIndex) in config.links.categories" :key="category.title">
           <li class="title">
-            <svg class="icon" aria-hidden="true" v-html="category.icon"></svg>
+            <IconComponent :icon="category.icon" size="20" class="title-icon" />
             <span>{{ category.title }}</span>
             <span class="edit-tools">
               <a href="javascript:void(0)" @click="editCategory(categoryIndex)" class="btn btn-sm btn-link">
-                <svg class="icon" aria-hidden="true">
-                  <use href="#icon-edit"></use>
-                </svg>
+                <IconComponent icon="#icon-edit" size="16" />
               </a>
             </span>
           </li>
           <li v-for="(link, linkIndex) in category.links" :key="linkIndex" class="lylme-3">
             <a :href="link.url" target="_blank">
-              <div class="lylme-cl">
-                <div class="img-box">
-                  <img v-if="isImageUrl(link.icon)" :src="link.icon" :alt="link.name" class="img-icon">
-                  <div v-else-if="link.icon" v-html="link.icon" class="svg-icon"></div>
-                </div>
-              </div>
-              <div class="sSiteInfo">
-                <span class="site-name">{{ link.name }}</span>
-              </div>
+              <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
+              <span>{{ link.name }}</span>
             </a>
             <div class="link-actions">
               <a href="javascript:void(0)" @click="editLink(categoryIndex, linkIndex)" class="btn btn-sm btn-link">
-                <svg class="icon" aria-hidden="true">
-                  <use href="#icon-edit"></use>
-                </svg>
+                <IconComponent icon="#icon-edit" size="16" />
               </a>
               <a href="javascript:void(0)" @click="deleteLink(categoryIndex, linkIndex)" class="btn btn-sm btn-link text-danger">
-                <svg class="icon" aria-hidden="true">
-                  <use href="#icon-delete"></use>
-                </svg>
+                <IconComponent icon="#icon-delete" size="16" />
               </a>
             </div>
           </li>
           <li class="lylme-3 add-link">
             <a href="javascript:void(0)" @click="addNewLink(categoryIndex)">
-              <svg class="icon" aria-hidden="true">
-                <use href="#icon-addlink"></use>
-              </svg>
+              <IconComponent icon="#icon-addlink" size="45" class="link-icon" />
               <span>添加链接</span>
             </a>
           </li>
@@ -148,42 +87,18 @@
 
         <!-- Add Category Button -->
         <li class="title" @click="showAddCategoryModal = true">
-          <svg class="icon" aria-hidden="true">
-            <use href="#icon-add"></use>
-          </svg>
+          <IconComponent icon="#icon-add" size="20" class="title-icon" />
           <span>添加分类</span>
         </li>
       </ul>
 
-      <!-- Copyright -->
-      <div id="copyright">
-        <div class="text-center">
-          <span class="copyright-wrapper d-inline-block" @click="showCopyrightModal = true">
-            {{ config.copyright.show ?
-              `Copyright ©${config.copyright.text} <span class="copyright-link">${config.copyright.target}</span>. All Rights Reserved.` +
-              (config.copyright.showRecord ? `<br><span class="record-link">${config.copyright.record}</span>` : '')
-              : '<span class="text-muted">点击开启版权信息显示</span>'
-            }}
-          </span>
-        </div>
-      </div>
+      <!-- Footer -->
+      <footer class="mt-5 mb-3 footer text-muted text-center">
+        <p v-html="copyrightHtml" id="copyright"></p>
+      </footer>
     </main>
 
-    <!-- SVG Icons (hidden) -->
-    <div style="display: none;">
-      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-        <symbol id="icon-menus" viewBox="0 0 1024 1024">
-          <path d="M64 320h896v128H64z"></path>
-          <path d="M64 576h896v128H64z"></path>
-          <path d="M64 832h896v128H64z"></path>
-        </symbol>
-        <symbol id="icon-closes" viewBox="0 0 1024 1024">
-          <path d="M816 832l-416-416-416 416L64 712l416-416L64 288l160-160 416 416 416-416 160 160L632 512l416 416z"></path>
-        </symbol>
-        <!-- Add more symbols as needed -->
-      </svg>
-    </div>
-
+  
     <!-- Modals -->
     <!-- Site Info Modal -->
     <div v-if="showSiteInfoModal" class="modal-backdrop" @click.self="showSiteInfoModal = false">
@@ -402,8 +317,10 @@
 </template>
 
 <script setup lang="ts">
-import type { SiteConfig } from '~/types/config'
+import type { SiteConfig, SearchEngine } from '~/types/config'
 import { defaultConfig } from '~/utils/config'
+import IconComponent from '~/components/IconComponent.vue'
+import SearchBox from '~/components/SearchBox.vue'
 
 // Middleware for authentication
 definePageMeta({
@@ -414,8 +331,6 @@ definePageMeta({
 const config = ref<SiteConfig>(defaultConfig)
 const mobileMenuOpen = ref(false)
 const adminDropdownOpen = ref(false)
-const searchListOpen = ref(false)
-const currentSearchEngineIndex = ref(0)
 const currentTime = ref('')
 const currentDate = ref('')
 
@@ -439,14 +354,34 @@ const loading = ref(false)
 const changingPassword = ref(false)
 const notification = ref({ show: false, message: '', type: 'success' })
 
-// Computed properties
-const currentSearchEngine = computed(() => {
-  return config.value.links.searchEngines[currentSearchEngineIndex.value] || config.value.links.searchEngines[0]
+
+// Computed
+const copyrightHtml = computed(() => {
+  if (!config.value.copyright.show) return ''
+
+  let html = `<span style="color: #ffffff;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
+
+  if (config.value.copyright.showRecord) {
+    html += `<br><span style="color: #87CEEB;"><a href="${config.value.copyright.recordUrl}" target="_blank" style="color: #87CEEB;">${config.value.copyright.record}</a></span>`
+  }
+
+  return html
 })
 
 // Load config on mount
 onMounted(async () => {
+  // Load configuration first
   await loadConfig()
+
+  // Set background
+  if (config.value.backgroundImage) {
+    document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
+    document.body.style.backgroundSize = 'cover'
+    document.body.style.backgroundPosition = 'center'
+    document.body.style.backgroundRepeat = 'no-repeat'
+    document.body.style.backgroundAttachment = 'fixed'
+  }
+
   updateTime()
   setInterval(updateTime, 1000)
 })
@@ -480,13 +415,22 @@ const toggleMobileMenu = () => {
   mobileMenuOpen.value = !mobileMenuOpen.value
 }
 
-const toggleSearchList = () => {
-  searchListOpen.value = !searchListOpen.value
-}
+const handleSearch = (query: string, engine: SearchEngine) => {
+  // This event handler is called by the SearchBox component
+  // Could be extended to track search analytics or show notifications
+  console.log('Search triggered:', { query, engine: engine.name, url: engine.url })
 
-const selectSearchEngine = (index: number) => {
-  currentSearchEngineIndex.value = index
-  searchListOpen.value = false
+  // Optional: Add search history or analytics here
+  try {
+    // Store recent searches (if localStorage is available)
+    if (typeof localStorage !== 'undefined') {
+      const recentSearches = JSON.parse(localStorage.getItem('recent_searches') || '[]')
+      const newSearches = [{ query, engine: engine.name, timestamp: Date.now() }, ...recentSearches].slice(0, 10)
+      localStorage.setItem('recent_searches', JSON.stringify(newSearches))
+    }
+  } catch (error) {
+    // Silently fail analytics/storage
+  }
 }
 
 const logout = () => {
@@ -998,33 +942,4 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-/* Search type list */
-.search-type {
-  display: none;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
-  padding: 10px;
-  margin-top: 10px;
-  list-style: none;
-  padding-left: 0;
-}
-
-.search-type.show-type-list {
-  display: block;
-}
-
-.search-type li {
-  padding: 8px 12px;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-bottom: 2px;
-}
-
-.search-type li:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.search-type input[type="radio"] {
-  margin-right: 8px;
-}
 </style>

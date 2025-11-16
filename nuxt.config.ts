@@ -3,7 +3,8 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',
     '~/assets/css/style.css',
-    '~/assets/css/performance.css'
+    '~/assets/css/performance.css',
+    '~/assets/css/index.css'
   ],
   app: {
     head: {

@@ -35,7 +35,7 @@
         <!-- Search Box Component -->
         <SearchBox
           :search-engines="config.links.searchEngines"
-          :initial-engine="config.links.searchEngines[0]"
+          :initial-engine="config.links.searchEngines?.[0]"
           @search="handleSearch"
         />
 
@@ -86,14 +86,16 @@ const isMenuOpen = ref(false)
 const showBackToTop = ref(false)
 
 // Load config
-try {
-  const siteConfig = await $fetch<SiteConfig>('/api/config')
-  if (siteConfig) {
-    config.value = siteConfig
+const loadConfig = async () => {
+  try {
+    const siteConfig = await $fetch<SiteConfig>('/api/config')
+    if (siteConfig) {
+      config.value = siteConfig
+    }
+  } catch (error) {
+    console.warn('Failed to load site config, using default:', error)
+    // Keep using defaultConfig
   }
-} catch (error) {
-  console.warn('Failed to load site config, using default:', error)
-  // Keep using defaultConfig
 }
 
 // Update head based on config
@@ -115,7 +117,7 @@ useHead({
 const copyrightHtml = computed(() => {
   if (!config.value.copyright.show) return ''
 
-  let html = `<span style="color: #87CEEB;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
+  let html = `<span style="color: #ffffff;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
 
   if (config.value.copyright.showRecord) {
     html += `<br><span style="color: #87CEEB;"><a href="${config.value.copyright.recordUrl}" target="_blank" style="color: #87CEEB;">${config.value.copyright.record}</a></span>`
@@ -131,7 +133,20 @@ const toggleMenu = () => {
 
 const handleSearch = (query: string, engine: SearchEngine) => {
   // This event handler is called by the SearchBox component
-  console.log('Search triggered:', query, engine.name)
+  // Could be extended to track search analytics or show notifications
+  console.log('Search triggered:', { query, engine: engine.name, url: engine.url })
+
+  // Optional: Add search history or analytics here
+  try {
+    // Store recent searches (if localStorage is available)
+    if (typeof localStorage !== 'undefined') {
+      const recentSearches = JSON.parse(localStorage.getItem('recent_searches') || '[]')
+      const newSearches = [{ query, engine: engine.name, timestamp: Date.now() }, ...recentSearches].slice(0, 10)
+      localStorage.setItem('recent_searches', JSON.stringify(newSearches))
+    }
+  } catch (error) {
+    // Silently fail analytics/storage
+  }
 }
 
 const scrollToTop = () => {
@@ -155,7 +170,10 @@ const updateTime = () => {
 }
 
 // Lifecycle
-onMounted(() => {
+onMounted(async () => {
+  // Load configuration first
+  await loadConfig()
+
   // Set background
   if (config.value.backgroundImage) {
     document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
@@ -222,338 +240,3 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-/* Time Display */
-.time-display {
-  margin: 40px 0;
-  text-align: center;
-}
-
-#show_time {
-  font-size: 80px;
-  font-weight: bold;
-  text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.7);
-}
-
-#show_date {
-  font-size: 18px;
-  color: #fff;
-  margin-top: 10px;
-  text-shadow: 0px 1px 0px #252525;
-}
-
-/* Search Box - styles moved to SearchBox component */
-
-/* Search Engine Selection */
-.search-type {
-  white-space: nowrap;
-  margin: 0;
-  padding: 10px 0;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
-
-.search-type li {
-  margin: 0;
-  padding: 8px 15px;
-  display: block;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-type li:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Search Suggestions */
-.search-suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.search-suggestions li {
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.search-suggestions li:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* Categories */
-.category-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto 30px auto;
-  padding: 0 20px;
-}
-
-.category-title {
-  width: 100%;
-  height: 35px;
-  line-height: 33px;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  font-size: 17px;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-  text-align: left !important;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.category-title:hover {
-  opacity: 0.8;
-}
-
-.category-title .title-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-}
-
-.category-links {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.lylme-3 {
-  width: 100px;
-  transition: 0.3s all linear;
-  font-size: 14px;
-  overflow: hidden;
-  padding: 10px 2px;
-  box-shadow: 2px 2px 10px 0px rgb(0 0 0 / 40%);
-  backdrop-filter: saturate(100%) blur(30px);
-  margin: 10px;
-  display: flex;
-  flex-direction: row;
-  border-radius: 15px;
-  justify-content: center;
-  align-items: center;
-}
-
-.lylme-3:hover {
-  backdrop-filter: blur(0px);
-  transform: translateY(5px);
-}
-
-.lylme-3 svg,
-.lylme-3 img {
-  display: block;
-  width: 45px;
-  height: 45px;
-  padding: 4px;
-  background: #fff;
-  border-radius: 10px;
-  border: 1px solid #eee;
-  margin: 0 auto 0.3rem;
-}
-
-.lylme-3 span {
-  width: 100%;
-  text-align: center;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.lylme-3 a {
-  width: 100%;
-  color: #fff;
-  display: block;
-  text-decoration: none;
-}
-
-/* Navigation */
-.navbar-light .navbar-nav .nav-link {
-  color: #fff !important;
-  font-size: 16px;
-  font-weight: bold;
-  text-shadow: 0px 1px 0px #000;
-}
-
-li.nav-item a {
-  color: #fff !important;
-}
-
-/* Force navbar items to be horizontal */
-#nav-items {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-}
-
-#nav-items .nav-item {
-  display: block !important;
-  float: left !important;
-  margin-right: 1rem !important;
-}
-
-#nav-items .nav-link {
-  display: block !important;
-  float: left !important;
-}
-
-/* Bootstrap override fix */
-.navbar-expand-lg .navbar-nav {
-  flex-direction: row !important;
-}
-
-.navbar-expand-lg .navbar-nav .nav-item {
-  float: left !important;
-}
-
-.navbar-expand-lg .navbar-nav .nav-link {
-  float: left !important;
-}
-
-/* Ensure navbar nav items are horizontally aligned */
-.navbar-nav {
-  flex-direction: row !important;
-  display: flex !important;
-}
-
-.navbar-nav .nav-item {
-  display: inline-block !important;
-}
-
-.navbar-nav .nav-link {
-  display: inline-block !important;
-}
-
-/* Force horizontal layout for all screen sizes */
-@media (min-width: 1px) {
-  .navbar-nav {
-    flex-direction: row !important;
-  }
-
-  .navbar-nav .nav-item {
-    display: inline-block !important;
-    margin-right: 1rem;
-  }
-
-  .navbar-nav .nav-link {
-    display: inline-block !important;
-  }
-}
-
-/* Footer */
-.footer {
-  margin-top: 60px;
-  text-align: center;
-}
-
-.footer p {
-  margin: 5px 0;
-  color: #ffffff !important;
-  text-shadow: 0px 1px 0px #252525;
-}
-
-.footer a {
-  color: #ffffff !important;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-
-/* Back to Top */
-.back-to {
-  position: fixed;
-  bottom: 66px;
-  right: 10px;
-  z-index: 999;
-}
-
-.back-top {
-  display: block;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAWBAMAAADZWBo2AAAALVBMVEUAAAB5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl4rtNiAAAADnRSTlMARHe7Zu7dMxGIIqqZzHSj3DwAAAB/SURBVVBjTYwADPgYk8OABgs2HLPUAjBA6+JAk4FJ8UJLqYLKxsQNTXhIDs/GWBoZCPcEFeop6CnyKvhMYGOQYGJIYmBL4BBgfgDjsrxi4nvMJsCSAOCChh3yHjjqAZV4wcDznO6TFANYTwsASwCfAAOFMFRCdAOd0v3vdAOIAANnHHKk0/kXuAAAAAElFTkSuQmCC');
-  background-repeat: no-repeat;
-  background-position: center;
-  cursor: pointer;
-  border: 1px solid #d8d8d8;
-  box-sizing: border-box;
-  opacity: 0.9;
-  transition: opacity 0.3s;
-}
-
-.back-top:hover {
-  opacity: 1;
-}
-
-/* SVG Icons */
-.svg-icon {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-}
-
-.engine-icon,
-.link-icon {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  #show_time {
-    font-size: 50px;
-  }
-
-  .category-links {
-    justify-content: center;
-  }
-
-  .lylme-3 {
-    width: 80px;
-  }
-
-  .lylme-3 svg,
-  .lylme-3 img {
-    width: 35px;
-    height: 35px;
-  }
-
-  div#navbarsExample05 {
-    background: rgba(0,0,0,0.8);
-    padding: 10px 30px;
-    border-radius: 20px;
-  }
-
-  #he-plugin-simple {
-    display: none !important;
-  }
-}
-</style>
