@@ -5,7 +5,7 @@
     :class="iconClass"
     :style="iconStyle"
   >
-    <use v-if="iconComponent === 'svg' && props.icon" :xlink:href="props.icon" />
+      <use v-if="iconComponent === 'svg' && props.icon" :href="props.icon" :xlink:href="props.icon" />
   </component>
 </template>
 
@@ -62,7 +62,10 @@ const memoizedIconProps = computed(() => {
     return {
       class: ['icon', 'aria-hidden', 'true', props.class].filter(Boolean).join(' '),
       role: 'img',
-      'aria-hidden': 'true'
+      'aria-hidden': 'true',
+      xmlns: 'http://www.w3.org/2000/svg',
+      fill: 'currentColor',
+      viewBox: '0 0 1024 1024'
     }
   }
 

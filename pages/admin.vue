@@ -16,22 +16,26 @@
       <div class="collapse navbar-collapse" :class="{ show: mobileMenuOpen }" id="navbarsExample05">
         <ul class="navbar-nav mr-auto" id="nav-items">
           <li v-for="item in config.links.navItems" :key="item.id" class="nav-item">
-            <a class="nav-link" :href="item.url">{{ item.name }}</a>
+            <a class="nav-link" :href="item.url" :id="item.id">{{ item.name }}</a>
           </li>
         </ul>
-        <button class="btn nav-link text-white" style="border: none; background: none;" @click="showSiteInfoModal = true">
-          <IconComponent icon="#icon-setting" size="16" />
-          网站信息
-        </button>
-        <div class="nav-item dropdown">
-          <button class="btn nav-link text-white" style="border: none; background: none;" type="button" @click="adminDropdownOpen = !adminDropdownOpen">
-            <IconComponent icon="#icon-admin" size="16" />
-            管理员
-          </button>
-          <div class="dropdown-menu" :class="{ show: adminDropdownOpen }" v-if="adminDropdownOpen">
-            <a class="dropdown-item" href="#" @click.prevent="showChangePasswordModal = true">修改密码</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" @click.prevent="logout">退出登录</a>
+        <div class="navbar-nav-right">
+          <div class="nav-item">
+            <a class="nav-link" href="javascript:void(0)" @click="showSiteInfoModal = true">
+              <IconComponent icon="#icon-setting" size="16" />
+              网站信息
+            </a>
+          </div>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="adminDropdown" @click="adminDropdownOpen = !adminDropdownOpen">
+              <IconComponent icon="#icon-admin" size="16" />
+              管理员
+            </a>
+            <div class="dropdown-menu" :class="{ show: adminDropdownOpen }" v-if="adminDropdownOpen">
+              <a class="dropdown-item" href="#" @click.prevent="showChangePasswordModal = true">修改密码</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" @click.prevent="logout">退出登录</a>
+            </div>
           </div>
         </div>
       </div>
@@ -52,45 +56,43 @@
       />
 
       <!-- Categories -->
-      <ul class="mylist row" id="categories">
+      <div id="categories">
         <template v-for="(category, categoryIndex) in config.links.categories" :key="category.title">
-          <li class="title">
-            <IconComponent :icon="category.icon" size="20" class="title-icon" />
-            <span>{{ category.title }}</span>
-            <span class="edit-tools">
-              <a href="javascript:void(0)" @click="editCategory(categoryIndex)" class="btn btn-sm btn-link">
-                <IconComponent icon="#icon-edit" size="16" />
-              </a>
-            </span>
-          </li>
-          <li v-for="(link, linkIndex) in category.links" :key="linkIndex" class="lylme-3">
-            <a :href="link.url" target="_blank">
-              <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
-              <span>{{ link.name }}</span>
-            </a>
-            <div class="link-actions">
-              <a href="javascript:void(0)" @click="editLink(categoryIndex, linkIndex)" class="btn btn-sm btn-link">
-                <IconComponent icon="#icon-edit" size="16" />
-              </a>
-              <a href="javascript:void(0)" @click="deleteLink(categoryIndex, linkIndex)" class="btn btn-sm btn-link text-danger">
-                <IconComponent icon="#icon-delete" size="16" />
-              </a>
+          <div class="category-container">
+            <div class="category-title">
+              <IconComponent :icon="category.icon" type="title" size="20" class="title-icon" />
+              <span>{{ category.title }}</span>
+              <span class="edit-tools">
+                <a href="javascript:void(0)" @click="editCategory(categoryIndex)" class="btn btn-sm btn-link">
+                  <IconComponent icon="#icon-edit" size="16" />
+                </a>
+              </span>
             </div>
-          </li>
-          <li class="lylme-3 add-link">
-            <a href="javascript:void(0)" @click="addNewLink(categoryIndex)">
-              <IconComponent icon="#icon-addlink" size="45" class="link-icon" />
-              <span>添加链接</span>
-            </a>
-          </li>
+            <ul class="category-links">
+              <li v-for="(link, linkIndex) in category.links" :key="linkIndex" class="lylme-3">
+                <a href="javascript:void(0)" @click="openLinkModal(categoryIndex, linkIndex)">
+                  <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
+                  <span>{{ link.name }}</span>
+                </a>
+              </li>
+              <li class="lylme-3 add-link">
+                <a href="javascript:void(0)" @click="addNewLink(categoryIndex)">
+                  <IconComponent icon="#icon-addlink" size="45" class="link-icon" />
+                  <span>添加链接</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </template>
 
         <!-- Add Category Button -->
-        <li class="title" @click="showAddCategoryModal = true">
-          <IconComponent icon="#icon-add" size="20" class="title-icon" />
-          <span>添加分类</span>
-        </li>
-      </ul>
+        <div class="category-container">
+          <div class="category-title add-category" @click="showAddCategoryModal = true">
+            <IconComponent icon="#icon-add" type="title" size="20" class="title-icon" />
+            <span>添加分类</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Footer -->
       <footer class="mt-5 mb-3 footer text-muted text-center">
@@ -248,7 +250,9 @@
               <input v-model="linkForm.name" type="text" class="form-control" placeholder="输入网站名称">
             </div>
             <div class="form-group">
-              <label>网站URL</label>
+              <label>
+                网站URL
+              </label>
               <input v-model="linkForm.url" type="url" class="form-control" placeholder="输入网站URL">
             </div>
             <div class="form-group">
@@ -260,6 +264,44 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="showAddLinkModal = false">取消</button>
             <button type="button" class="btn btn-primary" @click="addLink">添加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Link Modal -->
+    <div v-if="showEditLinkModal" class="modal-backdrop" @click.self="showEditLinkModal = false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">编辑链接</h5>
+            <button type="button" class="close" @click="showEditLinkModal = false">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>网站名称</label>
+              <input v-model="linkForm.name" type="text" class="form-control" placeholder="输入网站名称">
+            </div>
+            <div class="form-group">
+              <label>
+                网站URL
+                <span class="url-link-text" @click="visitLink" title="访问链接">
+                  <svg width="12" height="12" viewBox="0 0 1024 1024" fill="#007bff" style="display: inline-block; vertical-align: middle;">
+                    <path d="M853.333 170.667 570.667 453.333l60.333 60.333L913.333 231.333 913.333 384 960 384 960 128 704 128 704 174.667 853.333 170.667zM896 384 896 896c0 35.346-28.654 64-64 64L192 960c-35.346 0-64-28.654-64-64L128 128c0-35.346 28.654-64 64-64l384 0L576 192 192 192 192 896l640 0L832 384 896 384z"/>
+                  </svg>
+                </span>
+              </label>
+              <input v-model="linkForm.url" type="url" class="form-control" placeholder="输入网站URL">
+            </div>
+            <div class="form-group">
+              <label>图标URL</label>
+              <input v-model="linkForm.icon" type="text" class="form-control" placeholder="输入图标URL">
+              <button type="button" class="btn btn-sm btn-info mt-2" @click="autoFetchSiteInfo">自动获取网站信息</button>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" @click="deleteCurrentLink">删除</button>
+            <button type="button" class="btn btn-primary" @click="updateLink">保存</button>
           </div>
         </div>
       </div>
@@ -313,6 +355,28 @@
     <div v-if="notification.show" class="toast-notification" :class="notification.type">
       {{ notification.message }}
     </div>
+
+    <!-- Test Modal for debugging -->
+    <div v-if="false" class="modal-backdrop" @click.self="">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">测试弹窗</h5>
+            <button type="button" class="close" @click="">×</button>
+          </div>
+          <div class="modal-body">
+            <p>这是一个测试弹窗，用于验证样式是否生效。</p>
+            <div class="form-group">
+              <label>测试输入框</label>
+              <input type="text" class="form-control" placeholder="测试输入">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -340,7 +404,7 @@ const showChangePasswordModal = ref(false)
 const showAddEngineModal = ref(false)
 const showAddCategoryModal = ref(false)
 const showAddLinkModal = ref(false)
-const showCopyrightModal = ref(false)
+const showEditLinkModal = ref(false)
 
 // Form states
 const tempConfig = ref(JSON.parse(JSON.stringify(defaultConfig)))
@@ -353,6 +417,9 @@ const linkForm = ref({ name: '', url: '', icon: '' })
 const loading = ref(false)
 const changingPassword = ref(false)
 const notification = ref({ show: false, message: '', type: 'success' })
+
+// Current editing link tracking
+const currentEditingLink = ref<{ categoryIndex: number; linkIndex: number } | null>(null)
 
 
 // Computed
@@ -585,23 +652,61 @@ const addLink = async () => {
   }
 }
 
-const editLink = (categoryIndex: number, linkIndex: number) => {
+const openLinkModal = (categoryIndex: number, linkIndex: number) => {
   const link = config.value.links.categories[categoryIndex].links[linkIndex]
   linkForm.value = { ...link }
-  showAddLinkModal.value = true
-  ;(window as any).currentCategoryIndex = categoryIndex
-  ;(window as any).currentLinkIndex = linkIndex
+  currentEditingLink.value = { categoryIndex, linkIndex }
+  showEditLinkModal.value = true
 }
 
-const deleteLink = async (categoryIndex: number, linkIndex: number) => {
+const updateLink = async () => {
+  if (!linkForm.value.name || !linkForm.value.url) {
+    showNotification('请填写网站名称和URL', 'error')
+    return
+  }
+
+  if (!currentEditingLink.value) return
+
+  try {
+    const { categoryIndex, linkIndex } = currentEditingLink.value
+    config.value.links.categories[categoryIndex].links[linkIndex] = {
+      name: linkForm.value.name,
+      url: linkForm.value.url,
+      icon: linkForm.value.icon || ''
+    }
+    await saveConfig()
+
+    showEditLinkModal.value = false
+    currentEditingLink.value = null
+    linkForm.value = { name: '', url: '', icon: '' }
+    showNotification('链接更新成功')
+  } catch (error) {
+    showNotification('更新失败', 'error')
+  }
+}
+
+const deleteCurrentLink = async () => {
+  if (!currentEditingLink.value) return
+
   if (confirm('确定要删除这个链接吗？')) {
     try {
+      const { categoryIndex, linkIndex } = currentEditingLink.value
       config.value.links.categories[categoryIndex].links.splice(linkIndex, 1)
       await saveConfig()
+
+      showEditLinkModal.value = false
+      currentEditingLink.value = null
+      linkForm.value = { name: '', url: '', icon: '' }
       showNotification('链接删除成功')
     } catch (error) {
       showNotification('删除失败', 'error')
     }
+  }
+}
+
+const visitLink = () => {
+  if (linkForm.value.url) {
+    window.open(linkForm.value.url, '_blank')
   }
 }
 
@@ -676,6 +781,187 @@ onUnmounted(() => {
 <style scoped>
 /* Import the existing styles */
 @import url('~/assets/css/style.css');
+@import url('~/assets/css/index.css');
+
+/* Admin specific styles */
+.edit-tools {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.category-title:hover .edit-tools {
+  opacity: 1;
+}
+
+.edit-tools .btn {
+  padding: 2px 6px;
+  font-size: 12px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-decoration: none;
+}
+
+.edit-tools .btn:hover {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+/* Admin navigation styles */
+.navbar-nav .nav-link svg,
+.navbar-nav-right .nav-link svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  vertical-align: text-bottom;
+}
+
+/* Ensure navbar collapse uses flex layout */
+.navbar-collapse {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Right-aligned navigation container */
+.navbar-nav-right {
+  display: flex !important;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 2rem;  /* 向左移动一点，减小与左侧的距离 */
+  flex-shrink: 0;
+  /* Override global styles from index.css */
+  float: none !important;
+  flex-direction: row !important;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Override global navbar-nav styles for our custom container */
+.navbar-nav-right .nav-item {
+  display: flex !important;
+  float: none !important;
+  margin-right: 1rem !important;  /* 与左侧保持相同的margin */
+  margin-left: 0 !important;
+  align-items: center;
+}
+
+.navbar-nav-right .nav-item:last-child {
+  margin-right: 0 !important;
+}
+
+.navbar-nav-right .nav-link {
+  color: #fff !important;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0px 1px 0px #000;
+  padding: 0;  /* 完全移除padding，让margin控制间距 */
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav-right .nav-link:hover {
+  opacity: 0.8;
+}
+
+/* Dropdown positioning for right nav */
+.navbar-nav-right .dropdown {
+  position: relative;
+}
+
+.navbar-nav-right .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: auto;
+  min-width: 120px;
+  padding: 8px 0;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: dropdownFadeIn 0.2s ease-out;
+  transform-origin: top right;
+}
+
+.navbar-nav-right .dropdown-menu .dropdown-item {
+  padding: 8px 20px;
+  color: #ffffff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-nav-right .dropdown-menu .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.navbar-nav-right .dropdown-menu .dropdown-divider {
+  border-top: 0.1px solid rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 992px) {
+  .navbar-collapse {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .navbar-nav-right {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    order: 2;
+  }
+
+  .navbar-nav-right .nav-link {
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  .navbar-nav-right .dropdown-menu {
+    position: static;
+    margin-top: 0;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 0;
+  }
+}
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1040;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Modal styles */
 .modal-backdrop {
@@ -695,10 +981,16 @@ onUnmounted(() => {
   position: relative;
   width: auto;
   margin: 1.75rem auto;
-  max-width: 500px;
+  max-width: 1000px;  /* 从500px增大到600px */
   background: white;
   border-radius: 8px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* 使用更高优先级的选择器 */
+div.modal-backdrop > .modal-dialog,
+.modal-backdrop .modal-dialog {
+  max-width: 1000px !important;
 }
 
 .modal-content {
@@ -710,6 +1002,7 @@ onUnmounted(() => {
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 8px;
+  box-sizing: border-box;  /* 确保border和padding包含在width内 */
 }
 
 .modal-header {
@@ -720,6 +1013,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;  /* 确保padding包含在尺寸内 */
 }
 
 .modal-title {
@@ -749,6 +1043,7 @@ onUnmounted(() => {
   position: relative;
   flex: 1 1 auto;
   padding: 1rem;
+  box-sizing: border-box;  /* 确保padding包含在尺寸内 */
 }
 
 .modal-footer {
@@ -760,6 +1055,7 @@ onUnmounted(() => {
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
+  box-sizing: border-box;  /* 确保padding包含在尺寸内 */
 }
 
 .btn {
@@ -828,6 +1124,26 @@ onUnmounted(() => {
   font-weight: 500;
 }
 
+.url-link-text {
+  margin-left: 10px;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  transition: opacity 0.2s ease;
+}
+
+.url-link-text:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.url-link-text svg {
+  fill: #007bff !important;
+}
+
 .form-control {
   display: block;
   width: 100%;
@@ -841,6 +1157,7 @@ onUnmounted(() => {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;  /* 确保padding和border包含在width内 */
 }
 
 .dropdown-menu {
