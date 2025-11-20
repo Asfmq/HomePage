@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   try {
     // Get token from Authorization header or query
     const token = getHeader(event, 'authorization')?.replace('Bearer ', '') ||
-                  getQuery(event).token
+      getQuery(event).token
 
     if (!token) {
       throw createError({

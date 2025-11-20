@@ -514,15 +514,29 @@ const logout = () => {
 const saveSiteInfo = async () => {
   try {
     loading.value = true
+
+    // Get authentication token from localStorage or cookie
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('admin_token') :
+                   useCookie('admin_token').value
+
+    if (!token) {
+      showNotification('未找到认证令牌，请重新登录', 'error')
+      await logout()
+      return
+    }
+
     await $fetch('/api/config', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: tempConfig.value
     })
     config.value = JSON.parse(JSON.stringify(tempConfig.value))
     showSiteInfoModal.value = false
     showNotification('网站信息保存成功')
-  } catch (error) {
-    showNotification('保存失败', 'error')
+  } catch (error: any) {
+    showNotification(error.data?.statusMessage || '保存失败', 'error')
   } finally {
     loading.value = false
   }
@@ -745,8 +759,21 @@ const saveCopyright = async () => {
 }
 
 const saveConfig = async () => {
+  // Get authentication token from localStorage or cookie
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('admin_token') :
+                 useCookie('admin_token').value
+
+  if (!token) {
+    showNotification('未找到认证令牌，请重新登录', 'error')
+    await logout()
+    return
+  }
+
   await $fetch('/api/config', {
     method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
     body: config.value
   })
 }

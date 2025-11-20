@@ -48,3 +48,7 @@ temp/
 html/
 HomePage/
 .github/
+
+.nuxt/
+
+package-lock.json
