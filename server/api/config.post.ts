@@ -39,12 +39,11 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    // In a real implementation, save to file or database
-    // For now, just return success
-    // await fs.writeFile(
-    //   path.join(process.cwd(), 'config.json'),
-    //   JSON.stringify(newConfig, null, 2)
-    // )
+    // Save to file
+    await fs.writeFile(
+      path.join(process.cwd(), 'site-config.json'),
+      JSON.stringify(newConfig, null, 2)
+    )
 
     return {
       message: '配置已更新'

@@ -14,7 +14,7 @@
 
 #show_date {
   font-size: 18px;
-  color: #fff;
+  color: var(--text-light, #fff);
   margin-top: 10px;
   text-shadow: 0px 1px 0px #252525;
 }
@@ -90,7 +90,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.3s ease;
-  text-align: left !important;
+  text-align: left;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -160,81 +160,81 @@
 
 .lylme-3 a {
   width: 100%;
-  color: #fff;
+  color: var(--text-light, #fff);
   display: block;
   text-decoration: none;
 }
 
 /* Navigation -优先使用 index.vue 的样式 */
 .navbar-light .navbar-nav .nav-link {
-  color: #fff !important;
+  color: var(--text-light, #fff);
   font-size: 16px;
   font-weight: bold;
   text-shadow: 0px 1px 0px #000;
 }
 
 li.nav-item a {
-  color: #fff !important;
+  color: var(--text-light, #fff);
 }
 
 /* Force navbar items to be horizontal */
 #nav-items {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #nav-items .nav-item {
-  display: block !important;
-  float: left !important;
-  margin-right: 1rem !important;
+  display: block;
+  float: left;
+  margin-right: 1rem;
 }
 
 #nav-items .nav-link {
-  display: block !important;
-  float: left !important;
+  display: block;
+  float: left;
 }
 
 /* Bootstrap override fix - 优先使用 index.vue 的样式 */
 .navbar-expand-lg .navbar-nav {
-  flex-direction: row !important;
+  flex-direction: row;
 }
 
 .navbar-expand-lg .navbar-nav .nav-item {
-  float: left !important;
+  float: left;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
-  float: left !important;
+  float: left;
 }
 
 /* Ensure navbar nav items are horizontally aligned */
 .navbar-nav {
-  flex-direction: row !important;
-  display: flex !important;
+  flex-direction: row;
+  display: flex;
 }
 
 .navbar-nav .nav-item {
-  display: inline-block !important;
+  display: inline-block;
 }
 
 .navbar-nav .nav-link {
-  display: inline-block !important;
+  display: inline-block;
 }
 
 /* Force horizontal layout for all screen sizes */
 @media (min-width: 1px) {
   .navbar-nav {
-    flex-direction: row !important;
+    flex-direction: row;
   }
 
   .navbar-nav .nav-item {
-    display: inline-block !important;
+    display: inline-block;
     margin-right: 1rem;
   }
 
   .navbar-nav .nav-link {
-    display: inline-block !important;
+    display: inline-block;
   }
 }
 
@@ -246,12 +246,12 @@ li.nav-item a {
 
 .footer p {
   margin: 5px 0;
-  color: #ffffff !important;
+  color: #ffffff;
   text-shadow: 0px 1px 0px #252525;
 }
 
 .footer a {
-  color: #ffffff !important;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -322,12 +322,12 @@ li.nav-item a {
   }
 
   div#navbarsExample05 {
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     padding: 10px 30px;
     border-radius: 20px;
   }
 
   #he-plugin-simple {
-    display: none !important;
+    display: none;
   }
 }

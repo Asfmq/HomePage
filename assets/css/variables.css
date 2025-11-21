@@ -1,0 +1,32 @@
+:root {
+  /* Colors */
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  
+  /* Text Colors */
+  --text-color: #333333;
+  --text-light: #ffffff;
+  --text-muted: #6c757d;
+  
+  /* Backgrounds */
+  --bg-glass: rgba(255, 255, 255, 0.95);
+  --bg-glass-dark: rgba(0, 0, 0, 0.8);
+  
+  /* Spacing & Layout */
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 20px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+  
+  /* Transitions */
+  --transition-base: all 0.3s ease;
+}
