@@ -12,6 +12,8 @@ A modern personal homepage built with Nuxt 3, featuring search functionality, ca
 - **🎨 现代化界面** - 毛玻璃效果和平滑动画
 - **⚡ 高性能** - 基于 Nuxt 3 的 SSR 和代码分割
 - **🌐 SVG 图标系统** - 统一的图标管理和显示
+- **🖱️ 拖拽排序** - 支持链接和分类的实时拖拽排序
+- **☁️ 云端存储** - 支持七牛云对象存储，实现配置持久化
 
 ### 🛠 技术特性 | Technical Features
 - **Vue 3 Composition API** - 现代化的组件开发
@@ -20,6 +22,7 @@ A modern personal homepage built with Nuxt 3, featuring search functionality, ca
 - **服务端渲染 (SSR)** - 更好的 SEO 和首屏加载速度
 - **热模块替换** - 快速的开发体验
 - **API 后端** - 完整的配置管理和认证系统
+- **多存储支持** - 支持本地文件系统和七牛云存储切换
 
 ## 🚀 技术栈 | Tech Stack
 
@@ -33,6 +36,7 @@ A modern personal homepage built with Nuxt 3, featuring search functionality, ca
 - **Nuxt Server** - 内置的服务器端 API
 - **JWT 认证** - 安全的用户认证系统
 - **配置管理 API** - 动态配置管理
+- **[Qiniu SDK](https://developer.qiniu.com/kodo/sdk/nodejs)** - 七牛云对象存储集成
 
 ### 开发工具 | Development Tools
 - **[Vite](https://vitejs.dev/)** - 快速的构建工具
@@ -69,7 +73,8 @@ HomePage/
 │   └── config.ts          # 默认配置
 ├── 📄 app.vue             # 根组件
 ├── 📄 nuxt.config.ts      # Nuxt 配置文件
-└── 📄 package.json        # 项目依赖和脚本
+├── 📄 package.json        # 项目依赖和脚本
+└── 📄 .env                # 环境变量配置
 ```
 
 ## 🛠 安装和使用 | Installation & Usage
@@ -130,11 +135,9 @@ docker-compose up -d
 ## ⚙️ 配置 | Configuration
 
 ### 环境变量 | Environment Variables
-创建 `.env` 文件：
-```env
-NUXT_ADMIN_PASSWORD=your_admin_password
-NUXT_JWT_SECRET=your_jwt_secret
-```
+
+请参考 `.env.example` 创建 `.env` 文件。
+
 
 ### 站点配置 | Site Configuration
 通过 `utils/config.ts` 或管理后台配置站点：
@@ -292,6 +295,6 @@ GET /api/health                      # 健康检查
 
 **Author**: [Asfmq](https://github.com/Asfmq)
 **Version**: 1.0.0
-**Last Updated**: 2025-11-16
+**Last Updated**: 2025-11-21
 
 ⭐ 如果这个项目对你有帮助，请给个 Star！

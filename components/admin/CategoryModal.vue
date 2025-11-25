@@ -1,7 +1,7 @@
 <template>
   <BaseModal
     :model-value="modelValue"
-    title="添加新分类"
+    :title="isEdit ? '编辑分类' : '添加新分类'"
     size="md"
     @update:model-value="$emit('update:modelValue', $event)"
   >
@@ -16,7 +16,7 @@
 
     <template #footer>
       <button type="button" class="btn btn-secondary" @click="$emit('update:modelValue', false)">取消</button>
-      <button type="button" class="btn btn-primary" @click="add">添加</button>
+      <button type="button" class="btn btn-primary" @click="submit">{{ isEdit ? '保存' : '添加' }}</button>
     </template>
   </BaseModal>
 </template>
@@ -26,25 +26,32 @@ import BaseModal from '../BaseModal.vue'
 
 const props = defineProps<{
   modelValue: boolean
+  initialData?: { title: string; icon: string } | null
 }>()
 
-const emit = defineEmits(['update:modelValue', 'add'])
+const emit = defineEmits(['update:modelValue', 'submit'])
 
 const categoryForm = ref({ title: '', icon: '' })
 
+const isEdit = computed(() => !!props.initialData)
+
 watch(() => props.modelValue, (newVal) => {
-  if (!newVal) {
-    categoryForm.value = { title: '', icon: '' }
+  if (newVal) {
+    if (props.initialData) {
+      categoryForm.value = { ...props.initialData }
+    } else {
+      categoryForm.value = { title: '', icon: '' }
+    }
   }
 })
 
-const add = () => {
+const submit = () => {
   if (!categoryForm.value.title) {
-    emit('add', { error: '请填写分类名称' })
+    emit('submit', { error: '请填写分类名称' })
     return
   }
 
-  emit('add', { ...categoryForm.value })
+  emit('submit', { ...categoryForm.value })
 }
 </script>
 

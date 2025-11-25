@@ -69,7 +69,7 @@
           >
             <div class="category-title">
               <IconComponent :icon="category.icon" type="title" size="20" class="title-icon" />
-              <span>{{ category.title }}</span>
+              <span @click="editCategory(categoryIndex)" style="cursor: pointer;" title="点击编辑分类">{{ category.title }}</span>
               <span class="edit-tools">
                 <a href="javascript:void(0)" @click="editCategory(categoryIndex)" class="btn btn-sm btn-link">
                   <IconComponent icon="#icon-edit" size="16" />
@@ -137,7 +137,8 @@
 
     <AddCategoryModal
       v-model="showAddCategoryModal"
-      @add="handleAddCategory"
+      :initial-data="editingCategoryIndex !== null ? config.links.categories[editingCategoryIndex] : null"
+      @submit="handleCategorySubmit"
     />
 
     <LinkModal
@@ -172,7 +173,7 @@ import SearchBox from '~/components/SearchBox.vue'
 import SiteInfoModal from '~/components/admin/SiteInfoModal.vue'
 import ChangePasswordModal from '~/components/admin/ChangePasswordModal.vue'
 import AddEngineModal from '~/components/admin/AddEngineModal.vue'
-import AddCategoryModal from '~/components/admin/AddCategoryModal.vue'
+import AddCategoryModal from '~/components/admin/CategoryModal.vue'
 import LinkModal from '~/components/admin/LinkModal.vue'
 import CopyrightModal from '~/components/admin/CopyrightModal.vue'
 import ToastNotification from '~/components/ToastNotification.vue'
@@ -196,6 +197,9 @@ const showAddEngineModal = ref(false)
 const showAddCategoryModal = ref(false)
 const showLinkModal = ref(false)
 const showCopyrightModal = ref(false)
+
+// Category Edit State
+const editingCategoryIndex = ref<number | null>(null)
 
 // Link Modal State
 const linkModalMode = ref<'add' | 'edit'>('add')
@@ -360,29 +364,42 @@ const handleAddEngine = async (data: any) => {
   }
 }
 
-const handleAddCategory = async (data: any) => {
-  if (data.error) {
-    showNotification(data.error, 'error')
+const handleCategorySubmit = (categoryData: any) => {
+  if (categoryData.error) {
+    showNotification(categoryData.error, 'error')
     return
   }
 
-  try {
+  if (editingCategoryIndex.value !== null) {
+    // Update existing category
+    config.value.links.categories[editingCategoryIndex.value].title = categoryData.title
+    config.value.links.categories[editingCategoryIndex.value].icon = categoryData.icon
+    showNotification('分类更新成功', 'success')
+  } else {
+    // Add new category
     config.value.links.categories.push({
-      title: data.title,
-      icon: data.icon || '',
+      title: categoryData.title,
+      icon: categoryData.icon,
       links: []
     })
-    await saveConfig()
-    showAddCategoryModal.value = false
-    showNotification('分类添加成功')
-  } catch (error) {
-    showNotification('添加失败', 'error')
+    showNotification('分类添加成功', 'success')
   }
+  
+  saveConfig()
+  showAddCategoryModal.value = false
+  editingCategoryIndex.value = null // Reset editing index
 }
 
+// Reset editing index when modal is closed
+watch(showAddCategoryModal, (newVal) => {
+  if (!newVal) {
+    editingCategoryIndex.value = null
+  }
+})
+
 const editCategory = (index: number) => {
-  // TODO: Implement edit category modal if needed
-  showNotification('编辑分类功能开发中')
+  editingCategoryIndex.value = index
+  showAddCategoryModal.value = true
 }
 
 const addNewLink = (categoryIndex: number) => {
@@ -579,38 +596,16 @@ const onCategoryDrop = async (event: DragEvent, targetCategoryIndex: number) => 
 }
 
 const isCategoryDragging = (categoryIndex: number) => {
-  return draggedItem.value?.type === 'category' && draggedItem.value.categoryIndex === categoryIndex
+  return draggedItem.value?.type === 'category' && 
+         draggedItem.value.categoryIndex === categoryIndex
 }
 </script>
 
 <style scoped>
-/* Import the existing styles */
 @import url('~/assets/css/variables.css');
 @import url('~/assets/css/style.css');
 @import url('~/assets/css/index.css');
 
-/* Admin specific styles */
-.edit-tools {
-  margin-left: auto;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.category-title:hover .edit-tools {
-  opacity: 1;
-}
-
-.edit-tools .btn {
-  padding: 2px 6px;
-  font-size: 12px;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.7);
-  text-decoration: none;
-}
-
-.edit-tools .btn:hover {
-  color: rgba(255, 255, 255, 1);
-}
 
 /* Admin navigation styles */
 .navbar-nav .nav-link svg,
@@ -690,16 +685,16 @@ const isCategoryDragging = (categoryIndex: number) => {
 
 .navbar-nav-right .dropdown-menu .dropdown-item {
   padding: 8px 20px;
-  color: #ffffff;
+  color: #208be4;
   font-size: 14px;
   transition: all 0.2s ease;
   text-align: center;
   font-weight: 500;
-  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 1px 2px rgba(23, 69, 170, 0.164);
 }
 
 .navbar-nav-right .dropdown-menu .dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.993);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -720,56 +715,38 @@ const isCategoryDragging = (categoryIndex: number) => {
     }
 }
 
-/* Mobile responsive */
-@media screen and (max-width: 992px) {
-  .navbar-collapse {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
-  .navbar-nav-right {
-    margin-left: 0;
-    margin-top: 0.5rem;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    order: 2;
-  }
 
-  .navbar-nav-right .nav-link {
-    padding: 0.5rem 1rem;
-    width: 100%;
-  }
-
-  .navbar-nav-right .dropdown-menu {
-    position: static;
-    margin-top: 0;
-    box-shadow: none;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 0;
-  }
+.edit-tools {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-/* Drag and Drop Styles */
-.lylme-3 {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  cursor: move;
+.category-title:hover .edit-tools {
+  opacity: 1;
 }
 
-.lylme-3.dragging {
-  opacity: 0.5;
-  transform: scale(0.95);
+.category-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.category-container {
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  cursor: move;
-}
-
-.category-container.dragging {
-  opacity: 0.5;
-  transform: scale(0.98);
-  border: 2px dashed rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
+/* 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .category-links {
+    justify-content: space-between;
+  }
+  
+  .lylme-3 {
+    width: 30%;
+    height: auto;
+    aspect-ratio: 1;
+  }
 }
 </style>
