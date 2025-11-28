@@ -9,12 +9,6 @@
         "outputDirectory": ".output",
         "installCommand": "npm install"
     },
-    "routes": [
-        {
-            "src": "/api/.*",
-            "dest": "/api/$1"
-        }
-    ],
     "env": {
         "NODE_VERSION": "18"
     }

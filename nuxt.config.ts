@@ -45,43 +45,24 @@ export default defineNuxtConfig({
 
   // Nitro 配置 - EdgeOne Pages 部署优化
   nitro: {
-    // 使用 node-server preset 以支持 SSR 和 API 路由
-    preset: 'node-server',
-
+    // EdgeOne Pages 会自动检测并使用合适的 preset
     // 压缩配置
     compressPublicAssets: true,
 
-    // 预渲染配置 - 预渲染静态页面以提升性能
+    // 预渲染配置
     prerender: {
       crawlLinks: true,
-      routes: ['/'],
-      // 如果有其他静态页面，可以添加到这里
-      // routes: ['/', '/about', '/contact']
-    },
-
-    // 环境变量配置
-    runtimeConfig: {
-      // 确保环境变量正确传递
-      adminPassword: process.env.NUXT_ADMIN_PASSWORD,
-      jwtSecret: process.env.NUXT_JWT_SECRET,
+      routes: ['/']
     }
   },
 
-  // 构建优化
-  build: {
-    // 启用 CSS 代码分割
-    // extractCSS: true, // Nuxt 3 默认已启用
-  },
-
-  // 实验性功能（可选）
+  // 实验性功能
   experimental: {
-    // 启用 payload 提取以优化性能
     payloadExtraction: true,
   },
 
   // 路由配置
   routeRules: {
-    // API 路由启用 CORS
     '/api/**': { cors: true },
   }
 })
