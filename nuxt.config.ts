@@ -24,45 +24,44 @@ export default defineNuxtConfig({
     }
   },
 
-  // 运行时配置 - 使用环境变量
+  // 运行时配置
   runtimeConfig: {
-    // 服务端私有配置（不会暴露给客户端）
     adminPassword: process.env.NUXT_ADMIN_PASSWORD || '1235',
     jwtSecret: process.env.NUXT_JWT_SECRET || 'your-jwt-secret',
-
-    // 七牛云配置（如果使用）
     qiniuAccessKey: process.env.NUXT_QINIU_ACCESS_KEY || '',
     qiniuSecretKey: process.env.NUXT_QINIU_SECRET_KEY || '',
     qiniuBucket: process.env.NUXT_QINIU_BUCKET || '',
     qiniuDomain: process.env.NUXT_QINIU_DOMAIN || '',
     qiniuConfig: process.env.NUXT_QINIU_CONFIG || '',
-
-    // 公共配置（会暴露给客户端）
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
     }
   },
 
-  // Nitro 配置 - EdgeOne Pages 部署优化
-  nitro: {
-    // EdgeOne Pages 会自动检测并使用合适的 preset
-    // 压缩配置
-    compressPublicAssets: true,
-
-    // 预渲染配置
-    prerender: {
-      crawlLinks: true,
-      routes: ['/']
-    }
-  },
-
-  // 实验性功能
-  experimental: {
-    payloadExtraction: true,
-  },
-
-  // 路由配置
-  routeRules: {
-    '/api/**': { cors: true },
-  }
+  // adapter: process.env.NODE_ENV === 'production' ? 
+  //   require('@edgeone/nuxt') : undefined,
+  
+  // // 确保SSR启用
+  // ssr: true,
+  
+  // // Nitro配置
+  // nitro: {
+  //   // 指定输出目录为EO平台期望的目录
+  //   output: {
+  //     dir: '.output',
+  //     serverDir: '.output/server',
+  //     publicDir: '.output/public'
+  //   },
+  //   // 路由规则配置
+  //   routeRules: {
+  //     // 静态资源缓存
+  //     '/_nuxt/**': { 
+  //       headers: { 
+  //         'cache-control': 'public, max-age=31536000, immutable' 
+  //       } 
+  //     },
+  //     // API路由
+  //     '/api/**': { cors: true, swr: 60 }
+  //   }
+  // }
 })
