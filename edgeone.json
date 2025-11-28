@@ -1,0 +1,21 @@
+{
+    "$schema": "https://pages.edgeone.ai/schema.json",
+    "framework": {
+        "name": "nuxt",
+        "version": "3"
+    },
+    "build": {
+        "command": "npm run build",
+        "outputDirectory": ".output",
+        "installCommand": "npm install"
+    },
+    "routes": [
+        {
+            "src": "/api/.*",
+            "dest": "/api/$1"
+        }
+    ],
+    "env": {
+        "NODE_VERSION": "18"
+    }
+}
