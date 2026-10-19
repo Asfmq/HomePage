@@ -1,5 +1,14 @@
 import type { SiteConfig } from '~/types/config'
 
+/**
+ * 内置默认站点配置。
+ *
+ * 用途：仅当配置存储（七牛云 / 本地文件）读取失败时的兜底，
+ * 保证首页仍可渲染而不是白屏。
+ *
+ * 注意：内容由 site-config.json 同步而来，请勿手工维护。
+ * 真正的数据源始终是后台保存的配置（生产环境为七牛云）。
+ */
 export const defaultConfig: SiteConfig = {
   title: "fmq的主页",
   keywords: "",
@@ -98,24 +107,14 @@ export const defaultConfig: SiteConfig = {
             icon: "/img/ico/Transmission.png"
           },
           {
-            name: "immich",
-            url: "https://immich.asfmq.cn",
-            icon: "/img/ico/immich.ico"
-          },
-          {
-            name: "jellyfin",
-            url: "https://jellyfin.asfmq.cn",
-            icon: "/img/ico/jellyfin.jpg"
+            name: "alist",
+            url: "https://alist.asfmq.cn",
+            icon: "/img/ico/alist.png"
           },
           {
             name: "calibre",
             url: "https://calibre.asfmq.cn",
             icon: "/img/ico/calibre.png"
-          },
-          {
-            name: "alist",
-            url: "https://alist.asfmq.cn",
-            icon: "/img/ico/alist.png"
           },
           {
             name: "xiaoya",
@@ -124,7 +123,7 @@ export const defaultConfig: SiteConfig = {
           },
           {
             name: "ollama",
-            url: "https://llm.asfmq.cn",
+            url: "https://ollama.asfmq.cn/",
             icon: "/img/ico/ollama.jpg"
           },
           {
@@ -138,9 +137,34 @@ export const defaultConfig: SiteConfig = {
             icon: "/img/ico/frps.svg"
           },
           {
-            name: "思源笔记",
-            url: "https://note.asfmq.cn/",
-            icon: "https://note.asfmq.cn/favicon.ico"
+            name: "Astro科研",
+            url: "https://asr.asfmq.cn/",
+            icon: "https://asr.asfmq.cn/favicon.svg"
+          },
+          {
+            name: "DCTS — 分布式恒星大气网格计算控制台",
+            url: "https://dcts.asfmq.cn/",
+            icon: "https://dcts.asfmq.cn/favicon.ico"
+          },
+          {
+            name: "Gitea",
+            url: "https://git.asfmq.cn/",
+            icon: "https://git.asfmq.cn/assets/img/favicon.svg"
+          },
+          {
+            name: "飞牛 fnOS",
+            url: "https://fn.asfmq.cn/",
+            icon: "https://fn.asfmq.cn/favicon.ico"
+          },
+          {
+            name: "Vaultwarden Web",
+            url: "https://pwd.asfmq.cn/",
+            icon: "https://pwd.asfmq.cn/images/favicon-32x32.png"
+          },
+          {
+            name: "dsh",
+            url: "dsh.asfmq.cn",
+            icon: "https://ts2.tc.mm.bing.net/th/id/ODF.KzCeWNStUCs8vICyeYlCqA?w=32&h=32&qlt=91&pcl=fffffa&o=6&pid=1.2"
           }
         ]
       },
@@ -197,27 +221,22 @@ export const defaultConfig: SiteConfig = {
           {
             name: "DeepSeek",
             url: "https://chat.deepseek.com/",
-            icon: "https://chat.deepseek.com/favicon.svg"
+            icon: "https://ts4.tc.mm.bing.net/th/id/ODF.YxK1MUJaRoBfBG4UGNrXAA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2"
           },
           {
-            name: "Qwen Chat",
-            url: "https://chat.qwen.ai/",
-            icon: "https://assets.alicdn.com/g/qwenweb/qwen-webui-fe/0.0.69/favicon.png"
-          },
-          {
-            name: "通义",
-            url: "https://tongyi.aliyun.com/",
-            icon: "https://img.alicdn.com/imgextra/i4/O1CN01EfJVFQ1uZPd7W4W6i_!!6000000006051-2-tps-112-112.png"
+            name: "千问",
+            url: "https://www.qianwen.com/",
+            icon: "https://img.alicdn.com/imgextra/i2/O1CN01FPcQDy1WTPjPX6IH9_!!6000000002789-2-tps-96-96.png"
           },
           {
             name: "智谱清言",
             url: "https://chatglm.cn/",
-            icon: "https://chatglm.cn/img/icons/favicon.svg"
+            icon: "https://chatglm.cn/img/icons/favicon.ico"
           },
           {
-            name: "文心一言",
-            url: "https://yiyan.baidu.com/",
-            icon: "https://nlp-eb.cdn.bcebos.com/logo/favicon.ico"
+            name: "智谱清言",
+            url: "https://chatglm.cn/",
+            icon: "https://chatglm.cn/favicon.ico"
           },
           {
             name: "txyz",
@@ -233,6 +252,26 @@ export const defaultConfig: SiteConfig = {
             name: "huggingface",
             url: "https://huggingface.co/",
             icon: "/img/ico/img_6755ab0e9a949.png"
+          },
+          {
+            name: "豆包",
+            url: "https://www.doubao.com/",
+            icon: "https://lf-flow-web-cdn.doubao.com/obj/flow-doubao/doubao/chat/favicon.png"
+          },
+          {
+            name: "Kimi - K2 长思考上线",
+            url: "https://www.kimi.com/zh/",
+            icon: "https://www.kimi.com/favicon.ico"
+          },
+          {
+            name: "\u200eGoogle Gemini",
+            url: "https://gemini.google.com/",
+            icon: "https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg"
+          },
+          {
+            name: "Grok",
+            url: "https://grok.com/",
+            icon: "https://grok.com/images/favicon.svg"
           }
         ]
       },
@@ -332,6 +371,11 @@ export const defaultConfig: SiteConfig = {
             name: "Cloudflare",
             url: "https://dash.cloudflare.com/",
             icon: "/img/ico/img_671e1295a09de.ico"
+          },
+          {
+            name: "FMHY",
+            url: "https://fmhy.net/",
+            icon: "https://fmhy.net/test.png"
           }
         ]
       }
