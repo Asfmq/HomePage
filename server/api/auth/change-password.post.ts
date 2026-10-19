@@ -1,71 +1,36 @@
-import jwt from 'jsonwebtoken'
-import fs from 'fs/promises'
-import path from 'path'
+import { requireAdmin } from '~~/server/utils/auth'
+import {
+  verifyAdminPassword,
+  validateNewPassword,
+  persistPassword
+} from '~~/server/utils/password'
 
 export default defineEventHandler(async (event) => {
-  try {
-    // Get token from Authorization header or query
-    const token = getHeader(event, 'authorization')?.replace('Bearer ', '') ||
-      getQuery(event).token
+  requireAdmin(event)
 
-    if (!token) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: '未授权'
-      })
-    }
+  const body = await readBody(event)
+  const currentPassword = typeof body?.currentPassword === 'string' ? body.currentPassword : ''
+  const newPassword = typeof body?.newPassword === 'string' ? body.newPassword : ''
 
-    // Verify JWT token
-    const config = useRuntimeConfig()
-    const decoded = jwt.verify(token, config.jwtSecret)
+  if (!currentPassword || !newPassword) {
+    throw createError({ statusCode: 400, statusMessage: '请提供当前密码和新密码' })
+  }
 
-    if (!decoded.admin) {
-      throw createError({
-        statusCode: 403,
-        statusMessage: '权限不足'
-      })
-    }
+  validateNewPassword(newPassword)
 
-    // Get request body
-    const body = await readBody(event)
-    const { currentPassword, newPassword } = body
+  if (newPassword === currentPassword) {
+    throw createError({ statusCode: 400, statusMessage: '新密码不能与当前密码相同' })
+  }
 
-    if (!currentPassword || !newPassword) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: '请提供当前密码和新密码'
-      })
-    }
+  const ok = await verifyAdminPassword(event, currentPassword)
+  if (!ok) {
+    throw createError({ statusCode: 401, statusMessage: '当前密码错误' })
+  }
 
-    // Verify current password
-    if (currentPassword !== config.adminPassword) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: '当前密码错误'
-      })
-    }
+  await persistPassword(event, newPassword)
 
-    // In a real implementation, you would update the password in a secure way
-    // For demo purposes, we'll just return success
-    // In production, you might want to:
-    // 1. Update environment variables
-    // 2. Update a secure configuration file
-    // 3. Use a proper password hashing system
-
-    return {
-      success: true,
-      message: '密码修改成功'
-    }
-  } catch (error: any) {
-    if (error.name === 'JsonWebTokenError') {
-      throw createError({
-        statusCode: 403,
-        statusMessage: '无效的 token'
-      })
-    }
-    throw createError({
-      statusCode: error.statusCode || 500,
-      statusMessage: error.statusMessage || '修改密码失败'
-    })
+  return {
+    success: true,
+    message: '密码修改成功，请重新登录'
   }
 })

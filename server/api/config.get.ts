@@ -1,29 +1,22 @@
-import fs from 'fs/promises'
-import path from 'path'
 import type { SiteConfig } from '~/types/config'
-import { defaultConfig } from '~/utils/config'
+
+/**
+ * 读取站点配置。公开接口（首页需要）。
+ *
+ * 注意：必须剥离 _admin 等内部字段，
+ * 否则密码哈希会随公开配置一起返回给任何访客。
+ */
+function toPublicConfig(config: any): SiteConfig {
+  const { _admin, ...rest } = config || {}
+  return rest as SiteConfig
+}
 
 export default defineEventHandler(async (event) => {
-  const storageType = process.env.STORAGE_TYPE || 'local'
-
+  const storage = useConfigStorage()
   try {
-    if (storageType === 'qiniu') {
-      // Fetch config from Qiniu Cloud Storage
-      // Add timestamp to prevent caching
-      const domain = process.env.NUXT_QINIU_DOMAIN || 'http://qnimg.asfmq.cn'
-      const configKey = process.env.NUXT_QINIU_CONFIG || 'homepage/site-config.json'
-      const configUrl = `${domain}/${configKey}?t=${Date.now()}`
-      const config = await $fetch<SiteConfig>(configUrl)
-      return config
-    } else {
-      // Read from local file system
-      const configPath = path.join(process.cwd(), 'site-config.json')
-      const data = await fs.readFile(configPath, 'utf-8')
-      return JSON.parse(data) as SiteConfig
-    }
+    return toPublicConfig(await storage.read(event))
   } catch (error) {
-    // If fetch fails or file doesn't exist, return default config
-    console.error(`Failed to fetch config (${storageType}):`, error)
-    return defaultConfig
+    console.error(`[config] 读取失败 (storage=${storage.type}):`, error)
+    return toPublicConfig(await loadSiteConfig(event))
   }
 })

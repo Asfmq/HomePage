@@ -26,8 +26,10 @@ export default defineNuxtConfig({
 
   // 运行时配置
   runtimeConfig: {
-    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '1235',
-    jwtSecret: process.env.NUXT_JWT_SECRET || 'your-jwt-secret',
+    // 不再提供弱默认值：缺失时在服务端鉴权处直接拒绝，避免「默认密码可登录」
+    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '',
+    jwtSecret: process.env.NUXT_JWT_SECRET || '',
+    // 七牛云密钥只从环境变量读取，绝不硬编码
     qiniuAccessKey: process.env.NUXT_QINIU_ACCESS_KEY || '',
     qiniuSecretKey: process.env.NUXT_QINIU_SECRET_KEY || '',
     qiniuBucket: process.env.NUXT_QINIU_BUCKET || '',

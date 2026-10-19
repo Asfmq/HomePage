@@ -6,7 +6,7 @@
           <!-- Search engine icon -->
           <div class="search-engine" @click="toggleDropdown">
             <div class="search-engine-icon">
-              <IconComponent :icon="currentSearchEngine.icon" />
+              <IconComponent :icon="currentSearchEngine.icon || null" />
             </div>
             <div class="search-engine-arrow">
               <IconComponent icon="#icon-up" v-if="showDropdown" />
@@ -19,7 +19,7 @@
             v-model="searchQuery"
             type="text"
             class="search-input"
-            :placeholder="currentSearchEngine.placeholder"
+            :placeholder="currentSearchEngine.placeholder || '搜索…'"
             @keyup.enter="handleSearch"
           />
 
@@ -35,7 +35,7 @@
         <div v-show="showDropdown" class="search-dropdown">
           <div class="dropdown-content">
             <div
-              v-for="engine in searchEngines"
+              v-for="engine in engines"
               :key="engine.name"
               class="search-option"
               :class="{ active: currentSearchEngine.name === engine.name }"
@@ -54,59 +54,92 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { defaultConfig } from '~/utils/config'
+import { ref, computed, watch } from 'vue'
+import type { SearchEngine } from '~/types/config'
 import IconComponent from './IconComponent.vue'
+
+interface Props {
+  searchEngines?: SearchEngine[]
+  initialEngine?: SearchEngine | null
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  searchEngines: () => [],
+  initialEngine: null
+})
+
+const emit = defineEmits<{
+  (e: 'search', query: string, engine: SearchEngine): void
+}>()
 
 const searchQuery = ref('')
 const showDropdown = ref(false)
 
-// 从配置中获取搜索引擎数据
-const searchEngines = computed(() => defaultConfig.links.searchEngines)
+// 直接使用父组件传入的配置，保证后台新增的搜索引擎即时生效
+const engines = computed<SearchEngine[]>(() => props.searchEngines ?? [])
 
-// 当前选中的搜索引擎（默认第一个）
-const currentSearchEngine = ref(searchEngines.value[0])
+// 当前选中的搜索引擎：优先 initialEngine，否则第一个
+const selectedName = ref<string>('')
 
-// 切换下拉菜单显示状态
+const currentSearchEngine = computed<SearchEngine>(() => {
+  const list = engines.value
+  if (!list.length) {
+    return { name: '', url: '', placeholder: '搜索…', icon: '' }
+  }
+  const matched = list.find(e => e.name === selectedName.value)
+  if (matched) return matched
+  return props.initialEngine ?? list[0]
+})
+
+// 配置变化（如后台新增引擎）时，若当前选择已不存在则回退
+watch(engines, (list) => {
+  if (!list.length) {
+    selectedName.value = ''
+    return
+  }
+  if (!list.some(e => e.name === selectedName.value)) {
+    selectedName.value = (props.initialEngine ?? list[0]).name
+  }
+}, { immediate: true })
+
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
 }
 
-// 选择搜索引擎
-const selectSearchEngine = (engine: any) => {
-  currentSearchEngine.value = engine
-  // 立即收起下拉菜单，不等待动画
+const selectSearchEngine = (engine: SearchEngine) => {
+  selectedName.value = engine.name
   showDropdown.value = false
 }
 
-// 执行搜索
 const handleSearch = () => {
-  let searchUrl = currentSearchEngine.value.url
+  const engine = currentSearchEngine.value
+  if (!engine?.url) return
 
-  // 如果有输入文本，进行搜索
-  if (searchQuery.value.trim()) {
-    // 检查URL是否已经包含参数
-    if (searchUrl.includes('?')) {
-      // 如果已经有参数，添加&参数
-      searchUrl += encodeURIComponent(searchQuery.value.trim())
-    } else {
-      // 如果没有参数，添加?参数
-      searchUrl += encodeURIComponent(searchQuery.value.trim())
+  const keyword = searchQuery.value.trim()
+
+  // 没有关键词时直接打开搜索引擎首页
+  if (!keyword) {
+    try {
+      const origin = new URL(engine.url).origin
+      window.open(origin, '_blank')
+    } catch {
+      // URL 非法则忽略
     }
-  } else {
-    // 如果没有输入文本，直接跳转到搜索引擎首页
-    // 移除URL中的参数部分，只保留域名
-    const url = new URL(searchUrl)
-    searchUrl = url.origin
+    return
   }
 
-  // 在新窗口打开搜索结果
+  // 引擎 URL 已有查询参数时用 & 连接，否则用 ? 连接
+  const encoded = encodeURIComponent(keyword)
+  const separator = engine.url.includes('?') ? '&' : '?'
+  const searchUrl = engine.url.includes('=') || engine.url.includes('?')
+    ? `${engine.url}${encoded}`
+    : `${engine.url}${separator}${encoded}`
+
   window.open(searchUrl, '_blank')
 
-  // 清空搜索框
+  emit('search', keyword, engine)
   searchQuery.value = ''
 }
-
 </script>
 
 <style scoped>

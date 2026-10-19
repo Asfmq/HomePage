@@ -290,9 +290,17 @@ const logout = () => {
   navigateTo('/login')
 }
 
+const getToken = (): string | null => {
+  if (typeof localStorage !== 'undefined') {
+    const t = localStorage.getItem('admin_token')
+    if (t) return t
+  }
+  const cookie = useCookie('admin_token')
+  return (cookie.value as string | null) ?? null
+}
+
 const saveConfig = async () => {
-  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('admin_token') :
-                 useCookie('admin_token').value
+  const token = getToken()
 
   if (!token) {
     showNotification('未找到认证令牌，请重新登录', 'error')
@@ -327,15 +335,22 @@ const handleChangePassword = async (data: any) => {
   }
 
   try {
+    const token = getToken()
+    if (!token) {
+      showNotification('登录已过期，请重新登录', 'error')
+      return
+    }
+
     await $fetch('/api/auth/change-password', {
       method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
       body: {
         currentPassword: data.current,
         newPassword: data.new
       }
     })
     showChangePasswordModal.value = false
-    showNotification('密码修改成功')
+    showNotification('密码修改成功，即将退出登录')
     setTimeout(() => logout(), 3000)
   } catch (error: any) {
     showNotification(error.data?.statusMessage || '密码修改失败', 'error')

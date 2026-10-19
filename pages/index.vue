@@ -84,6 +84,7 @@ const currentTime = ref('')
 const currentDate = ref('')
 const isMenuOpen = ref(false)
 const showBackToTop = ref(false)
+let timerId: number | null = null
 
 // Load config
 const loadConfig = async () => {
@@ -98,8 +99,8 @@ const loadConfig = async () => {
   }
 }
 
-// Update head based on config
-useHead({
+// SEO 头信息：使用函数形式，配置加载/变更后自动更新
+useHead(() => ({
   title: config.value.title,
   meta: [
     { name: 'description', content: config.value.description },
@@ -109,7 +110,7 @@ useHead({
   link: [
     { rel: 'icon', type: 'image/x-icon', href: config.value.favicon }
   ]
-})
+}))
 
 // SVG icons are loaded by plugin
 
@@ -229,7 +230,7 @@ onMounted(async () => {
 
   // Initialize time
   updateTime()
-  setInterval(updateTime, 1000)
+  timerId = window.setInterval(updateTime, 1000)
 
   // Add scroll listener
   window.addEventListener('scroll', handleScroll)
@@ -237,6 +238,10 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+  if (timerId !== null) {
+    window.clearInterval(timerId)
+    timerId = null
+  }
 })
 </script>
 
