@@ -1,5 +1,12 @@
 <template>
   <div>
+    <!-- 首屏背景由服务端内联渲染，避免挂载后再设置导致闪动 -->
+    <div
+      v-if="config.backgroundImage"
+      class="page-background"
+      :style="{ backgroundImage: `url(${config.backgroundImage})` }"
+      aria-hidden="true"
+    />
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
       <button
@@ -78,26 +85,23 @@ import { defaultConfig } from '~/utils/config'
 import IconComponent from '~/components/IconComponent.vue'
 import SearchBox from '~/components/SearchBox.vue'
 
+// 关键：在服务端渲染阶段就取到真实配置。
+// 之前是 ref(defaultConfig) + onMounted 里 $fetch，
+// 导致首屏 SSR 输出的是内置默认配置，客户端挂载后才被替换 —— 这就是刷新时闪一下旧配置的原因。
+// useAsyncData 的结果会随 SSR payload 一起下发，首屏即为最新配置。
+const { data: initialConfig } = await useAsyncData<SiteConfig>(
+  'site-config',
+  () => $fetch<SiteConfig>('/api/config'),
+  { default: () => defaultConfig }
+)
+
 // State
-const config = ref<SiteConfig>(defaultConfig)
+const config = ref<SiteConfig>(initialConfig.value ?? defaultConfig)
 const currentTime = ref('')
 const currentDate = ref('')
 const isMenuOpen = ref(false)
 const showBackToTop = ref(false)
 let timerId: number | null = null
-
-// Load config
-const loadConfig = async () => {
-  try {
-    const siteConfig = await $fetch<SiteConfig>('/api/config')
-    if (siteConfig) {
-      config.value = siteConfig
-    }
-  } catch (error) {
-    console.warn('Failed to load site config, using default:', error)
-    // Keep using defaultConfig
-  }
-}
 
 // SEO 头信息：使用函数形式，配置加载/变更后自动更新
 useHead(() => ({
@@ -172,17 +176,9 @@ const updateTime = () => {
 
 // Lifecycle
 onMounted(async () => {
-  // Load configuration first
-  await loadConfig()
+  // 配置已在 setup 阶段（含 SSR）取到，这里不再重复请求
 
-  // Set background
-  if (config.value.backgroundImage) {
-    document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
-    document.body.style.backgroundSize = 'cover'
-    document.body.style.backgroundPosition = 'center'
-    document.body.style.backgroundRepeat = 'no-repeat'
-    document.body.style.backgroundAttachment = 'fixed'
-  }
+  // 背景已由模板中的 .page-background 内联渲染，无需在此设置
 
   // Load weather widget with error handling
   if (typeof window !== 'undefined') {
@@ -245,3 +241,17 @@ onUnmounted(() => {
 })
 </script>
 
+
+<style scoped>
+/* 首屏背景层：固定定位铺满视口，位于内容之下 */
+.page-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  pointer-events: none;
+}
+</style>

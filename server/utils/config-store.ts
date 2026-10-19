@@ -110,13 +110,22 @@ export function useConfigStorage(): ConfigStorage {
   return { read: () => readFromLocal(), write: (_event, cfg) => writeToLocal(cfg), type }
 }
 
-/** 读取配置，失败时回退到构建期内置的默认配置，保证首页永远可渲染 */
+/**
+ * 读取配置，失败时回退到构建期内置的默认配置，保证首页永远可渲染。
+ *
+ * 注意：回退会让站点「看起来变回默认配置」，因此这里打出醒目告警，
+ * 便于在 Vercel 日志里快速定位是环境变量缺失还是七牛不可达。
+ */
 export async function loadSiteConfig(event: H3Event): Promise<SiteConfig> {
+  const storage = useConfigStorage()
+
   try {
-    const storage = useConfigStorage()
     return await storage.read(event)
-  } catch (error) {
-    console.error('[config] 读取配置失败，回退到内置默认配置:', error)
+  } catch (error: any) {
+    console.error(
+      `[config] 读取失败 (storage=${storage.type})，已回退到内置默认配置！` +
+      `页面会显示默认内容而非七牛上的真实配置。原因: ${error?.message || error}`
+    )
     return defaultConfig
   }
 }

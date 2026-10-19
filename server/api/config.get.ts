@@ -12,11 +12,11 @@ function toPublicConfig(config: any): SiteConfig {
 }
 
 export default defineEventHandler(async (event) => {
-  const storage = useConfigStorage()
-  try {
-    return toPublicConfig(await storage.read(event))
-  } catch (error) {
-    console.error(`[config] 读取失败 (storage=${storage.type}):`, error)
-    return toPublicConfig(await loadSiteConfig(event))
-  }
+  // 配置随时可能被后台修改，禁止 CDN / 浏览器缓存，
+  // 否则修改后刷新仍会读到旧配置。
+  setHeader(event, 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+
+  // loadSiteConfig 内部已处理读取失败时回退默认配置
+  const config = await loadSiteConfig(event)
+  return toPublicConfig(config)
 })

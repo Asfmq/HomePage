@@ -185,6 +185,7 @@ definePageMeta({
 
 // State
 const config = ref<SiteConfig>(defaultConfig)
+let timerId: number | null = null
 const mobileMenuOpen = ref(false)
 const adminDropdownOpen = ref(false)
 const currentTime = ref('')
@@ -227,7 +228,7 @@ const copyrightHtml = computed(() => {
 onMounted(async () => {
   await loadConfig()
   updateTime()
-  setInterval(updateTime, 1000)
+  timerId = window.setInterval(updateTime, 1000)
   
   // Set background
   if (config.value.backgroundImage) {
@@ -244,6 +245,10 @@ onMounted(async () => {
 
 onUnmounted(() => {
   document.removeEventListener('click', closeDropdowns)
+  if (timerId !== null) {
+    window.clearInterval(timerId)
+    timerId = null
+  }
 })
 
 // Methods
