@@ -1,11 +1,6 @@
 <template>
-  <component
-    :is="iconComponent"
-    v-bind="memoizedIconProps"
-    :class="iconClass"
-    :style="iconStyle"
-  >
-      <use v-if="iconComponent === 'svg' && props.icon" :href="props.icon" :xlink:href="props.icon" />
+  <component :is="iconComponent" v-bind="memoizedIconProps" :class="iconClass" :style="iconStyle">
+    <use v-if="iconComponent === 'svg' && props.icon" :href="props.icon" :xlink:href="props.icon" />
   </component>
 </template>
 
@@ -13,7 +8,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  icon: string | null
+  icon?: string | null
   type?: 'svg' | 'img' | 'engine' | 'link' | 'title'
   size?: string | number
   class?: string
@@ -22,6 +17,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  icon: null,
   type: 'svg',
   size: 20,
   class: '',
@@ -70,9 +66,14 @@ const memoizedIconProps = computed(() => {
   }
 
   if (props.icon.startsWith('http') || props.icon.startsWith('/')) {
-    const altText = props.type === 'engine' ? 'Search engine' :
-                  props.type === 'link' ? 'Link' :
-                  props.type === 'title' ? 'Category' : 'Icon'
+    const altText =
+      props.type === 'engine'
+        ? 'Search engine'
+        : props.type === 'link'
+          ? 'Link'
+          : props.type === 'title'
+            ? 'Category'
+            : 'Icon'
     return {
       src: props.icon,
       alt: altText,
@@ -132,10 +133,28 @@ const iconStyle = computed(() => {
 }
 
 /* Common icon sizes */
-.icon-size-16 { width: 16px; height: 16px; }
-.icon-size-20 { width: 20px; height: 20px; }
-.icon-size-24 { width: 24px; height: 24px; }
-.icon-size-32 { width: 32px; height: 32px; }
-.icon-size-45 { width: 45px; height: 45px; }
-.icon-size-14 { width: 14px; height: 14px; }
+.icon-size-16 {
+  width: 16px;
+  height: 16px;
+}
+.icon-size-20 {
+  width: 20px;
+  height: 20px;
+}
+.icon-size-24 {
+  width: 24px;
+  height: 24px;
+}
+.icon-size-32 {
+  width: 32px;
+  height: 32px;
+}
+.icon-size-45 {
+  width: 45px;
+  height: 45px;
+}
+.icon-size-14 {
+  width: 14px;
+  height: 14px;
+}
 </style>

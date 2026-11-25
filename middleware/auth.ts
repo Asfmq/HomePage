@@ -1,35 +1,22 @@
+/**
+ * 管理页登录校验。
+ *
+ * token 放在 httpOnly cookie 里，前端 JS 读不到，所以只能在请求时让服务端判断：
+ * - SSR 阶段把浏览器的 cookie 转发给内部 /api/auth/verify；
+ * - 客户端阶段浏览器会自动携带同源 cookie。
+ */
 export default defineNuxtRouteMiddleware(async (to) => {
-  // Skip middleware for login page
-  if (to.path === '/login') {
-    return
-  }
+  if (to.path === '/login') return
 
-  // For server-side rendering, we need to handle authentication differently
-  // We'll rely on client-side validation for now
-  if (process.client) {
-    // Client-side check
-    const token = localStorage.getItem('admin_token')
+  const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
 
-    if (!token) {
+  try {
+    const authenticated = await $fetch<boolean>('/api/auth/verify', { headers })
+    if (!authenticated) {
       return navigateTo('/login')
     }
-
-    try {
-      // Verify token client-side
-      const response = await $fetch('/api/auth/verify', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      if (!response) {
-        localStorage.removeItem('admin_token')
-        return navigateTo('/login')
-      }
-    } catch (error) {
-      localStorage.removeItem('admin_token')
-      return navigateTo('/login')
-    }
+  } catch {
+    // 校验接口异常时按未登录处理，避免把后台页面暴露给匿名访客
+    return navigateTo('/login')
   }
-  // For server-side, we'll let the component handle authentication
 })

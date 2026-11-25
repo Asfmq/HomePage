@@ -3,8 +3,8 @@
 # 精简生产环境 Dockerfile
 # ==========================================
 
-# 使用官方 Node.js 20 Alpine 镜像作为基础镜像
-FROM node:20-alpine AS builder
+# 使用官方 Node.js 22 Alpine 镜像作为基础镜像
+FROM node:22-alpine AS builder
 
 # 设置构建参数
 ARG NODE_ENV=production
@@ -16,21 +16,24 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NPM_CONFIG_LOGLEVEL=warn
 ENV NPM_CONFIG_PROGRESS=false
+ENV NUXT_TELEMETRY_DISABLED=1
 
 # 安装构建依赖（仅安装必要的包）
 RUN apk add --no-cache libc6-compat
 
 # 复制 package 文件（利用 Docker 缓存层）
+# 注意：必须同时复制 package-lock.json，npm ci 依赖锁文件保证可复现构建。
 COPY package*.json ./
 
 # 安装所有依赖（包括 devDependencies，构建需要）
+# postinstall 脚本会执行 nuxt prepare，无需再单独调用
 RUN npm ci --include=dev && npm cache clean --force
 
 # 复制项目源文件
 COPY . .
 
-# 生成 .nuxt 目录并构建应用
-RUN npm run prepare && npm run build
+# 构建应用（nuxt build 自身会生成 .nuxt）
+RUN npm run build
 
 # 清理不需要的文件以减小镜像大小
 RUN npm prune --production && \
@@ -40,7 +43,7 @@ RUN npm prune --production && \
 
 # ==========================================
 # 生产环境阶段
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 
 # 创建非 root 用户
 RUN addgroup -g 1001 -S nodejs && \
@@ -54,6 +57,7 @@ ENV NODE_ENV=production
 ENV NITRO_HOST=0.0.0.0
 ENV NITRO_PORT=3000
 ENV NUXT_APP_PORT=3000
+ENV NUXT_TELEMETRY_DISABLED=1
 
 # 安装运行时必需的系统依赖
 RUN apk add --no-cache \
@@ -68,7 +72,8 @@ COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 COPY --from=builder --chown=nuxtjs:nodejs /app/public ./public
 
 # 创建必要的目录并设置权限
-RUN mkdir -p /app/.output/logs && \
+# /app/data 用于 local 存储模式持久化 site-config.json（配合挂载卷使用）
+RUN mkdir -p /app/.output/logs /app/data && \
     chown -R nuxtjs:nodejs /app
 
 # 切换到非 root 用户

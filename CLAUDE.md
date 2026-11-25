@@ -4,113 +4,48 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a modern personal homepage built with Nuxt 3, featuring search functionality, categorized links management, and responsive design. The application supports both SSR (Server-Side Rendering) and static generation modes.
+Personal homepage built with Nuxt 3: multi-engine search, categorized link navigation, and an admin panel for editing the site configuration. SSR is used in production (Vercel or Node/Docker), with configuration persisted to Qiniu object storage (or a local file for development).
 
 ## Development Commands
 
-### Core Development
-- `npm run dev` - Start development server (http://localhost:3000)
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run generate` - Generate static site
-- `npm install` - Install dependencies
+- `npm run dev` – dev server on http://localhost:3000
+- `npm run build` – production build (`.output/`)
+- `npm run preview` – preview the production build
+- `npm run generate` – static generation
+- `npm run lint` / `npm run lint:fix` – ESLint
+- `npm run typecheck` – vue-tsc type checking
+- `npm run format` / `npm run format:check` – Prettier
+- `npm install` – install dependencies
 
-### Testing
-- No specific test commands are currently configured
+Node.js >= 22.12 is required (`engines` in `package.json`). There is no automated test suite yet.
 
-## Architecture Overview
+## Architecture
 
-### Tech Stack
-- **Frontend**: Nuxt 3 with Vue 3 Composition API
-- **Styling**: Tailwind CSS with custom CSS files
-- **Backend**: Built-in Nuxt Server API routes
-- **Authentication**: JWT-based auth system
-- **Icons**: SVG sprite system in `public/icons.svg`
+- Nuxt 3 (3.21), Vue 3 Composition API, TypeScript 5, custom CSS (no Tailwind).
+- Pages: `pages/index.vue` (public homepage), `pages/admin.vue` (admin UI), `pages/login.vue`.
+- Auth: JWT in an **httpOnly cookie** (`admin_token`, 2h TTL). Login sets it; `requireAdmin()` reads it from the cookie (an `Authorization: Bearer` header is also accepted for scripting). Tokens are never stored in localStorage or passed in query strings.
+- Config storage: `server/utils/config-store.ts`. `STORAGE_TYPE=qiniu` for production/Vercel; `STORAGE_TYPE=local` for development/Docker, using `CONFIG_FILE_PATH` (default `./site-config.json`).
+- Config API: `GET /api/config` (public, strips `_admin`), `POST /api/config` (admin).
+- Auth API: `POST /api/auth/login`, `GET /api/auth/verify`, `POST /api/auth/logout`, `POST /api/auth/change-password`.
+- Utility API: `GET /api/fetch-site-info` (admin only, SSRF-guarded), `GET /api/health`.
+- `/admin` is protected by `middleware/auth.ts`, which verifies via `/api/auth/verify` on both server (forwarding the request cookie) and client.
 
-### Key Directories Structure
+## Configuration
 
-```
-HomePage/
-├── components/          # Vue components (IconComponent, SearchBox, IconDebug)
-├── pages/              # File-based routing (index.vue, admin.vue, login.vue)
-├── server/api/         # API routes (config, auth, site-info, health)
-├── utils/              # Utilities and default configuration
-├── types/              # TypeScript type definitions
-├── assets/             # CSS and JS assets
-└── public/             # Static assets including SVG icons
-```
-
-### Component System
-- **IconComponent.vue**: Unified icon component supporting SVG sprites, images, and text
-- **SearchBox.vue**: Multi-search engine component with switching and suggestions
-- **IconDebug.vue**: Development tool for icon debugging
-
-### Configuration Management
-- **Default Config**: `utils/config.ts` contains default site configuration
-- **Dynamic Config**: Runtime configuration stored server-side, manageable via admin panel
-- **Type Safety**: Full TypeScript definitions in `types/config.ts`
-
-### API Architecture
-- **Config API**: `GET/POST /api/config` - Site configuration management
-- **Auth API**: `/api/auth/login`, `/api/auth/verify`, `/api/auth/change-password`
-- **Utility API**: `/api/fetch-site-info`, `/api/health`
-
-## Key Configuration Files
-
-### Environment Variables
-Set in `nuxt.config.ts` runtime config:
-- `adminPassword`: Admin access password (currently hardcoded as '1235')
-- `jwtSecret`: JWT signing secret
-- `public.apiBase`: API base path
-
-### Site Configuration Structure
-The site configuration follows this schema:
-- Navigation links (`navItems`)
-- Search engines configuration (`searchEngines`)
-- Categorized links (`categories`)
-- Copyright and site metadata
+- `utils/config.ts` – built-in `defaultConfig`, used only when no stored configuration exists yet.
+- `site-config.json` – local storage file (kept in the repo as the default/reference configuration).
+- `types/config.ts` – `SiteConfig` schema.
+- Environment variables read by `nuxt.config.ts`: `NUXT_ADMIN_PASSWORD` and `NUXT_JWT_SECRET` are required; `STORAGE_TYPE`, `CONFIG_FILE_PATH`, and `NUXT_QINIU_ACCESS_KEY` / `NUXT_QINIU_SECRET_KEY` / `NUXT_QINIU_BUCKET` / `NUXT_QINIU_DOMAIN` / `NUXT_QINIU_CONFIG` for storage.
+  There are **no weak default secrets**: if the password or JWT secret is missing, login returns 503.
 
 ## Icon System
-Icons are managed through an SVG sprite system:
-- SVG icons defined in `public/icons.svg` as `<symbol>` elements
-- Icons referenced by ID (e.g., `#icon-home`)
-- IconComponent automatically detects and renders SVG, image, or text icons
 
-## Development Notes
+- SVG sprites live in `public/icons.svg`, referenced as `#icon-name`.
+- `IconComponent.vue` renders sprite SVGs, images (`/` or `http` URLs), or inline SVG strings.
+- The sprite is injected on the client by `plugins/svg-icons.client.ts`.
 
-### Code Style
-- Vue 3 Composition API with `<script setup>` syntax
-- TypeScript for type safety
-- Tailwind CSS for styling with custom performance optimizations
+## Conventions
 
-### Security
-- JWT-based authentication for admin features
-- Server-side configuration management
-- Environment variable handling for sensitive data
-
-### Performance
-- SSR support for better SEO and loading performance
-- CSS optimization in `assets/css/performance.css`
-- Component code splitting
-- Icon lazy loading
-
-## Common Development Tasks
-
-### Adding New Search Engines
-1. Update search engine configuration in `utils/config.ts`
-2. Add corresponding icon to `public/icons.svg`
-3. Configure SearchBox component with new engine
-
-### Adding New Link Categories
-1. Define category structure following `Category` interface
-2. Add category data to configuration
-3. Icons automatically loaded from SVG sprite
-
-### Modifying Site Configuration
-- For development: Edit `utils/config.ts`
-- For production: Use admin panel at `/admin` or API endpoints
-
-### Adding New Icons
-1. Add SVG `<symbol>` to `public/icons.svg` with unique ID
-2. Reference using `#icon-{name}` format in components
-3. Use IconDebug component for testing icon display
+- Vue 3 `<script setup>` with TypeScript. Prettier: no semicolons, single quotes, 100 columns.
+- Error responses use h3's `message` field; clients read `error.data.message` (falling back to `statusMessage` for compatibility).
+- Never reintroduce `v-html` for admin-editable fields – the copyright block is rendered with text interpolation to avoid stored XSS.

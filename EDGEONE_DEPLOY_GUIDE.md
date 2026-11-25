@@ -5,11 +5,13 @@
 根据 EdgeOne Pages 官方文档，我发现了之前配置的问题：
 
 ### ❌ 之前的错误配置
+
 1. 使用了 `nitro.preset: 'node-server'` - 这不适合 EdgeOne Pages
 2. 在 `edgeone.json` 中手动指定了构建命令和输出目录
 3. 添加了过多的自定义配置
 
 ### ✅ 正确的配置方式
+
 **EdgeOne Pages 会自动识别 Nuxt 项目并配置所有必要的设置！**
 
 ## 📋 当前配置（已优化）
@@ -19,14 +21,14 @@
 ```typescript
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  
+
   css: [
     '~/assets/css/main.css',
     '~/assets/css/style.css',
     '~/assets/css/performance.css',
     '~/assets/css/index.css'
   ],
-  
+
   app: {
     head: {
       title: 'fmq的主页',
@@ -38,15 +40,18 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' }
+        {
+          rel: 'stylesheet',
+          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+        }
       ]
     }
   },
-  
+
   // 运行时配置
   runtimeConfig: {
-    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '1235',
-    jwtSecret: process.env.NUXT_JWT_SECRET || 'your-jwt-secret',
+    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '',
+    jwtSecret: process.env.NUXT_JWT_SECRET || '',
     qiniuAccessKey: process.env.NUXT_QINIU_ACCESS_KEY || '',
     qiniuSecretKey: process.env.NUXT_QINIU_SECRET_KEY || '',
     qiniuBucket: process.env.NUXT_QINIU_BUCKET || '',
@@ -60,6 +65,7 @@ export default defineNuxtConfig({
 ```
 
 **关键点：**
+
 - ❌ 不要添加 `nitro` 配置
 - ❌ 不要添加 `modules: ['@edgeone/nuxt-pages']`（会导致构建失败）
 - ✅ 让 EdgeOne Pages 自动处理所有部署配置
@@ -73,6 +79,7 @@ export default defineNuxtConfig({
 ```
 
 **就这么简单！** EdgeOne Pages 会自动：
+
 - 检测 Nuxt 版本
 - 选择正确的构建命令
 - 配置输出目录
@@ -90,29 +97,30 @@ export default defineNuxtConfig({
    - 授权并选择你的 `HomePage` 仓库
 
 3. **配置项目（重要！）**
-   
+
    EdgeOne Pages 会自动检测配置，但请**确认**以下设置：
-   
-   | 配置项 | 推荐值 | 说明 |
-   |--------|--------|------|
-   | **框架预设** | Nuxt.js | 自动检测 |
-   | **构建命令** | 留空或 `npm run build` | 让平台自动选择 |
-   | **输出目录** | 留空或 `.output` | 让平台自动选择 |
-   | **Node 版本** | 18.x 或 20.x | 推荐 18.x |
-   | **根目录** | `/` | 如果项目在仓库根目录 |
+
+   | 配置项        | 推荐值                 | 说明                 |
+   | ------------- | ---------------------- | -------------------- |
+   | **框架预设**  | Nuxt.js                | 自动检测             |
+   | **构建命令**  | 留空或 `npm run build` | 让平台自动选择       |
+   | **输出目录**  | 留空或 `.output`       | 让平台自动选择       |
+   | **Node 版本** | 18.x 或 20.x           | 推荐 18.x            |
+   | **根目录**    | `/`                    | 如果项目在仓库根目录 |
 
    **⚠️ 关键：不要手动指定太多配置，让 EdgeOne Pages 自动处理！**
 
 4. **配置环境变量**
-   
+
    在"环境变量"部分添加：
-   
+
    ```bash
    NUXT_ADMIN_PASSWORD=你的强密码
    NUXT_JWT_SECRET=至少32个字符的密钥
    ```
-   
+
    可选（如果使用七牛云）：
+
    ```bash
    STORAGE_TYPE=qiniu
    NUXT_QINIU_ACCESS_KEY=你的AccessKey
@@ -148,11 +156,13 @@ edgeone deploy
 ### 1. 查看部署日志
 
 在 EdgeOne Pages 控制台：
+
 1. 进入项目
 2. 点击"部署"标签
 3. 查看最新部署的日志
 
 **检查要点：**
+
 - ✅ 是否识别为 Nuxt 项目
 - ✅ 构建命令是什么（应该是 `npm run build` 或自动检测）
 - ✅ 输出目录是什么（应该是 `.output`）
@@ -161,6 +171,7 @@ edgeone deploy
 ### 2. 测试部署的应用
 
 访问 EdgeOne Pages 提供的 URL，测试：
+
 - ✅ 首页是否正常显示
 - ✅ 静态资源（CSS、JS、图片）是否加载
 - ✅ API 路由是否工作（如 `/api/xxx`）
@@ -181,19 +192,21 @@ edgeone deploy
    - 环境变量是否配置？
 
 3. **本地测试**
+
    ```bash
    # 本地构建测试
    npm run build
-   
+
    # 本地预览
    npm run preview
    ```
-   
+
    如果本地预览正常，但部署后 404，问题在于 EdgeOne Pages 配置。
 
 4. **检查 package.json**
-   
+
    确保有正确的脚本：
+
    ```json
    {
      "scripts": {
@@ -206,9 +219,9 @@ edgeone deploy
    ```
 
 5. **尝试使用 generate 命令**
-   
+
    如果 SSR 部署有问题，可以尝试静态生成：
-   
+
    在 EdgeOne Pages 控制台修改：
    - 构建命令: `npm run generate`
    - 输出目录: `.output/public`

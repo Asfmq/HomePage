@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!body || typeof body !== 'object' || !body.links || !Array.isArray(body.links.categories)) {
     throw createError({
       statusCode: 400,
-      statusMessage: '无效的配置数据'
+      message: '无效的配置数据'
     })
   }
 
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
     console.error(`[config] 保存失败 (storage=${storage.type}):`, error)
     throw createError({
       statusCode: 500,
-      statusMessage: `配置保存失败: ${error?.message || '未知错误'}`
+      message: `配置保存失败: ${error?.message || '未知错误'}`
     })
   }
 

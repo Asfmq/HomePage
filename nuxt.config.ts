@@ -1,6 +1,8 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  modules: ['@nuxt/eslint'],
+
   css: [
     '~/assets/css/main.css',
     '~/assets/css/style.css',
@@ -19,7 +21,10 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css' }
+        {
+          rel: 'stylesheet',
+          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css'
+        }
       ]
     }
   },
@@ -38,14 +43,14 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
     }
-  },
+  }
 
-  // adapter: process.env.NODE_ENV === 'production' ? 
+  // adapter: process.env.NODE_ENV === 'production' ?
   //   require('@edgeone/nuxt') : undefined,
-  
+
   // // 确保SSR启用
   // ssr: true,
-  
+
   // // Nitro配置
   // nitro: {
   //   // 指定输出目录为EO平台期望的目录
@@ -57,10 +62,10 @@ export default defineNuxtConfig({
   //   // 路由规则配置
   //   routeRules: {
   //     // 静态资源缓存
-  //     '/_nuxt/**': { 
-  //       headers: { 
-  //         'cache-control': 'public, max-age=31536000, immutable' 
-  //       } 
+  //     '/_nuxt/**': {
+  //       headers: {
+  //         'cache-control': 'public, max-age=31536000, immutable'
+  //       }
   //     },
   //     // API路由
   //     '/api/**': { cors: true, swr: 60 }

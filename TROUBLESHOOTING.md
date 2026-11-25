@@ -13,6 +13,7 @@
 3. 查看最新部署的详细日志
 
 **关键检查点：**
+
 - ✅ 构建是否成功完成
 - ✅ 是否有错误或警告信息
 - ✅ 输出目录是否正确（应该是 `.output`）
@@ -22,13 +23,13 @@
 
 确认 EdgeOne Pages 控制台中的配置：
 
-| 配置项 | 正确值 |
-|--------|--------|
-| **框架** | Nuxt.js 或 Nuxt 3 |
-| **构建命令** | `npm run build` |
-| **输出目录** | `.output` |
-| **安装命令** | `npm install` |
-| **Node 版本** | 18.x 或 20.x |
+| 配置项        | 正确值            |
+| ------------- | ----------------- |
+| **框架**      | Nuxt.js 或 Nuxt 3 |
+| **构建命令**  | `npm run build`   |
+| **输出目录**  | `.output`         |
+| **安装命令**  | `npm install`     |
+| **Node 版本** | 18.x 或 20.x      |
 
 ### 3. 检查环境变量
 
@@ -46,11 +47,13 @@ NUXT_JWT_SECRET=your-secret
 #### 问题：所有页面都 404
 
 **可能原因：**
+
 - Nitro preset 配置不正确
 - 输出目录配置错误
 - EdgeOne Pages 没有正确识别 Nuxt 应用
 
 **解决方案：**
+
 1. 确保 `nuxt.config.ts` 中**不要**指定 `nitro.preset`，让 EdgeOne 自动检测
 2. 确保 `edgeone.json` 中的 `outputDirectory` 是 `.output`
 3. 重新部署项目
@@ -58,10 +61,12 @@ NUXT_JWT_SECRET=your-secret
 #### 问题：API 路由 404
 
 **可能原因：**
+
 - API 路由没有正确部署
 - serverless functions 配置问题
 
 **解决方案：**
+
 1. 检查 `server/api` 目录下的文件是否存在
 2. 查看部署日志确认 API 路由是否被识别
 3. 确保没有在 `edgeone.json` 中配置冲突的路由规则
@@ -87,16 +92,17 @@ npm run preview
 **症状：** 访问根路径 `/` 显示 404
 
 **解决方案：**
+
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
   nitro: {
     // 不要指定 preset
     // preset: 'node-server', // ❌ 删除这行
-    
+
     prerender: {
       crawlLinks: true,
-      routes: ['/']  // ✅ 确保预渲染首页
+      routes: ['/'] // ✅ 确保预渲染首页
     }
   }
 })
@@ -107,6 +113,7 @@ export default defineNuxtConfig({
 **症状：** CSS、JS、图片等静态资源加载失败
 
 **解决方案：**
+
 1. 检查 `public` 目录下的文件是否正确
 2. 确认构建输出中包含静态资源
 3. 检查 EdgeOne Pages 的 CDN 配置
@@ -116,13 +123,14 @@ export default defineNuxtConfig({
 **症状：** 如 `/admin` 等页面 404
 
 **解决方案：**
+
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/admin']  // 添加需要预渲染的路由
+      routes: ['/', '/admin'] // 添加需要预渲染的路由
     }
   }
 })
@@ -135,6 +143,7 @@ export default defineNuxtConfig({
 **症状：** 应用无法读取环境变量
 
 **解决方案：**
+
 1. 在 EdgeOne Pages 控制台重新检查环境变量配置
 2. 确保变量名以 `NUXT_` 开头
 3. 重新部署项目（修改环境变量后必须重新部署）
@@ -147,16 +156,16 @@ export default defineNuxtConfig({
 export default defineNuxtConfig({
   // 基础配置
   devtools: { enabled: true },
-  
+
   // 运行时配置
   runtimeConfig: {
-    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '1235',
-    jwtSecret: process.env.NUXT_JWT_SECRET || 'your-jwt-secret',
+    adminPassword: process.env.NUXT_ADMIN_PASSWORD || '',
+    jwtSecret: process.env.NUXT_JWT_SECRET || '',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api'
     }
   },
-  
+
   // Nitro 配置
   nitro: {
     // 不指定 preset，让 EdgeOne 自动检测
@@ -203,7 +212,7 @@ npm install @edgeone/nuxt-pages
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@edgeone/nuxt-pages'],
+  modules: ['@edgeone/nuxt-pages']
   // ... 其他配置
 })
 ```
@@ -218,6 +227,7 @@ npm run generate
 ```
 
 然后在 EdgeOne Pages 配置：
+
 - 构建命令: `npm run generate`
 - 输出目录: `.output/public`
 

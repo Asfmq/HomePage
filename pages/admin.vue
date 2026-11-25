@@ -13,10 +13,10 @@
           <IconComponent icon="#icon-closes" size="24" />
         </span>
       </button>
-      <div class="collapse navbar-collapse" :class="{ show: mobileMenuOpen }" id="navbarsExample05">
-        <ul class="navbar-nav mr-auto" id="nav-items">
+      <div id="navbarsExample05" class="collapse navbar-collapse" :class="{ show: mobileMenuOpen }">
+        <ul id="nav-items" class="navbar-nav mr-auto">
           <li v-for="item in config.links.navItems" :key="item.id" class="nav-item">
-            <a class="nav-link" :href="item.url" :id="item.id">{{ item.name }}</a>
+            <a :id="item.id" class="nav-link" :href="item.url">{{ item.name }}</a>
           </li>
         </ul>
         <div class="navbar-nav-right">
@@ -27,12 +27,23 @@
             </a>
           </div>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="adminDropdown" @click="adminDropdownOpen = !adminDropdownOpen">
+            <a
+              id="adminDropdown"
+              class="nav-link dropdown-toggle"
+              href="javascript:void(0)"
+              @click="adminDropdownOpen = !adminDropdownOpen"
+            >
               <IconComponent icon="#icon-admin" size="16" />
               管理员
             </a>
-            <div class="dropdown-menu" :class="{ show: adminDropdownOpen }" v-if="adminDropdownOpen">
-              <a class="dropdown-item" href="#" @click.prevent="showChangePasswordModal = true">修改密码</a>
+            <div
+              v-if="adminDropdownOpen"
+              class="dropdown-menu"
+              :class="{ show: adminDropdownOpen }"
+            >
+              <a class="dropdown-item" href="#" @click.prevent="showChangePasswordModal = true"
+                >修改密码</a
+              >
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" @click.prevent="logout">退出登录</a>
             </div>
@@ -42,7 +53,10 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container" style="margin-top:10vh;">
+    <main class="container" style="margin-top: 10vh">
+      <div v-if="!configLoaded" class="config-warning" role="alert">
+        配置加载失败，已禁用保存以避免覆盖线上数据。请检查网络或七牛配置后刷新页面重试。
+      </div>
       <div id="main">
         <div id="show_time">{{ currentTime }}</div>
         <div id="show_date">{{ currentDate }}</div>
@@ -57,39 +71,57 @@
 
       <!-- Categories -->
       <div id="categories">
-        <template v-for="(category, categoryIndex) in config.links.categories" :key="category.title">
-          <div 
+        <template
+          v-for="(category, categoryIndex) in config.links.categories"
+          :key="category.title"
+        >
+          <div
             class="category-container"
             draggable="true"
+            :class="{ dragging: isCategoryDragging(categoryIndex) }"
             @dragstart="onCategoryDragStart($event, categoryIndex)"
             @dragover.prevent="onCategoryDragOver($event, categoryIndex)"
             @dragenter.prevent="onCategoryDragEnter($event, categoryIndex)"
             @drop="onCategoryDrop($event, categoryIndex)"
-            :class="{ 'dragging': isCategoryDragging(categoryIndex) }"
           >
             <div class="category-title">
               <IconComponent :icon="category.icon" type="title" size="20" class="title-icon" />
-              <span @click="editCategory(categoryIndex)" style="cursor: pointer;" title="点击编辑分类">{{ category.title }}</span>
+              <span
+                style="cursor: pointer"
+                title="点击编辑分类"
+                @click="editCategory(categoryIndex)"
+                >{{ category.title }}</span
+              >
               <span class="edit-tools">
-                <a href="javascript:void(0)" @click="editCategory(categoryIndex)" class="btn btn-sm btn-link">
+                <a
+                  href="javascript:void(0)"
+                  class="btn btn-sm btn-link"
+                  @click="editCategory(categoryIndex)"
+                >
                   <IconComponent icon="#icon-edit" size="16" />
                 </a>
               </span>
             </div>
             <ul class="category-links" @dragover.prevent="onDragOverContainer($event)">
-              <li 
-                v-for="(link, linkIndex) in category.links" 
-                :key="link.url" 
+              <li
+                v-for="(link, linkIndex) in category.links"
+                :key="link.url"
                 class="lylme-3"
                 draggable="true"
+                :class="{ dragging: isLinkDragging(categoryIndex, linkIndex) }"
                 @dragstart.stop="onLinkDragStart($event, categoryIndex, linkIndex)"
                 @dragover.prevent="onLinkDragOver($event, categoryIndex)"
                 @dragenter.prevent="onLinkDragEnter($event, categoryIndex, linkIndex)"
                 @drop.stop="onLinkDrop($event, categoryIndex, linkIndex)"
-                :class="{ 'dragging': isLinkDragging(categoryIndex, linkIndex) }"
               >
                 <a href="javascript:void(0)" @click="openLinkModal(categoryIndex, linkIndex)">
-                  <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
+                  <IconComponent
+                    :icon="link.icon"
+                    type="link"
+                    size="45"
+                    class="link-icon"
+                    loading="lazy"
+                  />
                   <span>{{ link.name }}</span>
                 </a>
               </li>
@@ -114,7 +146,27 @@
 
       <!-- Footer -->
       <footer class="mt-5 mb-3 footer text-muted text-center">
-        <p v-html="copyrightHtml" id="copyright" @click="showCopyrightModal = true" style="cursor: pointer;" title="点击编辑版权信息"></p>
+        <p
+          v-if="config.copyright.show"
+          id="copyright"
+          style="cursor: pointer"
+          title="点击编辑版权信息"
+          @click="showCopyrightModal = true"
+        >
+          <span class="copyright-text">
+            Copyright ©{{ config.copyright.text }}
+            <a href="/" target="_blank" class="copyright-link">{{ config.copyright.target }}</a>.
+            All Rights Reserved.
+          </span>
+          <template v-if="config.copyright.showRecord">
+            <br />
+            <span class="copyright-record">
+              <a :href="config.copyright.recordUrl" target="_blank" class="copyright-link">{{
+                config.copyright.record
+              }}</a>
+            </span>
+          </template>
+        </p>
       </footer>
     </main>
 
@@ -122,22 +174,23 @@
     <SiteInfoModal
       v-model="showSiteInfoModal"
       :config="config"
+      :saving="saving"
       @save="handleSaveSiteInfo"
     />
 
     <ChangePasswordModal
       v-model="showChangePasswordModal"
+      :saving="saving"
       @change-password="handleChangePassword"
     />
 
-    <AddEngineModal
-      v-model="showAddEngineModal"
-      @add="handleAddEngine"
-    />
+    <AddEngineModal v-model="showAddEngineModal" @add="handleAddEngine" />
 
     <AddCategoryModal
       v-model="showAddCategoryModal"
-      :initial-data="editingCategoryIndex !== null ? config.links.categories[editingCategoryIndex] : null"
+      :initial-data="
+        editingCategoryIndex !== null ? config.links.categories[editingCategoryIndex] : null
+      "
       @submit="handleCategorySubmit"
     />
 
@@ -183,8 +236,28 @@ definePageMeta({
   middleware: 'auth'
 })
 
+// 首屏配置：SSR 阶段取到并直出背景，避免进入后台时背景突变
+const { data: initialConfig, error: initialConfigError } = await useAsyncData(
+  'site-config',
+  () => $fetch<SiteConfig>('/api/config'),
+  { default: () => defaultConfig }
+)
+
 // State
-const config = ref<SiteConfig>(defaultConfig)
+const config = ref<SiteConfig>(initialConfig.value ?? defaultConfig)
+// 配置是否已成功从服务端加载：未加载成功时禁止保存，否则会用内置默认值覆盖线上配置
+const configLoaded = ref(!initialConfigError.value)
+
+// 背景随配置直出，避免挂载后再设置造成闪变
+useHead(() => ({
+  bodyAttrs: {
+    style: config.value.backgroundImage
+      ? `background-image:url(${config.value.backgroundImage});background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;`
+      : ''
+  }
+}))
+// 保存中的全局状态，用于驱动弹窗按钮的 loading 表现
+const saving = ref(false)
 let timerId: number | null = null
 const mobileMenuOpen = ref(false)
 const adminDropdownOpen = ref(false)
@@ -209,35 +282,20 @@ const activeCategoryIndex = ref(-1)
 const activeLinkIndex = ref(-1)
 
 // Notification
-const notification = ref({ show: false, message: '', type: 'success' as 'success' | 'error' | 'info' | 'warning' })
-
-// Computed
-const copyrightHtml = computed(() => {
-  if (!config.value.copyright.show) return ''
-
-  let html = `<span style="color: #ffffff;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
-
-  if (config.value.copyright.showRecord) {
-    html += `<br><span style="color: #87CEEB;"><a href="${config.value.copyright.recordUrl}" target="_blank" style="color: #87CEEB;">${config.value.copyright.record}</a></span>`
-  }
-
-  return html
+const notification = ref({
+  show: false,
+  message: '',
+  type: 'success' as 'success' | 'error' | 'info' | 'warning'
 })
 
 // Lifecycle
 onMounted(async () => {
-  await loadConfig()
+  // 首屏数据已由 useAsyncData 取到；只有在初始加载失败时才重试一次
+  if (initialConfigError.value) {
+    await loadConfig()
+  }
   updateTime()
   timerId = window.setInterval(updateTime, 1000)
-  
-  // Set background
-  if (config.value.backgroundImage) {
-    document.body.style.backgroundImage = `url(${config.value.backgroundImage})`
-    document.body.style.backgroundSize = 'cover'
-    document.body.style.backgroundPosition = 'center'
-    document.body.style.backgroundRepeat = 'no-repeat'
-    document.body.style.backgroundAttachment = 'fixed'
-  }
 
   // Close dropdowns when clicking outside
   document.addEventListener('click', closeDropdowns)
@@ -256,8 +314,11 @@ const loadConfig = async () => {
   try {
     const data = await $fetch<SiteConfig>('/api/config')
     config.value = data
-  } catch (error) {
-    showNotification('加载配置失败', 'error')
+    configLoaded.value = true
+  } catch {
+    // 保持「禁止保存」状态：此时 config 还是内置默认值，保存会覆盖线上真实配置
+    configLoaded.value = false
+    showNotification('加载配置失败，已禁用保存以避免覆盖线上配置，请刷新重试', 'error')
   }
 }
 
@@ -286,38 +347,37 @@ const handleSearch = (query: string, engine: SearchEngine) => {
   console.log('Search triggered:', { query, engine: engine.name })
 }
 
-const logout = () => {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem('admin_token')
+const logout = async () => {
+  try {
+    // 清除服务端的 httpOnly cookie
+    await $fetch('/api/auth/logout', { method: 'POST' })
+  } catch {
+    // 登出接口异常也继续跳转，避免用户卡在后台
   }
-  const cookie = useCookie('admin_token')
-  cookie.value = null
-  navigateTo('/login')
-}
-
-const getToken = (): string | null => {
-  if (typeof localStorage !== 'undefined') {
-    const t = localStorage.getItem('admin_token')
-    if (t) return t
-  }
-  const cookie = useCookie('admin_token')
-  return (cookie.value as string | null) ?? null
+  await navigateTo('/login')
 }
 
 const saveConfig = async () => {
-  const token = getToken()
-
-  if (!token) {
-    showNotification('未找到认证令牌，请重新登录', 'error')
-    await logout()
-    return
+  if (!configLoaded.value) {
+    throw new Error('配置尚未成功加载，已阻止保存以避免覆盖线上配置，请刷新重试')
   }
 
-  await $fetch('/api/config', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}` },
-    body: config.value
-  })
+  saving.value = true
+  try {
+    // 已登录状态由 httpOnly cookie 自动携带，无需手动加 Authorization
+    await $fetch('/api/config', {
+      method: 'POST',
+      body: config.value
+    })
+  } catch (error: any) {
+    if (error?.statusCode === 401 || error?.statusCode === 403) {
+      showNotification('登录已过期，请重新登录', 'error')
+      await logout()
+    }
+    throw error
+  } finally {
+    saving.value = false
+  }
 }
 
 // Modal Handlers
@@ -329,7 +389,10 @@ const handleSaveSiteInfo = async (newConfig: SiteConfig) => {
     showSiteInfoModal.value = false
     showNotification('网站信息保存成功')
   } catch (error: any) {
-    showNotification(error.data?.statusMessage || '保存失败', 'error')
+    showNotification(
+      error?.data?.message || error?.data?.statusMessage || error?.message || '保存失败',
+      'error'
+    )
   }
 }
 
@@ -340,15 +403,9 @@ const handleChangePassword = async (data: any) => {
   }
 
   try {
-    const token = getToken()
-    if (!token) {
-      showNotification('登录已过期，请重新登录', 'error')
-      return
-    }
-
+    saving.value = true
     await $fetch('/api/auth/change-password', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` },
       body: {
         currentPassword: data.current,
         newPassword: data.new
@@ -356,9 +413,13 @@ const handleChangePassword = async (data: any) => {
     })
     showChangePasswordModal.value = false
     showNotification('密码修改成功，即将退出登录')
-    setTimeout(() => logout(), 3000)
+    setTimeout(() => {
+      void logout()
+    }, 3000)
   } catch (error: any) {
-    showNotification(error.data?.statusMessage || '密码修改失败', 'error')
+    showNotification(error?.data?.message || error?.data?.statusMessage || '密码修改失败', 'error')
+  } finally {
+    saving.value = false
   }
 }
 
@@ -379,12 +440,12 @@ const handleAddEngine = async (data: any) => {
     await saveConfig()
     showAddEngineModal.value = false
     showNotification('搜索引擎添加成功')
-  } catch (error) {
+  } catch {
     showNotification('添加失败', 'error')
   }
 }
 
-const handleCategorySubmit = (categoryData: any) => {
+const handleCategorySubmit = async (categoryData: any) => {
   if (categoryData.error) {
     showNotification(categoryData.error, 'error')
     return
@@ -404,10 +465,14 @@ const handleCategorySubmit = (categoryData: any) => {
     })
     showNotification('分类添加成功', 'success')
   }
-  
-  saveConfig()
-  showAddCategoryModal.value = false
-  editingCategoryIndex.value = null // Reset editing index
+
+  try {
+    await saveConfig()
+    showAddCategoryModal.value = false
+    editingCategoryIndex.value = null // Reset editing index
+  } catch (error: any) {
+    showNotification(error?.message || '分类保存失败', 'error')
+  }
 }
 
 // Reset editing index when modal is closed
@@ -453,13 +518,14 @@ const handleSaveLink = async (data: any) => {
     if (linkModalMode.value === 'add') {
       config.value.links.categories[activeCategoryIndex.value].links.push(newLink)
     } else {
-      config.value.links.categories[activeCategoryIndex.value].links[activeLinkIndex.value] = newLink
+      config.value.links.categories[activeCategoryIndex.value].links[activeLinkIndex.value] =
+        newLink
     }
 
     await saveConfig()
     showLinkModal.value = false
     showNotification(linkModalMode.value === 'add' ? '链接添加成功' : '链接更新成功')
-  } catch (error) {
+  } catch {
     showNotification('保存失败', 'error')
   }
 }
@@ -470,7 +536,7 @@ const handleDeleteLink = async () => {
     await saveConfig()
     showLinkModal.value = false
     showNotification('链接删除成功')
-  } catch (error) {
+  } catch {
     showNotification('删除失败', 'error')
   }
 }
@@ -489,12 +555,15 @@ const handleSaveCopyright = async (data: any) => {
     await saveConfig()
     showCopyrightModal.value = false
     showNotification('版权设置保存成功')
-  } catch (error) {
+  } catch {
     showNotification('保存失败', 'error')
   }
 }
 
-const showNotification = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'success') => {
+const showNotification = (
+  message: string,
+  type: 'success' | 'error' | 'info' | 'warning' = 'success'
+) => {
   notification.value = { show: true, message, type }
 }
 
@@ -531,7 +600,11 @@ const onDragOverContainer = (event: DragEvent) => {
   }
 }
 
-const onLinkDragEnter = (event: DragEvent, targetCategoryIndex: number, targetLinkIndex: number) => {
+const onLinkDragEnter = (
+  event: DragEvent,
+  targetCategoryIndex: number,
+  targetLinkIndex: number
+) => {
   if (!draggedItem.value || draggedItem.value.type !== 'link') return
 
   const { categoryIndex: sourceCategoryIndex, linkIndex: sourceLinkIndex } = draggedItem.value
@@ -542,21 +615,25 @@ const onLinkDragEnter = (event: DragEvent, targetCategoryIndex: number, targetLi
 
   const category = config.value.links.categories[sourceCategoryIndex]
   const links = [...category.links]
-  
+
   const [movedItem] = links.splice(sourceLinkIndex, 1)
   links.splice(targetLinkIndex, 0, movedItem)
-  
+
   config.value.links.categories[sourceCategoryIndex].links = links
   draggedItem.value.linkIndex = targetLinkIndex
 }
 
-const onLinkDrop = async (event: DragEvent, targetCategoryIndex: number, targetLinkIndex: number) => {
+const onLinkDrop = async (
+  _event: DragEvent,
+  _targetCategoryIndex: number,
+  _targetLinkIndex: number
+) => {
   if (!draggedItem.value || draggedItem.value.type !== 'link') return
 
   try {
     await saveConfig()
     showNotification('链接排序已更新')
-  } catch (error) {
+  } catch {
     showNotification('排序保存失败', 'error')
   }
 
@@ -564,9 +641,11 @@ const onLinkDrop = async (event: DragEvent, targetCategoryIndex: number, targetL
 }
 
 const isLinkDragging = (categoryIndex: number, linkIndex: number) => {
-  return draggedItem.value?.type === 'link' && 
-         draggedItem.value.categoryIndex === categoryIndex && 
-         draggedItem.value.linkIndex === linkIndex
+  return (
+    draggedItem.value?.type === 'link' &&
+    draggedItem.value.categoryIndex === categoryIndex &&
+    draggedItem.value.linkIndex === linkIndex
+  )
 }
 
 // Category Drag Handlers
@@ -578,7 +657,7 @@ const onCategoryDragStart = (event: DragEvent, categoryIndex: number) => {
   }
 }
 
-const onCategoryDragOver = (event: DragEvent, categoryIndex: number) => {
+const onCategoryDragOver = (event: DragEvent, _categoryIndex: number) => {
   if (draggedItem.value?.type === 'category') {
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move'
@@ -594,21 +673,21 @@ const onCategoryDragEnter = (event: DragEvent, targetCategoryIndex: number) => {
   if (sourceCategoryIndex === targetCategoryIndex) return
 
   const categories = [...config.value.links.categories]
-  
+
   const [movedCategory] = categories.splice(sourceCategoryIndex, 1)
   categories.splice(targetCategoryIndex, 0, movedCategory)
-  
+
   config.value.links.categories = categories
   draggedItem.value.categoryIndex = targetCategoryIndex
 }
 
-const onCategoryDrop = async (event: DragEvent, targetCategoryIndex: number) => {
+const onCategoryDrop = async (_event: DragEvent, _targetCategoryIndex: number) => {
   if (!draggedItem.value || draggedItem.value.type !== 'category') return
 
   try {
     await saveConfig()
     showNotification('分类排序已更新')
-  } catch (error) {
+  } catch {
     showNotification('排序保存失败', 'error')
   }
 
@@ -616,16 +695,33 @@ const onCategoryDrop = async (event: DragEvent, targetCategoryIndex: number) => 
 }
 
 const isCategoryDragging = (categoryIndex: number) => {
-  return draggedItem.value?.type === 'category' && 
-         draggedItem.value.categoryIndex === categoryIndex
+  return draggedItem.value?.type === 'category' && draggedItem.value.categoryIndex === categoryIndex
 }
 </script>
 
 <style scoped>
 @import url('~/assets/css/variables.css');
+
+#copyright {
+  color: #ffffff;
+}
+
+.copyright-link {
+  color: #87ceeb;
+}
+
+.config-warning {
+  max-width: 1200px;
+  margin: 0 auto 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(255, 193, 7, 0.95);
+  color: #212529;
+  font-size: 14px;
+  text-align: center;
+}
 @import url('~/assets/css/style.css');
 @import url('~/assets/css/index.css');
-
 
 /* Admin navigation styles */
 .navbar-nav .nav-link svg,
@@ -725,17 +821,15 @@ const isCategoryDragging = (categoryIndex: number) => {
 }
 
 @keyframes dropdownFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-
 
 .edit-tools {
   margin-left: auto;
@@ -762,7 +856,7 @@ const isCategoryDragging = (categoryIndex: number) => {
   .category-links {
     justify-content: space-between;
   }
-  
+
   .lylme-3 {
     width: 30%;
     height: auto;

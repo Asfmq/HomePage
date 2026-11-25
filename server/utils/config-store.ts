@@ -23,7 +23,8 @@ function getStorageType(): string {
 }
 
 function localConfigPath(): string {
-  return path.join(process.cwd(), 'site-config.json')
+  // CONFIG_FILE_PATH 允许把配置放到持久化目录（如 Docker 卷）或镜像只读目录之外的位置
+  return process.env.CONFIG_FILE_PATH || path.join(process.cwd(), 'site-config.json')
 }
 
 /**
@@ -33,7 +34,10 @@ function localConfigPath(): string {
 async function readFromQiniu(event: H3Event): Promise<SiteConfig> {
   const runtimeConfig = useRuntimeConfig(event)
   const domain = (runtimeConfig.qiniuDomain as string) || process.env.NUXT_QINIU_DOMAIN || ''
-  const configKey = (runtimeConfig.qiniuConfig as string) || process.env.NUXT_QINIU_CONFIG || 'homepage/site-config.json'
+  const configKey =
+    (runtimeConfig.qiniuConfig as string) ||
+    process.env.NUXT_QINIU_CONFIG ||
+    'homepage/site-config.json'
 
   if (!domain) {
     throw new Error('未配置 NUXT_QINIU_DOMAIN，无法从七牛云读取配置')
@@ -50,13 +54,20 @@ async function readFromQiniu(event: H3Event): Promise<SiteConfig> {
 async function writeToQiniu(event: H3Event, config: SiteConfig): Promise<void> {
   const runtimeConfig = useRuntimeConfig(event)
 
-  const accessKey = (runtimeConfig.qiniuAccessKey as string) || process.env.NUXT_QINIU_ACCESS_KEY || ''
-  const secretKey = (runtimeConfig.qiniuSecretKey as string) || process.env.NUXT_QINIU_SECRET_KEY || ''
+  const accessKey =
+    (runtimeConfig.qiniuAccessKey as string) || process.env.NUXT_QINIU_ACCESS_KEY || ''
+  const secretKey =
+    (runtimeConfig.qiniuSecretKey as string) || process.env.NUXT_QINIU_SECRET_KEY || ''
   const bucket = (runtimeConfig.qiniuBucket as string) || process.env.NUXT_QINIU_BUCKET || ''
-  const key = (runtimeConfig.qiniuConfig as string) || process.env.NUXT_QINIU_CONFIG || 'homepage/site-config.json'
+  const key =
+    (runtimeConfig.qiniuConfig as string) ||
+    process.env.NUXT_QINIU_CONFIG ||
+    'homepage/site-config.json'
 
   if (!accessKey || !secretKey || !bucket) {
-    throw new Error('七牛云配置不完整，请检查 NUXT_QINIU_ACCESS_KEY / NUXT_QINIU_SECRET_KEY / NUXT_QINIU_BUCKET')
+    throw new Error(
+      '七牛云配置不完整，请检查 NUXT_QINIU_ACCESS_KEY / NUXT_QINIU_SECRET_KEY / NUXT_QINIU_BUCKET'
+    )
   }
 
   // 动态导入：仅在真正写七牛时才加载，local 模式下即使没装 qiniu 也不影响
@@ -111,10 +122,27 @@ export function useConfigStorage(): ConfigStorage {
 }
 
 /**
- * 读取配置，失败时回退到构建期内置的默认配置，保证首页永远可渲染。
+ * 判断是否为「配置尚未创建」（首次部署），而不是读取故障。
  *
- * 注意：回退会让站点「看起来变回默认配置」，因此这里打出醒目告警，
- * 便于在 Vercel 日志里快速定位是环境变量缺失还是七牛不可达。
+ * - local 模式：文件不存在 → ENOENT
+ * - qiniu 模式：对象不存在 → 404
+ */
+function isConfigMissing(error: any): boolean {
+  return (
+    error?.code === 'ENOENT' ||
+    error?.statusCode === 404 ||
+    error?.status === 404 ||
+    error?.response?.status === 404
+  )
+}
+
+/**
+ * 读取配置。
+ *
+ * - 配置尚不存在（首次部署）：返回内置默认配置，允许后台保存完成初始化；
+ * - 读取故障（网络 / 权限 / JSON 损坏）：抛出 503，而不是回退默认值。
+ *   否则后台会把默认配置当成真实配置再写回，覆盖线上数据。首页由
+ *   useAsyncData 的 default 兜底渲染，不会白屏。
  */
 export async function loadSiteConfig(event: H3Event): Promise<SiteConfig> {
   const storage = useConfigStorage()
@@ -122,10 +150,17 @@ export async function loadSiteConfig(event: H3Event): Promise<SiteConfig> {
   try {
     return await storage.read(event)
   } catch (error: any) {
+    if (isConfigMissing(error)) {
+      console.info(`[config] 尚未创建配置文件 (storage=${storage.type})，使用内置默认配置`)
+      return defaultConfig
+    }
+
     console.error(
-      `[config] 读取失败 (storage=${storage.type})，已回退到内置默认配置！` +
-      `页面会显示默认内容而非七牛上的真实配置。原因: ${error?.message || error}`
+      `[config] 读取失败 (storage=${storage.type})，拒绝回退以避免覆盖线上配置。原因: ${error?.message || error}`
     )
-    return defaultConfig
+    throw createError({
+      statusCode: 503,
+      message: '配置读取失败，请检查存储服务或环境变量'
+    })
   }
 }

@@ -9,8 +9,8 @@
               <IconComponent :icon="currentSearchEngine.icon || null" />
             </div>
             <div class="search-engine-arrow">
-              <IconComponent icon="#icon-up" v-if="showDropdown" />
-              <IconComponent icon="#icon-down" v-else />
+              <IconComponent v-if="showDropdown" icon="#icon-up" />
+              <IconComponent v-else icon="#icon-down" />
             </div>
           </div>
 
@@ -86,21 +86,25 @@ const currentSearchEngine = computed<SearchEngine>(() => {
   if (!list.length) {
     return { name: '', url: '', placeholder: '搜索…', icon: '' }
   }
-  const matched = list.find(e => e.name === selectedName.value)
+  const matched = list.find((e) => e.name === selectedName.value)
   if (matched) return matched
   return props.initialEngine ?? list[0]
 })
 
 // 配置变化（如后台新增引擎）时，若当前选择已不存在则回退
-watch(engines, (list) => {
-  if (!list.length) {
-    selectedName.value = ''
-    return
-  }
-  if (!list.some(e => e.name === selectedName.value)) {
-    selectedName.value = (props.initialEngine ?? list[0]).name
-  }
-}, { immediate: true })
+watch(
+  engines,
+  (list) => {
+    if (!list.length) {
+      selectedName.value = ''
+      return
+    }
+    if (!list.some((e) => e.name === selectedName.value)) {
+      selectedName.value = (props.initialEngine ?? list[0]).name
+    }
+  },
+  { immediate: true }
+)
 
 const toggleDropdown = () => {
   showDropdown.value = !showDropdown.value
@@ -130,15 +134,29 @@ const handleSearch = () => {
 
   // 引擎 URL 已有查询参数时用 & 连接，否则用 ? 连接
   const encoded = encodeURIComponent(keyword)
-  const separator = engine.url.includes('?') ? '&' : '?'
-  const searchUrl = engine.url.includes('=') || engine.url.includes('?')
-    ? `${engine.url}${encoded}`
-    : `${engine.url}${separator}${encoded}`
+  const searchUrl = buildSearchUrl(engine.url, encoded)
 
   window.open(searchUrl, '_blank')
 
   emit('search', keyword, engine)
   searchQuery.value = ''
+}
+
+/**
+ * 构造搜索 URL。
+ *
+ * 推荐在配置里使用 {query} 占位符，例如 `https://www.baidu.com/s?wd={query}`。
+ * 兼容旧配置：URL 以 `...?q=` 形式结尾时直接拼接关键词，其余回退为 `?q=关键词`。
+ */
+function buildSearchUrl(url: string, encodedKeyword: string): string {
+  if (url.includes('{query}')) {
+    return url.split('{query}').join(encodedKeyword)
+  }
+  if (/[?&][^=&#]*=$/.test(url)) {
+    return `${url}${encodedKeyword}`
+  }
+  const separator = url.includes('?') ? '&' : '?'
+  return `${url}${separator}q=${encodedKeyword}`
 }
 </script>
 

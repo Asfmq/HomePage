@@ -9,7 +9,7 @@
         <div class="modal-body">
           <slot></slot>
         </div>
-        <div class="modal-footer" v-if="$slots.footer">
+        <div v-if="$slots.footer" class="modal-footer">
           <slot name="footer"></slot>
         </div>
       </div>
@@ -43,10 +43,14 @@ const close = () => {
 
 const sizeClass = computed(() => {
   switch (props.size) {
-    case 'sm': return 'modal-sm'
-    case 'lg': return 'modal-lg'
-    case 'xl': return 'modal-xl'
-    default: return ''
+    case 'sm':
+      return 'modal-sm'
+    case 'lg':
+      return 'modal-lg'
+    case 'xl':
+      return 'modal-xl'
+    default:
+      return ''
   }
 })
 
@@ -93,9 +97,15 @@ onUnmounted(() => {
   animation: slideUp 0.3s ease-out;
 }
 
-.modal-lg { max-width: 800px; }
-.modal-sm { max-width: 300px; }
-.modal-xl { max-width: 1140px; }
+.modal-lg {
+  max-width: 800px;
+}
+.modal-sm {
+  max-width: 300px;
+}
+.modal-xl {
+  max-width: 1140px;
+}
 
 .modal-content {
   position: relative;
@@ -111,7 +121,7 @@ onUnmounted(() => {
 
 .modal-header {
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-top-left-radius: var(--border-radius-lg, 12px);
   border-top-right-radius: var(--border-radius-lg, 12px);
   display: flex;
@@ -156,19 +166,29 @@ onUnmounted(() => {
   align-items: center;
   justify-content: flex-end;
   padding: 1rem 1.5rem;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
   border-bottom-right-radius: var(--border-radius-lg, 12px);
   border-bottom-left-radius: var(--border-radius-lg, 12px);
   gap: 10px;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

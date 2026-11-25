@@ -13,7 +13,7 @@ yarn-error.log*
 .nuxt/
 .output/
 dist/
-
+data/
 # IDE
 .idea/
 .vscode/
@@ -51,4 +51,5 @@ HomePage/
 
 .nuxt/
 
-package-lock.json
+# 注意：package-lock.json 必须入库。
+# Dockerfile 使用 npm ci，缺少锁文件会直接构建失败，且依赖版本不可复现。

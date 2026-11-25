@@ -20,10 +20,10 @@
           <IconComponent icon="#icon-closes" size="24" />
         </span>
       </button>
-      <div class="collapse navbar-collapse" :class="{ show: isMenuOpen }" id="navbarsExample05">
-        <ul class="navbar-nav mr-auto" id="nav-items">
+      <div id="navbarsExample05" class="collapse navbar-collapse" :class="{ show: isMenuOpen }">
+        <ul id="nav-items" class="navbar-nav mr-auto">
           <li v-for="item in config.links.navItems" :key="item.id" class="nav-item">
-            <a class="nav-link" :href="item.url" :id="item.id">{{ item.name }}</a>
+            <a :id="item.id" class="nav-link" :href="item.url">{{ item.name }}</a>
           </li>
         </ul>
         <div id="he-plugin-simple"></div>
@@ -31,7 +31,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container" style="margin-top:10vh;">
+    <main class="container" style="margin-top: 10vh">
       <div id="main">
         <!-- Time Display -->
         <div class="time-display">
@@ -48,7 +48,11 @@
 
         <!-- Categories -->
         <div id="categories">
-          <div v-for="category in config.links.categories" :key="category.title" class="category-container">
+          <div
+            v-for="category in config.links.categories"
+            :key="category.title"
+            class="category-container"
+          >
             <div class="category-title">
               <IconComponent :icon="category.icon" type="title" size="20" class="title-icon" />
               <span>{{ category.title }}</span>
@@ -56,7 +60,13 @@
             <ul class="category-links">
               <li v-for="link in category.links" :key="link.url" class="lylme-3">
                 <a :href="link.url" target="_blank" rel="nofollow">
-                  <IconComponent :icon="link.icon" type="link" size="45" class="link-icon" loading="lazy" />
+                  <IconComponent
+                    :icon="link.icon"
+                    type="link"
+                    size="45"
+                    class="link-icon"
+                    loading="lazy"
+                  />
                   <span>{{ link.name }}</span>
                 </a>
               </li>
@@ -67,19 +77,33 @@
     </main>
 
     <!-- Back to Top -->
-    <div v-show="showBackToTop" class="back-to" id="toolBackTop">
-      <a title="返回顶部" @click="scrollToTop" class="back-top"></a>
+    <div v-show="showBackToTop" id="toolBackTop" class="back-to">
+      <a title="返回顶部" class="back-top" @click="scrollToTop"></a>
     </div>
 
     <!-- Footer -->
     <footer class="mt-5 mb-3 footer text-muted text-center">
-      <p v-html="copyrightHtml" id="copyright"></p>
+      <p v-if="config.copyright.show" id="copyright">
+        <span class="copyright-text">
+          Copyright ©{{ config.copyright.text }}
+          <a href="/" target="_blank" class="copyright-link">{{ config.copyright.target }}</a>. All
+          Rights Reserved.
+        </span>
+        <template v-if="config.copyright.showRecord">
+          <br />
+          <span class="copyright-record">
+            <a :href="config.copyright.recordUrl" target="_blank" class="copyright-link">{{
+              config.copyright.record
+            }}</a>
+          </span>
+        </template>
+      </p>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import type { SiteConfig, SearchEngine } from '~/types/config'
 import { defaultConfig } from '~/utils/config'
 import IconComponent from '~/components/IconComponent.vue'
@@ -111,25 +135,10 @@ useHead(() => ({
     { name: 'keywords', content: config.value.keywords },
     { name: 'author', content: config.value.author }
   ],
-  link: [
-    { rel: 'icon', type: 'image/x-icon', href: config.value.favicon }
-  ]
+  link: [{ rel: 'icon', type: 'image/x-icon', href: config.value.favicon }]
 }))
 
 // SVG icons are loaded by plugin
-
-// Computed
-const copyrightHtml = computed(() => {
-  if (!config.value.copyright.show) return ''
-
-  let html = `<span style="color: #ffffff;">Copyright ©${config.value.copyright.text} <a href='/' target='_blank' style="color: #87CEEB;">${config.value.copyright.target}</a>. All Rights Reserved.</span>`
-
-  if (config.value.copyright.showRecord) {
-    html += `<br><span style="color: #87CEEB;"><a href="${config.value.copyright.recordUrl}" target="_blank" style="color: #87CEEB;">${config.value.copyright.record}</a></span>`
-  }
-
-  return html
-})
 
 // Methods
 const toggleMenu = () => {
@@ -146,10 +155,13 @@ const handleSearch = (query: string, engine: SearchEngine) => {
     // Store recent searches (if localStorage is available)
     if (typeof localStorage !== 'undefined') {
       const recentSearches = JSON.parse(localStorage.getItem('recent_searches') || '[]')
-      const newSearches = [{ query, engine: engine.name, timestamp: Date.now() }, ...recentSearches].slice(0, 10)
+      const newSearches = [
+        { query, engine: engine.name, timestamp: Date.now() },
+        ...recentSearches
+      ].slice(0, 10)
       localStorage.setItem('recent_searches', JSON.stringify(newSearches))
     }
-  } catch (error) {
+  } catch {
     // Silently fail analytics/storage
   }
 }
@@ -184,26 +196,26 @@ onMounted(async () => {
   if (typeof window !== 'undefined') {
     // Extend Window interface for weather widget
     ;(window as any).WIDGET = {
-      "CONFIG": {
-        "modules": "12043",
-        "background": "5",
-        "tmpColor": "FFFFFF",
-        "tmpSize": "16",
-        "cityColor": "FFFFFF",
-        "citySize": "18",
-        "aqiColor": "FFFFFF",
-        "aqiSize": "16",
-        "weatherIconSize": "24",
-        "alertIconSize": "18",
-        "padding": "0px 0px 0px 0px",
-        "shadow": "0",
-        "language": "auto",
-        "fixed": "false",
-        "vertical": "center",
-        "horizontal": "center",
-        "right": "0",
-        "top": "0",
-        "key": "9d714f8dd6b94c7696f9cea8dc3ed1c5"
+      CONFIG: {
+        modules: '12043',
+        background: '5',
+        tmpColor: 'FFFFFF',
+        tmpSize: '16',
+        cityColor: 'FFFFFF',
+        citySize: '18',
+        aqiColor: 'FFFFFF',
+        aqiSize: '16',
+        weatherIconSize: '24',
+        alertIconSize: '18',
+        padding: '0px 0px 0px 0px',
+        shadow: '0',
+        language: 'auto',
+        fixed: 'false',
+        vertical: 'center',
+        horizontal: 'center',
+        right: '0',
+        top: '0',
+        key: '9d714f8dd6b94c7696f9cea8dc3ed1c5'
       }
     }
 
@@ -241,8 +253,16 @@ onUnmounted(() => {
 })
 </script>
 
-
 <style scoped>
+/* 版权区：文字与链接的样式，改用 CSS 而不是内联 HTML 字符串 */
+#copyright {
+  color: #ffffff;
+}
+
+.copyright-link {
+  color: #87ceeb;
+}
+
 /* 首屏背景层：固定定位铺满视口，位于内容之下 */
 .page-background {
   position: fixed;

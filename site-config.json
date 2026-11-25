@@ -4,7 +4,7 @@
   "description": "",
   "author": "Asfmq",
   "favicon": "/img/ico/fmq.ico",
-  "backgroundImage": "https://ts1.cn.mm.bing.net/th/id/R-C.5245729f06d893bb71f1ef22d1701e99?rik=UUiU5%2f9nqV5QWA&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20181109%2fa6fcad52457646ef8b3d3c3b3b12e8ab.jpeg&ehk=UIlATT2VKn8IqNzCFFGKXvl11vSYf%2flqCueyxilmefg%3d&risl=&pid=ImgRaw&r=0",
+  "backgroundImage": "/img/background/background.jpg",
   "links": {
     "navItems": [
       {
@@ -26,55 +26,55 @@
     "searchEngines": [
       {
         "name": "Bing",
-        "url": "https://cn.bing.com/search?q=",
+        "url": "https://cn.bing.com/search?q={query}",
         "placeholder": "微软必应搜索",
         "icon": "#icon-bing",
         "color": "#696a6d"
       },
       {
         "name": "百度",
-        "url": "https://www.baidu.com/s?word=",
+        "url": "https://www.baidu.com/s?word={query}",
         "placeholder": "百度一下，你就知道",
         "icon": "#icon-icon_baidulogo",
         "color": "#0c498c"
       },
       {
         "name": "搜狗",
-        "url": "https://www.sogou.com/web?query=",
+        "url": "https://www.sogou.com/web?query={query}",
         "placeholder": "上网从搜狗开始",
         "icon": "#icon-sougou",
         "color": "#696a6d"
       },
       {
         "name": "知乎",
-        "url": "https://www.zhihu.com/search?q=",
+        "url": "https://www.zhihu.com/search?q={query}",
         "placeholder": "有问题，上知乎",
         "icon": "#icon-zhihu",
         "color": "#0084fe"
       },
       {
         "name": "Blibili",
-        "url": "https://search.bilibili.com/all?keyword=",
+        "url": "https://search.bilibili.com/all?keyword={query}",
         "icon": "#icon-bilibili",
         "placeholder": "(゜-゜)つロ 干杯~",
         "color": "#00a1d6"
       },
       {
         "name": "微博",
-        "url": "https://s.weibo.com/weibo/",
+        "url": "https://s.weibo.com/weibo?q={query}",
         "placeholder": "随时随地发现新鲜事",
         "icon": "#icon-weibo",
         "color": "#ff5722"
       },
       {
         "name": "谷歌",
-        "url": "https://search.njau.cf/extdomains/www.google.com.hk/search?q=",
+        "url": "https://search.njau.cf/extdomains/www.google.com.hk/search?q={query}",
         "icon": "#icon-google",
         "placeholder": "值得信任的搜索引擎"
       },
       {
         "name": "翻译",
-        "url": "https://translate.google.cn/?hl=zh-CN&sl=auto&tl=zh-CN&text=",
+        "url": "https://translate.google.cn/?hl=zh-CN&sl=auto&tl=zh-CN&text={query}",
         "placeholder": "输入翻译内容（自动检测语言）",
         "icon": "#icon-search",
         "color": "#0084fe"
@@ -85,11 +85,6 @@
         "title": "我的服务",
         "icon": "#icon-home",
         "links": [
-          {
-            "name": "本地服务",
-            "url": "/local",
-            "icon": "/img/ico/fmq.ico"
-          },
           {
             "name": "transmission",
             "url": "https://transmission.asfmq.cn",

@@ -7,16 +7,30 @@
   >
     <div class="form-group">
       <label>分类名称</label>
-      <input v-model="categoryForm.title" type="text" class="form-control" placeholder="输入分类名称">
+      <input
+        v-model="categoryForm.title"
+        type="text"
+        class="form-control"
+        placeholder="输入分类名称"
+      />
     </div>
     <div class="form-group">
       <label>分类图标</label>
-      <input v-model="categoryForm.icon" type="text" class="form-control" placeholder="图标SVG代码">
+      <input
+        v-model="categoryForm.icon"
+        type="text"
+        class="form-control"
+        placeholder="图标SVG代码"
+      />
     </div>
 
     <template #footer>
-      <button type="button" class="btn btn-secondary" @click="$emit('update:modelValue', false)">取消</button>
-      <button type="button" class="btn btn-primary" @click="submit">{{ isEdit ? '保存' : '添加' }}</button>
+      <button type="button" class="btn btn-secondary" @click="$emit('update:modelValue', false)">
+        取消
+      </button>
+      <button type="button" class="btn btn-primary" @click="submit">
+        {{ isEdit ? '保存' : '添加' }}
+      </button>
     </template>
   </BaseModal>
 </template>
@@ -35,15 +49,18 @@ const categoryForm = ref({ title: '', icon: '' })
 
 const isEdit = computed(() => !!props.initialData)
 
-watch(() => props.modelValue, (newVal) => {
-  if (newVal) {
-    if (props.initialData) {
-      categoryForm.value = { ...props.initialData }
-    } else {
-      categoryForm.value = { title: '', icon: '' }
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal) {
+      if (props.initialData) {
+        categoryForm.value = { ...props.initialData }
+      } else {
+        categoryForm.value = { title: '', icon: '' }
+      }
     }
   }
-})
+)
 
 const submit = () => {
   if (!categoryForm.value.title) {
@@ -75,9 +92,11 @@ const submit = () => {
   line-height: 1.5;
   color: var(--text-color, #495057);
   background-color: #fff;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--border-radius, 0.25rem);
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {

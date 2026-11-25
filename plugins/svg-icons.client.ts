@@ -10,13 +10,13 @@ export default defineNuxtPlugin(() => {
 
       // 直接加载SVG文件并注入到DOM中
       fetch('/icons.svg')
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             throw new Error(`Failed to fetch SVG icons: ${response.status}`)
           }
           return response.text()
         })
-        .then(svgContent => {
+        .then((svgContent) => {
           // 创建一个临时的div来解析SVG内容
           const tempDiv = document.createElement('div')
           tempDiv.innerHTML = svgContent
@@ -31,7 +31,7 @@ export default defineNuxtPlugin(() => {
             reject(new Error('No SVG element found in the loaded content'))
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error('Failed to load SVG icons:', error)
           reject(error)
         })

@@ -16,13 +16,16 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:show'])
 
-watch(() => props.show, (newVal) => {
-  if (newVal) {
-    setTimeout(() => {
-      emit('update:show', false)
-    }, props.duration || 3000)
+watch(
+  () => props.show,
+  (newVal) => {
+    if (newVal) {
+      setTimeout(() => {
+        emit('update:show', false)
+      }, props.duration || 3000)
+    }
   }
-})
+)
 </script>
 
 <style scoped>

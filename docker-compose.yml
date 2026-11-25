@@ -5,15 +5,31 @@ services:
     container_name: homepage-nuxt
     restart: unless-stopped
     ports:
-      - "${HOMEPAGE_PORT:-3000}:3000"
+      - '${HOMEPAGE_PORT:-3000}:3000'
     environment:
       - NODE_ENV=production
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-please-change-this-password}
-      - JWT_SECRET=${JWT_SECRET:-please-change-this-secret-in-production}
+      # 必须显式提供：缺失时 compose 直接报错，避免静默使用弱默认口令
+      - NUXT_ADMIN_PASSWORD=${NUXT_ADMIN_PASSWORD:?请先设置 NUXT_ADMIN_PASSWORD}
+      - NUXT_JWT_SECRET=${NUXT_JWT_SECRET:?请先设置 NUXT_JWT_SECRET（至少 32 位）}
       - NUXT_PUBLIC_API_BASE=${NUXT_PUBLIC_API_BASE:-/api}
+      # local：写入 CONFIG_FILE_PATH（默认落在挂载卷里）；qiniu：写入七牛云，适合无状态部署
+      - STORAGE_TYPE=${STORAGE_TYPE:-local}
+      - CONFIG_FILE_PATH=${CONFIG_FILE_PATH:-/app/data/site-config.json}
+      # 仅 STORAGE_TYPE=qiniu 时需要
+      - NUXT_QINIU_ACCESS_KEY=${NUXT_QINIU_ACCESS_KEY:-}
+      - NUXT_QINIU_SECRET_KEY=${NUXT_QINIU_SECRET_KEY:-}
+      - NUXT_QINIU_BUCKET=${NUXT_QINIU_BUCKET:-}
+      - NUXT_QINIU_DOMAIN=${NUXT_QINIU_DOMAIN:-}
+      - NUXT_QINIU_CONFIG=${NUXT_QINIU_CONFIG:-}
+    volumes:
+      # local 存储模式的持久化目录，容器重建后配置不丢
+      - ./data:/app/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/health']
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+
+volumes:
+  homepage-data:

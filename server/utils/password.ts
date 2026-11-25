@@ -58,7 +58,7 @@ export function validateNewPassword(newPassword: string): void {
   if (typeof newPassword !== 'string' || newPassword.length < MIN_PASSWORD_LENGTH) {
     throw createError({
       statusCode: 400,
-      statusMessage: `新密码长度至少为 ${MIN_PASSWORD_LENGTH} 位`
+      message: `新密码长度至少为 ${MIN_PASSWORD_LENGTH} 位`
     })
   }
 }
